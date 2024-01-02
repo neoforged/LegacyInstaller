@@ -63,9 +63,9 @@ public class ProgressFrame extends JFrame implements ProgressCallback
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] { 600, 0 };
-        gridBagLayout.rowHeights = new int[] {0, 0, 0, 200};
+        gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 200};
         gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-        gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
+        gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0 };
         panel.setLayout(gridBagLayout);
 
         progressText = new JLabel("Progress Text");
@@ -104,7 +104,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_btnCancel.gridx = 0;
         gbc_btnCancel.gridy = gridY++;
         panel.add(btnCancel, gbc_btnCancel);
-        
+
         consoleArea = new JTextArea();
         consoleArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
         GridBagConstraints gbc_textArea = new GridBagConstraints();

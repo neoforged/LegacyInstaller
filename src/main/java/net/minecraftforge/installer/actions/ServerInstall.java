@@ -51,7 +51,7 @@ public class ServerInstall extends Action {
         if (!target.exists())
             target.mkdirs();
         librariesDir.mkdir();
-        if (profile.getMirror() != null)
+        if (profile.getMirror() != null && profile.getMirror().isAdvertised())
             monitor.stage(getSponsorMessage());
         checkCancel();
 
