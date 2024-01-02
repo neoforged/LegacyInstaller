@@ -1,31 +1,42 @@
+import proguard.gradle.ProGuardTask
+
 buildscript {
     repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
     }
     dependencies {
         classpath 'com.guardsquare:proguard-gradle:7.1.0'
-        classpath 'net.minecraftforge:GradleUtils:1.+'
     }
 }
 
 plugins {
     id 'org.cadixdev.licenser' version '0.6.1'
     id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'net.neoforged.gradleutils' version '3.0.0-alpha.10'
     //id 'maven'
     id 'maven-publish'
     id 'java'
     id 'eclipse'
     id 'idea'
 }
-apply plugin: 'net.minecraftforge.gradleutils'
 
 repositories {
     mavenCentral()
 }
 
-group = 'net.minecraftforge'
-archivesBaseName = 'installer'
+group = 'net.neoforged'
+base {
+    archivesName = 'legacyinstaller'
+}
+
+gradleutils.setupSigning(signAllPublications: true)
+
+gradleutils.version {
+    branches {
+        suffixBranch()
+    }
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 license {
@@ -34,7 +45,7 @@ license {
   newLine false
 }
 
-version = gradleutils.getTagOffsetBranchVersion(null, 'master', 'HEAD', '2.0')
+version = gradleutils.version
 println('Installer Version: ' + version)
 
 ext {
@@ -44,11 +55,11 @@ ext {
         attributes('Main-Class': MAIN_CLASS)
         attributes([
             'Specification-Title':      'Installer',
-            'Specification-Vendor':     'Forge Development LLC',
+            'Specification-Vendor':     'NeoForge',
             'Specification-Version':    SPEC_VERSION,
             'Implementation-Title':     'SimpleInstaller',
             'Implementation-Version':   project.version,
-            'Implementation-Vendor':    'Forge Development LLC'
+            'Implementation-Vendor':    'NeoForge'
         ] as LinkedHashMap, 'net/minecraftforge/installer/')
     }
 }
@@ -71,27 +82,26 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-    manifest.from(MANIFEST)
+java {
+    withSourcesJar()
 }
 
 shadowJar {
-    classifier 'fatjar'
+    archiveClassifier = 'fatjar'
     manifest.from(MANIFEST)
 }
 
-task pgShrinkJar(type: proguard.gradle.ProGuardTask, dependsOn: shadowJar) {
+tasks.register('pgShrinkJar', ProGuardTask) {
+    dependsOn shadowJar
     ext {
         inputJar = shadowJar.archiveFile.get().asFile
         outDir = file("${buildDir}/proguard")
-        obfuscatedJar = "${outDir}/${jar.archiveBaseName}.jar"
+        obfuscatedJar = "${outDir}/${jar.archiveBaseName.get()}.jar"
         config = 'proguard.pro'
     }
     inputs.file inputJar
     inputs.file config
-    
+
     outDir.mkdirs()
 
     injars inputJar
@@ -111,8 +121,9 @@ task pgShrinkJar(type: proguard.gradle.ProGuardTask, dependsOn: shadowJar) {
     configuration config
 }
 
-task shrinkJar(type: Jar, dependsOn: pgShrinkJar) {
-    classifier = 'shrunk'
+tasks.register('shrinkJar', Jar) {
+    dependsOn pgShrinkJar
+    archiveClassifier = 'shrunk'
     from zipTree(pgShrinkJar.obfuscatedJar)
     manifest.from(MANIFEST)
 }
@@ -127,10 +138,11 @@ jar {
     manifest.from(MANIFEST)
 }
 
-task testJar(type: Jar, dependsOn: shrinkJar) {
+tasks.register('testJar', Jar) {
+    dependsOn shrinkJar
     from zipTree(shrinkJar.archiveFile.get().asFile)
     from sourceSets.test.output
-    classifier 'test'
+    archiveClassifier = 'test'
     manifest.from(MANIFEST)
 }
 
@@ -143,47 +155,12 @@ publishing {
             pom {
                 name = project.archivesBaseName
                 packaging = 'jar'
-                description = 'Minecraft Forge Installer'
-                url = 'https://github.com/MinecraftForge/Installer'
-
-                scm {
-                    url = 'https://github.com/MinecraftForge/Installer'
-                    connection = 'scm:git:git://github.com/MinecraftForge/Installer.git'
-                    developerConnection = 'scm:git:git@github.com:MinecraftForge/Installer.git'
-                }
-
-                issueManagement {
-                    system = 'github'
-                    url = 'https://github.com/MinecraftForge/Installer/issues'
-                }
-
-                developers {
-                    developer {
-                        id = 'cpw'
-                        name = 'cpw'
-                    }
-                    developer {
-                        id = 'LexManos'
-                        name = 'Lex Manos'
-                    }
-                }
+                description = 'NeoForge Forge Installer'
+                pomUtils.githubRepo(it, 'LegacyInstaller')
             }
         }
     }
     repositories {
-        maven {
-            if (System.env.MAVEN_USER) {
-                url 'https://maven.minecraftforge.net/'
-                authentication {
-                    basic(BasicAuthentication)
-                }
-                credentials {
-                    username = System.env.MAVEN_USER ?: 'not'
-                    password = System.env.MAVEN_PASSWORD ?: 'set'
-                }
-            } else {
-                url 'file://' + rootProject.file('repo').getAbsolutePath()
-            }
-        }
+        maven gradleutils.publishingMaven
     }
 }
