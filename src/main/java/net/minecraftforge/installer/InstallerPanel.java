@@ -18,12 +18,35 @@
  */
 package net.minecraftforge.installer;
 
-import java.awt.*;
+import net.minecraftforge.installer.actions.Action;
+import net.minecraftforge.installer.actions.ActionCanceledException;
+import net.minecraftforge.installer.actions.Actions;
+import net.minecraftforge.installer.actions.ProgressCallback;
+import net.minecraftforge.installer.json.InstallV1;
+import net.minecraftforge.installer.json.OptionalLibrary;
+
+import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -38,20 +61,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.basic.BasicBorders;
-
-import net.minecraftforge.installer.actions.Action;
-import net.minecraftforge.installer.actions.ActionCanceledException;
-import net.minecraftforge.installer.actions.Actions;
-import net.minecraftforge.installer.actions.ProgressCallback;
-import net.minecraftforge.installer.json.Install;
-import net.minecraftforge.installer.json.InstallV1;
-import net.minecraftforge.installer.json.OptionalLibrary;
-import net.minecraftforge.installer.json.Util;
 
 @SuppressWarnings("unused")
 public class InstallerPanel extends JPanel {
