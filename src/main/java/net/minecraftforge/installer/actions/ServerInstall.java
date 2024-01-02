@@ -68,7 +68,7 @@ public class ServerInstall extends Action {
         checkCancel();
 
         //Download MC Server jar
-        monitor.stage("Considering minecraft server jar");
+        monitor.stage("Considering Minecraft server jar", true);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("ROOT", target.getAbsolutePath());
         tokens.put("MINECRAFT_VERSION", profile.getMinecraft());

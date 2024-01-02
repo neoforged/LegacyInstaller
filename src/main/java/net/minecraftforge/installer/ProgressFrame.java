@@ -44,10 +44,14 @@ public class ProgressFrame extends JFrame implements ProgressCallback
 
     private final JLabel progressText;
     private final JProgressBar progressBar;
+    private final JProgressBar stepProgress;
+    private final ProgressBar _stepProgress;
     private final JTextArea consoleArea;
 
     public ProgressFrame(ProgressCallback parent, String title, Runnable canceler)
     {
+        int gridY = 0;
+
         this.parent = parent;
         
         setResizable(false);
@@ -68,7 +72,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         GridBagConstraints gbc_lblProgressText = new GridBagConstraints();
         gbc_lblProgressText.insets = new Insets(10, 0, 5, 0);
         gbc_lblProgressText.gridx = 0;
-        gbc_lblProgressText.gridy = 0;
+        gbc_lblProgressText.gridy = gridY++;
         panel.add(progressText, gbc_lblProgressText);
 
         progressBar = new JProgressBar();
@@ -76,8 +80,17 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_progressBar.insets = new Insets(0, 25, 5, 25);
         gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
         gbc_progressBar.gridx = 0;
-        gbc_progressBar.gridy = 1;
+        gbc_progressBar.gridy = gridY++;
         panel.add(progressBar, gbc_progressBar);
+
+        stepProgress = new JProgressBar();
+        _stepProgress = wrapSwing(stepProgress);
+        GridBagConstraints gbc_stepProgress = new GridBagConstraints();
+        gbc_stepProgress.insets = new Insets(0, 25, 5, 25);
+        gbc_stepProgress.fill = GridBagConstraints.HORIZONTAL;
+        gbc_stepProgress.gridx = 0;
+        gbc_stepProgress.gridy = gridY++;
+        panel.add(stepProgress, gbc_stepProgress);
 
         JButton btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e ->
@@ -89,7 +102,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_btnCancel.insets = new Insets(0, 25, 5, 25);
         gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
         gbc_btnCancel.gridx = 0;
-        gbc_btnCancel.gridy = 2;
+        gbc_btnCancel.gridy = gridY++;
         panel.add(btnCancel, gbc_btnCancel);
         
         consoleArea = new JTextArea();
@@ -98,7 +111,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_textArea.insets = new Insets(15, 25, 25, 25);
         gbc_textArea.fill = GridBagConstraints.BOTH;
         gbc_textArea.gridx = 0;
-        gbc_textArea.gridy = 3;
+        gbc_textArea.gridy = gridY;
         
         JScrollPane scroll = new JScrollPane(consoleArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setAutoscrolls(true);
@@ -122,11 +135,20 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     }
 
     @Override
-    public void stage(String message)
+    public void stage(String message, boolean withProgress)
     {
         message(message, MessagePriority.HIGH, false);
         this.progressBar.setIndeterminate(true);
         parent.stage(message);
+
+        this.stepProgress.setIndeterminate(!withProgress);
+        this.stepProgress.setMaximum(100);
+        this.stepProgress.setToolTipText(message);
+    }
+
+    @Override
+    public ProgressBar getStepProgress() {
+        return _stepProgress;
     }
 
     @Override
@@ -145,5 +167,29 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         consoleArea.setCaretPosition(consoleArea.getDocument().getLength());
         if (notifyParent)
             parent.message(message, priority);
+    }
+
+    private static ProgressBar wrapSwing(JProgressBar bar) {
+        return new ProgressBar() {
+            @Override
+            public void setMaxProgress(int maximum) {
+                bar.setMaximum(maximum);
+            }
+
+            @Override
+            public void progress(int value) {
+                bar.setValue(value);
+            }
+
+            @Override
+            public void percentageProgress(double value) {
+                bar.setValue((int) value * 100);
+            }
+
+            @Override
+            public void setIndeterminate(boolean indeterminate) {
+                bar.setIndeterminate(indeterminate);
+            }
+        };
     }
 }
