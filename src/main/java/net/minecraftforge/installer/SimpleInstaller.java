@@ -84,7 +84,7 @@ public class SimpleInstaller
         }
 
         OptionParser parser = new OptionParser();
-        OptionSpec<File> clientInstallOption = parser.acceptsAll(Arrays.asList("installClient", "install-client"), "Install a client to the specified directory, defaulting to the MC installer dir").withOptionalArg().ofType(File.class).defaultsTo(getMCDir());
+        OptionSpec<File> clientInstallOption = parser.acceptsAll(Arrays.asList("installClient", "install-client"), "Install a client to the specified directory, defaulting to the MC installation directory").withOptionalArg().ofType(File.class).defaultsTo(getMCDir());
         OptionSpec<File> serverInstallOption = parser.acceptsAll(Arrays.asList("installServer", "install-server"), "Install a server to the current directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
         OptionSpec<File> extractOption = parser.accepts("extract", "Extract the contained jar file to the specified directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
         OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"),"Help with this installer");
