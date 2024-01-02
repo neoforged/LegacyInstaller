@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,8 @@ public class InstallerPanel extends JPanel {
     private JPanel fileEntryPanel;
     private List<OptionalListEntry> optionals = new ArrayList<>();
     private Map<String, Function<ProgressCallback, Action>> actions = new HashMap<>();
+
+    private Optional<JButton> proceedButton = Optional.empty();
 
     private final InstallV1 profile;
     private final File installer;
@@ -372,6 +375,7 @@ public class InstallerPanel extends JPanel {
             selectedDirText.setForeground(null);
             infoLabel.setVisible(false);
             fileEntryPanel.setBorder(null);
+            proceedButton.ifPresent(button -> button.setEnabled(true));
         }
         else
         {
@@ -379,6 +383,7 @@ public class InstallerPanel extends JPanel {
             fileEntryPanel.setBorder(new LineBorder(Color.RED));
             infoLabel.setText("<html>"+action.getFileError(targetDir)+"</html>");
             infoLabel.setVisible(true);
+            proceedButton.ifPresent(button -> button.setEnabled(false));
         }
         if (dialog!=null)
         {
@@ -390,6 +395,15 @@ public class InstallerPanel extends JPanel {
     public void run(ProgressCallback monitor)
     {
         JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+
+        // Attempt to change the OK button to a Proceed button
+        // Use index 1 (the buttons panel) as 0 is this panel
+        proceedButton = Arrays.stream(((JPanel) optionPane.getComponents()[1]).getComponents())
+                .filter(comp -> comp instanceof JButton)
+                .map(JButton.class::cast)
+                .filter(btn -> btn.getText().equals("OK"))
+                .findFirst();
+        proceedButton.ifPresent(button -> button.setText("Proceed"));
 
         dialog = optionPane.createDialog("NeoForge installer");
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
