@@ -84,6 +84,7 @@ public class SimpleInstaller
         }
 
         OptionParser parser = new OptionParser();
+        OptionSpec<File> clientInstallOption = parser.accepts("installClient", "Install a client to the specified directory, defaulting to the MC installer dir").withOptionalArg().ofType(File.class).defaultsTo(getMCDir());
         OptionSpec<File> serverInstallOption = parser.accepts("installServer", "Install a server to the current directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
         OptionSpec<File> extractOption = parser.accepts("extract", "Extract the contained jar file to the specified directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
         OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"),"Help with this installer");
@@ -110,8 +111,7 @@ public class SimpleInstaller
         else
         {
             for(String host : new String[] {
-                "files.minecraftforge.net",
-                "maven.minecraftforge.net",
+                "maven.neoforged.net",
                 "libraries.minecraft.net",
                 "launchermeta.mojang.com",
                 "piston-meta.mojang.com",
@@ -130,6 +130,9 @@ public class SimpleInstaller
         } else if (optionSet.has(extractOption)) {
             action = Actions.EXTRACT;
             target = optionSet.valueOf(extractOption);
+        } else if (optionSet.has(clientInstallOption)) {
+            action = Actions.CLIENT;
+            target = optionSet.valueOf(clientInstallOption);
         }
 
         if (action != null)
