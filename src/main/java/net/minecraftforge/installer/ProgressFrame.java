@@ -61,6 +61,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         setBounds(100, 100, 600, 400);
         setContentPane(panel);
         setLocationRelativeTo(null);
+        setIconImages(Images.getWindowIcons());
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] { 600, 0 };

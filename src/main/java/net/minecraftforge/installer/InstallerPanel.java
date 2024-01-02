@@ -25,7 +25,6 @@ import net.minecraftforge.installer.actions.ProgressCallback;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.OptionalLibrary;
 
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -48,10 +47,8 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,31 +125,13 @@ public class InstallerPanel extends JPanel {
         return data;
     }
 
-    private BufferedImage getImage(String path, String default_)
-    {
-        try
-        {
-            InputStream in = SimpleInstaller.class.getResourceAsStream(path);
-            if (in == null && default_ != null)
-                in = new ByteArrayInputStream(hexToByteArray(default_));
-            return ImageIO.read(in);
-        }
-        catch (IOException e)
-        {
-            if (default_ == null)
-                throw new RuntimeException(e);
-            else
-                return new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-        }
-    }
-
     public InstallerPanel(File targetDir, InstallV1 profile, File installer)
     {
         this.profile = profile;
         this.installer = installer;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        BufferedImage image = getImage(profile.getLogo(), null);
+        BufferedImage image = Images.getImage(profile.getLogo());
         //final BufferedImage urlIcon = getImage(profile.getUrlIcon(), URL);
 
         JPanel logoSplash = new JPanel();
@@ -415,6 +394,7 @@ public class InstallerPanel extends JPanel {
         proceedButton.ifPresent(button -> button.setText("Proceed"));
 
         dialog = optionPane.createDialog("NeoForge installer");
+        dialog.setIconImages(Images.getWindowIcons());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
         int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
