@@ -18,30 +18,12 @@
  */
 package net.minecraftforge.installer;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Desktop;
-import java.awt.EventQueue;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import net.minecraftforge.installer.actions.Action;
+import net.minecraftforge.installer.actions.ActionCanceledException;
+import net.minecraftforge.installer.actions.Actions;
+import net.minecraftforge.installer.actions.ProgressCallback;
+import net.minecraftforge.installer.json.InstallV1;
+import net.minecraftforge.installer.json.OptionalLibrary;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -50,28 +32,35 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-
-import net.minecraftforge.installer.actions.Action;
-import net.minecraftforge.installer.actions.ActionCanceledException;
-import net.minecraftforge.installer.actions.Actions;
-import net.minecraftforge.installer.actions.ProgressCallback;
-import net.minecraftforge.installer.json.Install;
-import net.minecraftforge.installer.json.InstallV1;
-import net.minecraftforge.installer.json.OptionalLibrary;
-import net.minecraftforge.installer.json.Util;
+import java.awt.Color;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public class InstallerPanel extends JPanel {
@@ -88,6 +77,8 @@ public class InstallerPanel extends JPanel {
     private List<OptionalListEntry> optionals = new ArrayList<>();
     private Map<String, Function<ProgressCallback, Action>> actions = new HashMap<>();
 
+    private Optional<JButton> proceedButton = Optional.empty();
+
     private final InstallV1 profile;
     private final File installer;
 
@@ -101,17 +92,15 @@ public class InstallerPanel extends JPanel {
             JFileChooser dirChooser = new JFileChooser();
             dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             dirChooser.setFileHidingEnabled(false);
+            dirChooser.setDialogTitle("Select installation directory");
+            dirChooser.setApproveButtonText("Select");
             dirChooser.ensureFileIsVisible(targetDir);
             dirChooser.setSelectedFile(targetDir);
+
             int response = dirChooser.showOpenDialog(InstallerPanel.this);
-            switch (response)
-            {
-            case JFileChooser.APPROVE_OPTION:
+            if (response == JFileChooser.APPROVE_OPTION) {
                 targetDir = dirChooser.getSelectedFile();
                 updateFilePath();
-                break;
-            default:
-                break;
             }
         }
     }
@@ -178,10 +167,19 @@ public class InstallerPanel extends JPanel {
         tag.setAlignmentX(CENTER_ALIGNMENT);
         tag.setAlignmentY(CENTER_ALIGNMENT);
         logoSplash.add(tag);
-        tag = new JLabel(profile.getVersion());
-        tag.setAlignmentX(CENTER_ALIGNMENT);
-        tag.setAlignmentY(CENTER_ALIGNMENT);
-        logoSplash.add(tag);
+
+        {
+            // The version is a box that has a first label that is non-bold
+            final Box version = Box.createHorizontalBox();
+            version.add(new JLabel("Version: "));
+            tag = new JLabel(profile.getVersion());
+            // and a bold part which represents the actual version
+            tag.setFont(tag.getFont().deriveFont(Font.BOLD));
+            version.add(tag);
+            version.setAlignmentX(CENTER_ALIGNMENT);
+            version.setAlignmentY(CENTER_ALIGNMENT);
+            logoSplash.add(version);
+        }
 
         logoSplash.setAlignmentX(CENTER_ALIGNMENT);
         logoSplash.setAlignmentY(TOP_ALIGNMENT);
@@ -191,12 +189,6 @@ public class InstallerPanel extends JPanel {
         sponsorPanel.setLayout(new BoxLayout(sponsorPanel, BoxLayout.X_AXIS));
         sponsorPanel.setAlignmentX(CENTER_ALIGNMENT);
         sponsorPanel.setAlignmentY(CENTER_ALIGNMENT);
-
-//        sponsorLogo = new JLabel();
-//        sponsorLogo.setSize(50, 20);
-//        sponsorLogo.setAlignmentX(CENTER_ALIGNMENT);
-//        sponsorLogo.setAlignmentY(CENTER_ALIGNMENT);
-//        sponsorPanel.add(sponsorLogo);
 
         sponsorButton = new JButton();
         sponsorButton.setAlignmentX(CENTER_ALIGNMENT);
@@ -211,7 +203,7 @@ public class InstallerPanel extends JPanel {
         choiceButtonGroup = new ButtonGroup();
 
         JPanel choicePanel = new JPanel();
-        choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.Y_AXIS));
+        choicePanel.setLayout(new BoxLayout(choicePanel, BoxLayout.PAGE_AXIS));
         boolean first = true;
         SelectButtonAction sba = new SelectButtonAction();
         for (Actions action : Actions.values())
@@ -228,12 +220,20 @@ public class InstallerPanel extends JPanel {
             radioButton.setSelected(first);
             radioButton.setAlignmentX(LEFT_ALIGNMENT);
             radioButton.setAlignmentY(CENTER_ALIGNMENT);
+            radioButton.setSize(15, 15);
+            // The default gap of 4 is too small for the size of the buttons, so almost triple the gap
+            // to avoid clipping and improve readability
+            radioButton.setIconTextGap(10);
+            // Pad the button 5 pixels everywhere to avoid overlapping
+            radioButton.setMargin(new Insets(3, 3, 3, 3));
             choiceButtonGroup.add(radioButton);
             choicePanel.add(radioButton);
+            // Add a pixel between the buttons that ensures vertical separation and prevents clipping
+            choicePanel.add(Box.createRigidArea(new Dimension(1, 1)));
             first = false;
         }
 
-        choicePanel.setAlignmentX(RIGHT_ALIGNMENT);
+        choicePanel.setAlignmentX(CENTER_ALIGNMENT);
         choicePanel.setAlignmentY(CENTER_ALIGNMENT);
         add(choicePanel);
 
@@ -319,14 +319,13 @@ public class InstallerPanel extends JPanel {
         this.targetDir = targetDir;
         selectedDirText = new JTextField();
         selectedDirText.setEditable(false);
-        selectedDirText.setToolTipText("Path to minecraft");
+        selectedDirText.setToolTipText("Path to the Minecraft installation directory");
         selectedDirText.setColumns(30);
-//        homeDir.setMaximumSize(homeDir.getPreferredSize());
         entryPanel.add(selectedDirText);
         JButton dirSelect = new JButton();
         dirSelect.setAction(new FileSelectAction());
         dirSelect.setText("...");
-        dirSelect.setToolTipText("Select an alternative minecraft directory");
+        dirSelect.setToolTipText("Select an alternative Minecraft directory");
         entryPanel.add(dirSelect);
 
         entryPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -385,6 +384,7 @@ public class InstallerPanel extends JPanel {
             selectedDirText.setForeground(null);
             infoLabel.setVisible(false);
             fileEntryPanel.setBorder(null);
+            proceedButton.ifPresent(button -> button.setEnabled(true));
         }
         else
         {
@@ -392,6 +392,7 @@ public class InstallerPanel extends JPanel {
             fileEntryPanel.setBorder(new LineBorder(Color.RED));
             infoLabel.setText("<html>"+action.getFileError(targetDir)+"</html>");
             infoLabel.setVisible(true);
+            proceedButton.ifPresent(button -> button.setEnabled(false));
         }
         if (dialog!=null)
         {
@@ -404,7 +405,16 @@ public class InstallerPanel extends JPanel {
     {
         JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
-        dialog = optionPane.createDialog("Mod system installer");
+        // Attempt to change the OK button to a Proceed button
+        // Use index 1 (the buttons panel) as 0 is this panel
+        proceedButton = Arrays.stream(((JPanel) optionPane.getComponents()[1]).getComponents())
+                .filter(comp -> comp instanceof JButton)
+                .map(JButton.class::cast)
+                .filter(btn -> btn.getText().equals("OK"))
+                .findFirst();
+        proceedButton.ifPresent(button -> button.setText("Proceed"));
+
+        dialog = optionPane.createDialog("NeoForge installer");
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
         int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
@@ -422,7 +432,7 @@ public class InstallerPanel extends JPanel {
                 prog.toFront();
                 if (action.run(targetDir, optPred, installer)) {
                     prog.start("Finished!");
-                    prog.progress(1);
+                    prog.getGlobalProgress().percentageProgress(1);
                     JOptionPane.showMessageDialog(null, action.getSuccessMessage(), "Complete", JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (ActionCanceledException e) {

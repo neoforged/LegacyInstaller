@@ -51,7 +51,7 @@ public class ServerInstall extends Action {
         if (!target.exists())
             target.mkdirs();
         librariesDir.mkdir();
-        if (profile.getMirror() != null)
+        if (profile.getMirror() != null && profile.getMirror().isAdvertised())
             monitor.stage(getSponsorMessage());
         checkCancel();
 
@@ -68,7 +68,7 @@ public class ServerInstall extends Action {
         checkCancel();
 
         //Download MC Server jar
-        monitor.stage("Considering minecraft server jar");
+        monitor.stage("Considering Minecraft server jar", true);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("ROOT", target.getAbsolutePath());
         tokens.put("MINECRAFT_VERSION", profile.getMinecraft());
@@ -137,12 +137,12 @@ public class ServerInstall extends Action {
         else if (!targetDir.isDirectory())
             return "The specified path needs to be a directory";
         else
-            return "There are already files at the target directory";
+            return "There are already files in the target directory";
     }
 
     @Override
     public String getSuccessMessage() {
-        if (grabbed.size() > 0)
+        if (!grabbed.isEmpty())
             return String.format("Successfully downloaded minecraft server, downloaded %d libraries and installed %s", grabbed.size(), profile.getVersion());
         return String.format("Successfully downloaded minecraft server and installed %s", profile.getVersion());
     }

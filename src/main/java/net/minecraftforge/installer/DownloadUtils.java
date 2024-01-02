@@ -190,7 +190,7 @@ public class DownloadUtils {
         try {
             URLConnection connection = getConnection(url);
             if (connection != null) {
-                Files.copy(connection.getInputStream(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(monitor.wrapStepDownload(connection), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
                 if (download.getSha1() != null) {
                     String sha1 = getSha1(target);

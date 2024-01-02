@@ -43,11 +43,16 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     private final JPanel panel = new JPanel();
 
     private final JLabel progressText;
-    private final JProgressBar progressBar;
+    private final JProgressBar globalProgress;
+    private final ProgressBar globalProgressController;
+    private final JProgressBar stepProgress;
+    private final ProgressBar stepProgressController;
     private final JTextArea consoleArea;
 
     public ProgressFrame(ProgressCallback parent, String title, Runnable canceler)
     {
+        int gridY = 0;
+
         this.parent = parent;
         
         setResizable(false);
@@ -59,25 +64,35 @@ public class ProgressFrame extends JFrame implements ProgressCallback
 
         GridBagLayout gridBagLayout = new GridBagLayout();
         gridBagLayout.columnWidths = new int[] { 600, 0 };
-        gridBagLayout.rowHeights = new int[] {0, 0, 0, 200};
+        gridBagLayout.rowHeights = new int[] {0, 0, 0, 0, 200};
         gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-        gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 1.0 };
+        gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0 };
         panel.setLayout(gridBagLayout);
 
         progressText = new JLabel("Progress Text");
         GridBagConstraints gbc_lblProgressText = new GridBagConstraints();
         gbc_lblProgressText.insets = new Insets(10, 0, 5, 0);
         gbc_lblProgressText.gridx = 0;
-        gbc_lblProgressText.gridy = 0;
+        gbc_lblProgressText.gridy = gridY++;
         panel.add(progressText, gbc_lblProgressText);
 
-        progressBar = new JProgressBar();
+        globalProgress = new JProgressBar();
+        globalProgressController = wrapSwing(globalProgress);
         GridBagConstraints gbc_progressBar = new GridBagConstraints();
         gbc_progressBar.insets = new Insets(0, 25, 5, 25);
         gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
         gbc_progressBar.gridx = 0;
-        gbc_progressBar.gridy = 1;
-        panel.add(progressBar, gbc_progressBar);
+        gbc_progressBar.gridy = gridY++;
+        panel.add(globalProgress, gbc_progressBar);
+
+        stepProgress = new JProgressBar();
+        stepProgressController = wrapSwing(stepProgress);
+        GridBagConstraints gbc_stepProgress = new GridBagConstraints();
+        gbc_stepProgress.insets = new Insets(0, 25, 5, 25);
+        gbc_stepProgress.fill = GridBagConstraints.HORIZONTAL;
+        gbc_stepProgress.gridx = 0;
+        gbc_stepProgress.gridy = gridY++;
+        panel.add(stepProgress, gbc_stepProgress);
 
         JButton btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e ->
@@ -89,16 +104,16 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_btnCancel.insets = new Insets(0, 25, 5, 25);
         gbc_btnCancel.fill = GridBagConstraints.HORIZONTAL;
         gbc_btnCancel.gridx = 0;
-        gbc_btnCancel.gridy = 2;
+        gbc_btnCancel.gridy = gridY++;
         panel.add(btnCancel, gbc_btnCancel);
-        
+
         consoleArea = new JTextArea();
         consoleArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
         GridBagConstraints gbc_textArea = new GridBagConstraints();
         gbc_textArea.insets = new Insets(15, 25, 25, 25);
         gbc_textArea.fill = GridBagConstraints.BOTH;
         gbc_textArea.gridx = 0;
-        gbc_textArea.gridy = 3;
+        gbc_textArea.gridy = gridY;
         
         JScrollPane scroll = new JScrollPane(consoleArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scroll.setAutoscrolls(true);
@@ -109,24 +124,31 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     public void start(String label)
     {
         message(label, MessagePriority.HIGH, false);
-        this.progressBar.setValue(0);
-        this.progressBar.setIndeterminate(false);
+        this.globalProgress.setValue(0);
+        this.globalProgress.setIndeterminate(false);
         parent.start(label);
     }
 
     @Override
-    public void progress(double progress)
+    public void stage(String message, boolean withProgress)
     {
-        this.progressBar.setValue((int) (progress * 100));
-        parent.progress(progress);
+        message(message, MessagePriority.HIGH, false);
+        this.globalProgress.setIndeterminate(true);
+        parent.stage(message);
+
+        this.stepProgress.setIndeterminate(!withProgress);
+        this.stepProgress.setMaximum(100);
+        this.stepProgress.setToolTipText(message);
     }
 
     @Override
-    public void stage(String message)
-    {
-        message(message, MessagePriority.HIGH, false);
-        this.progressBar.setIndeterminate(true);
-        parent.stage(message);
+    public ProgressBar getStepProgress() {
+        return stepProgressController;
+    }
+
+    @Override
+    public ProgressBar getGlobalProgress() {
+        return globalProgressController;
     }
 
     @Override
@@ -145,5 +167,29 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         consoleArea.setCaretPosition(consoleArea.getDocument().getLength());
         if (notifyParent)
             parent.message(message, priority);
+    }
+
+    private static ProgressBar wrapSwing(JProgressBar bar) {
+        return new ProgressBar() {
+            @Override
+            public void setMaxProgress(int maximum) {
+                bar.setMaximum(maximum);
+            }
+
+            @Override
+            public void progress(int value) {
+                bar.setValue(value);
+            }
+
+            @Override
+            public void percentageProgress(double value) {
+                bar.setValue((int) value * 100);
+            }
+
+            @Override
+            public void setIndeterminate(boolean indeterminate) {
+                bar.setIndeterminate(indeterminate);
+            }
+        };
     }
 }
