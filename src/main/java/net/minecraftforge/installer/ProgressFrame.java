@@ -43,10 +43,10 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     private final JPanel panel = new JPanel();
 
     private final JLabel progressText;
-    private final JProgressBar progressBar;
-    private final ProgressBar _progressBar;
+    private final JProgressBar globalProgress;
+    private final ProgressBar globalProgressController;
     private final JProgressBar stepProgress;
-    private final ProgressBar _stepProgress;
+    private final ProgressBar stepProgressController;
     private final JTextArea consoleArea;
 
     public ProgressFrame(ProgressCallback parent, String title, Runnable canceler)
@@ -76,17 +76,17 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_lblProgressText.gridy = gridY++;
         panel.add(progressText, gbc_lblProgressText);
 
-        progressBar = new JProgressBar();
-        _progressBar = wrapSwing(progressBar);
+        globalProgress = new JProgressBar();
+        globalProgressController = wrapSwing(globalProgress);
         GridBagConstraints gbc_progressBar = new GridBagConstraints();
         gbc_progressBar.insets = new Insets(0, 25, 5, 25);
         gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
         gbc_progressBar.gridx = 0;
         gbc_progressBar.gridy = gridY++;
-        panel.add(progressBar, gbc_progressBar);
+        panel.add(globalProgress, gbc_progressBar);
 
         stepProgress = new JProgressBar();
-        _stepProgress = wrapSwing(stepProgress);
+        stepProgressController = wrapSwing(stepProgress);
         GridBagConstraints gbc_stepProgress = new GridBagConstraints();
         gbc_stepProgress.insets = new Insets(0, 25, 5, 25);
         gbc_stepProgress.fill = GridBagConstraints.HORIZONTAL;
@@ -124,8 +124,8 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     public void start(String label)
     {
         message(label, MessagePriority.HIGH, false);
-        this.progressBar.setValue(0);
-        this.progressBar.setIndeterminate(false);
+        this.globalProgress.setValue(0);
+        this.globalProgress.setIndeterminate(false);
         parent.start(label);
     }
 
@@ -133,7 +133,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     public void stage(String message, boolean withProgress)
     {
         message(message, MessagePriority.HIGH, false);
-        this.progressBar.setIndeterminate(true);
+        this.globalProgress.setIndeterminate(true);
         parent.stage(message);
 
         this.stepProgress.setIndeterminate(!withProgress);
@@ -143,12 +143,12 @@ public class ProgressFrame extends JFrame implements ProgressCallback
 
     @Override
     public ProgressBar getStepProgress() {
-        return _stepProgress;
+        return stepProgressController;
     }
 
     @Override
     public ProgressBar getGlobalProgress() {
-        return _progressBar;
+        return globalProgressController;
     }
 
     @Override
