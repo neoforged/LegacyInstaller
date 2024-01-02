@@ -70,10 +70,8 @@ public interface ProgressCallback
      */
     void message(String message, MessagePriority priority);
 
-    default void progress(double progress)
-    {
-        //TODO: Better bar? We're in console.. so let not spam with updates
-        //System.out.println(DecimalFormat.getPercentInstance().format(progress));
+    default ProgressBar getGlobalProgress() {
+        return ProgressBar.NOOP;
     }
 
     default ProgressBar getStepProgress() {

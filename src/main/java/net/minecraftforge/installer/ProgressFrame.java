@@ -44,6 +44,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
 
     private final JLabel progressText;
     private final JProgressBar progressBar;
+    private final ProgressBar _progressBar;
     private final JProgressBar stepProgress;
     private final ProgressBar _stepProgress;
     private final JTextArea consoleArea;
@@ -76,6 +77,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         panel.add(progressText, gbc_lblProgressText);
 
         progressBar = new JProgressBar();
+        _progressBar = wrapSwing(progressBar);
         GridBagConstraints gbc_progressBar = new GridBagConstraints();
         gbc_progressBar.insets = new Insets(0, 25, 5, 25);
         gbc_progressBar.fill = GridBagConstraints.HORIZONTAL;
@@ -128,13 +130,6 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     }
 
     @Override
-    public void progress(double progress)
-    {
-        this.progressBar.setValue((int) (progress * 100));
-        parent.progress(progress);
-    }
-
-    @Override
     public void stage(String message, boolean withProgress)
     {
         message(message, MessagePriority.HIGH, false);
@@ -149,6 +144,11 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     @Override
     public ProgressBar getStepProgress() {
         return _stepProgress;
+    }
+
+    @Override
+    public ProgressBar getGlobalProgress() {
+        return _progressBar;
     }
 
     @Override

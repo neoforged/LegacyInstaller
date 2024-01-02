@@ -432,7 +432,7 @@ public class InstallerPanel extends JPanel {
                 prog.toFront();
                 if (action.run(targetDir, optPred, installer)) {
                     prog.start("Finished!");
-                    prog.progress(1);
+                    prog.getGlobalProgress().percentageProgress(1);
                     JOptionPane.showMessageDialog(null, action.getSuccessMessage(), "Complete", JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (ActionCanceledException e) {

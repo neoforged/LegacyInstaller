@@ -84,7 +84,7 @@ public class PostProcessors {
                 double steps = data.size();
                 int progress = 1;
                 for (String key : data.keySet()) {
-                    monitor.progress(progress++ / steps);
+                    monitor.getGlobalProgress().percentageProgress(progress++ / steps);
                     String value = data.get(key);
 
                     if (value.charAt(0) == '[' && value.charAt(value.length() - 1) == ']') { //Artifact
@@ -118,7 +118,7 @@ public class PostProcessors {
                 monitor.start("Building Processors");
             }
             for (Processor proc : processors) {
-                monitor.progress((double) progress++ / processors.size());
+                monitor.getGlobalProgress().percentageProgress((double) progress++ / processors.size());
                 log("===============================================================================");
 
                 Map<String, String> outputs = new HashMap<>();
