@@ -31,6 +31,7 @@ public class Mirror {
     private String url;
     private boolean triedImage;
     private Icon _image_;
+    private boolean advertised;
 
     public Mirror() {}
 
@@ -66,5 +67,8 @@ public class Mirror {
     }
     public String getUrl() {
         return url;
+    }
+    public boolean isAdvertised() {
+        return advertised;
     }
 }
