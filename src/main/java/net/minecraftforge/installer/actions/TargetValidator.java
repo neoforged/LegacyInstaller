@@ -1,12 +1,18 @@
 package net.minecraftforge.installer.actions;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * A functional interface responsible for checking whether a target installation directory is valid.
+ */
 @FunctionalInterface
 public interface TargetValidator {
 
+    @NotNull
     ValidationResult validate(File target);
 
     default TargetValidator and(TargetValidator other) {
@@ -34,7 +40,17 @@ public interface TargetValidator {
     class ValidationResult {
         private static final ValidationResult VALID = new ValidationResult(true, false, "");
 
-        public final boolean valid, critical;
+        /**
+         * Whether the target directory is valid for installation.
+         */
+        public final boolean valid;
+        /**
+         * If {@code true}, the installation cannot begin.
+         */
+        public final boolean critical;
+        /**
+         * A message to display to users if the target is invalid.
+         */
         public final String message;
 
         private ValidationResult(boolean valid, boolean critical, String message) {
