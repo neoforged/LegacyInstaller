@@ -24,10 +24,14 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
@@ -44,12 +48,14 @@ import net.minecraftforge.installer.json.Util;
 import net.minecraftforge.installer.json.Version.Download;
 import net.minecraftforge.installer.json.Version.Library;
 import net.minecraftforge.installer.json.Version.LibraryDownload;
+import org.jetbrains.annotations.Nullable;
 
 public class DownloadUtils {
     public static final String LIBRARIES_URL = "https://libraries.minecraft.net/";
     public static final String MANIFEST_URL = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
 
     public static boolean OFFLINE_MODE = false;
+    private static final LocalSource LOCAL_SOURCE = LocalSource.detect();
 
     public static boolean downloadLibrary(ProgressCallback monitor, Mirror mirror, Library library, File root, Predicate<String> optional, List<Artifact> grabbed, List<File> additionalLibraryDirs) {
         Artifact artifact = library.getName();
@@ -90,7 +96,7 @@ public class DownloadUtils {
         target.getParentFile().mkdirs();
 
         // Try extracting first
-        try (final InputStream input = DownloadUtils.class.getResourceAsStream("/maven/" + artifact.getPath())) {
+        try (final InputStream input = LOCAL_SOURCE.getArtifact(artifact.getPath())) {
             if (input != null) {
                 monitor.message("  Extracting library from /maven/" + artifact.getPath());
                 Files.copy(input, target.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -395,6 +401,75 @@ public class DownloadUtils {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public interface LocalSource {
+
+        @Nullable
+        InputStream getArtifact(String path) throws IOException;
+
+        default LocalSource fallbackWith(@Nullable LocalSource other) {
+            if (other == null) {
+                return null;
+            }
+
+            return p -> {
+                final InputStream art = getArtifact(p);
+                return art != null ? art : other.getArtifact(p);
+            };
+        }
+
+        static LocalSource walkFromClassesOut(Path out) {
+            // The local path would be LegacyInstaller/build/classes/java/main, so walk upwards 4 times
+            for (int i = 0; i < 3; i++) {
+                out = out.getParent();
+            }
+
+            // The maven src dir is in src/main/resources/maven
+            final Path base = out.resolve("src/main/resources/maven");
+            return fromDir(base);
+        }
+
+        @Nullable
+        static LocalSource walkFromLibs(Path source) {
+            source = source.getParent();
+            if (source == null || !source.getFileName().toString().equals("libs")) return null;
+            source = source.getParent();
+            if (source == null || !source.getFileName().toString().equals("build")) return null;
+            source = source.getParent();
+            if (source == null) return null;
+
+            final Path base = source.resolve("src/main/resources/maven");
+            return Files.isDirectory(base) ? fromDir(base) : null;
+        }
+
+        static LocalSource fromDir(Path base) {
+            return p -> {
+                final Path children = base.resolve(p);
+                try {
+                    return Files.newInputStream(children);
+                } catch (NoSuchFileException ex) {
+                    return null;
+                }
+            };
+        }
+
+        static LocalSource fromResource() {
+            return p -> DownloadUtils.class.getResourceAsStream("/maven/" + p);
+        }
+
+        static LocalSource detect() {
+            try {
+                final URL url = DownloadUtils.class.getProtectionDomain().getCodeSource().getLocation();
+                if (url.getProtocol().equals("file") && Files.isDirectory(Paths.get(url.getPath()))) { // If we're running local IDE, use the resources dir
+                    return walkFromClassesOut(Paths.get(url.toURI()));
+                }
+
+                return fromResource().fallbackWith(walkFromLibs(Paths.get(url.toURI())));
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
