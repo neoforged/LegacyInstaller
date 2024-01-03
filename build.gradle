@@ -141,6 +141,10 @@ jar {
     manifest.from(MANIFEST)
 }
 
+processResources {
+    exclude 'maven/**'
+}
+
 tasks.register('testJar', Jar) {
     dependsOn shrinkJar
     from zipTree(shrinkJar.archiveFile.get().asFile)
