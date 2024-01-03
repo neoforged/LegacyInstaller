@@ -462,7 +462,7 @@ public class DownloadUtils {
         static LocalSource detect() {
             try {
                 final URL url = DownloadUtils.class.getProtectionDomain().getCodeSource().getLocation();
-                if (url.getProtocol().equals("file") && Files.isDirectory(Paths.get(url.getPath()))) { // If we're running local IDE, use the resources dir
+                if (url.getProtocol().equals("file") && Files.isDirectory(Paths.get(url.toURI()))) { // If we're running local IDE, use the resources dir
                     return walkFromClassesOut(Paths.get(url.toURI()));
                 }
 

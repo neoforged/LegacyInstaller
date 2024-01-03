@@ -22,6 +22,7 @@ import net.minecraftforge.installer.actions.Action;
 import net.minecraftforge.installer.actions.ActionCanceledException;
 import net.minecraftforge.installer.actions.Actions;
 import net.minecraftforge.installer.actions.ProgressCallback;
+import net.minecraftforge.installer.actions.TargetValidator;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.OptionalLibrary;
 
@@ -363,7 +364,7 @@ public class InstallerPanel extends JPanel {
         }
 
         Action action = actions.get(choiceButtonGroup.getSelection().getActionCommand()).apply(null);
-        boolean valid = action.isPathValid(targetDir);
+        TargetValidator.ValidationResult valid = action.getTargetValidator().validate(targetDir);
 
         if (profile.getMirror() != null)
         {
@@ -379,21 +380,20 @@ public class InstallerPanel extends JPanel {
         {
             sponsorPanel.setVisible(false);
         }
-        if (valid)
-        {
+
+        if (valid.valid) {
             selectedDirText.setForeground(null);
             infoLabel.setVisible(false);
             fileEntryPanel.setBorder(null);
             proceedButton.ifPresent(button -> button.setEnabled(true));
-        }
-        else
-        {
+        } else {
             selectedDirText.setForeground(Color.RED);
             fileEntryPanel.setBorder(new LineBorder(Color.RED));
-            infoLabel.setText("<html>"+action.getFileError(targetDir)+"</html>");
+            infoLabel.setText("<html>"+valid.message+"</html>");
             infoLabel.setVisible(true);
-            proceedButton.ifPresent(button -> button.setEnabled(false));
+            proceedButton.ifPresent(button -> button.setEnabled(!valid.critical));
         }
+
         if (dialog!=null)
         {
             dialog.invalidate();

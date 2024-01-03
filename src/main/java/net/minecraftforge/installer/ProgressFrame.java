@@ -152,6 +152,18 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         return globalProgressController;
     }
 
+    private String step;
+    @Override
+    public String getCurrentStep() {
+        return step;
+    }
+
+    @Override
+    public void setCurrentStep(String step) {
+        message(step, MessagePriority.HIGH);
+        this.step = step;
+    }
+
     @Override
     public void message(String message, MessagePriority priority)
     {

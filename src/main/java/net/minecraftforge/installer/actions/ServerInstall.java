@@ -126,18 +126,10 @@ public class ServerInstall extends Action {
     }
 
     @Override
-    public boolean isPathValid(File targetDir) {
-        return targetDir.exists() && targetDir.isDirectory() && targetDir.list().length == 0;
-    }
-
-    @Override
-    public String getFileError(File targetDir) {
-        if (!targetDir.exists())
-            return "The specified directory does not exist<br/>It will be created";
-        else if (!targetDir.isDirectory())
-            return "The specified path needs to be a directory";
-        else
-            return "There are already files in the target directory";
+    public TargetValidator getTargetValidator() {
+        return TargetValidator.shouldExist(false)
+                .and(TargetValidator.isDirectory())
+                .and(TargetValidator.shouldBeEmpty());
     }
 
     @Override

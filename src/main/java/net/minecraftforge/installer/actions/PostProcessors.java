@@ -126,7 +126,7 @@ public class PostProcessors {
                     procName += (" -> " + proc.getArgs()[Arrays.asList(proc.getArgs()).indexOf("--task") + 1]);
                 }
 
-                monitor.message("Processor: " + procName, MessagePriority.HIGH);
+                monitor.setCurrentStep("Processor: " + procName);
 
                 Map<String, String> outputs = new HashMap<>();
                 if (!proc.getOutputs().isEmpty()) {

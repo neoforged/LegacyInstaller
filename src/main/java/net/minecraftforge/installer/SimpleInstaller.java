@@ -260,7 +260,7 @@ public class SimpleInstaller
 
             @Override
             public void setStep(String step) {
-                monitor.message(step, ProgressCallback.MessagePriority.HIGH);
+                monitor.message(monitor.getCurrentStep() + ": " + step, ProgressCallback.MessagePriority.HIGH);
             }
 
             @Override

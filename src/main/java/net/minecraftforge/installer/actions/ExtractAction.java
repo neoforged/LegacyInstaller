@@ -82,15 +82,9 @@ public class ExtractAction extends Action {
     }
 
     @Override
-    public boolean isPathValid(File targetDir)
-    {
-        return targetDir.exists() && targetDir.isDirectory();
-    }
-
-    @Override
-    public String getFileError(File targetDir)
-    {
-        return !targetDir.exists() ? "Target directory does not exist" : !targetDir.isDirectory() ? "Target is not a directory" : "";
+    public TargetValidator getTargetValidator() {
+        return TargetValidator.shouldExist(true)
+                .and(TargetValidator.isDirectory());
     }
 
     @Override

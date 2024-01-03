@@ -193,19 +193,10 @@ public class ClientInstall extends Action {
     }
 
     @Override
-    public boolean isPathValid(File targetDir) {
-        return targetDir.exists() && (
-            new File(targetDir, "launcher_profiles.json").exists() ||
-            new File(targetDir, "launcher_profiles_microsoft_store.json").exists()
-         );
-    }
-
-    @Override
-    public String getFileError(File targetDir) {
-        if (targetDir.exists())
-            return "The directory is missing a launcher profile. Please run the minecraft launcher first";
-        else
-            return "There is no minecraft directory set up. Either choose an alternative, or run the minecraft launcher to create one";
+    public TargetValidator getTargetValidator() {
+        return TargetValidator.shouldExist(true)
+                .and(TargetValidator.isDirectory())
+                .and(TargetValidator.isMCInstallationDirectory());
     }
 
     @Override

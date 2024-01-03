@@ -70,6 +70,9 @@ public interface ProgressCallback
      */
     void message(String message, MessagePriority priority);
 
+    void setCurrentStep(String step);
+    String getCurrentStep();
+
     default ProgressBar getGlobalProgress() {
         return ProgressBar.NOOP;
     }
@@ -124,11 +127,23 @@ public interface ProgressCallback
     }
 
     static ProgressCallback TO_STD_OUT = new ProgressCallback() {
+        private String currentStep;
 
         @Override
         public void message(String message, MessagePriority priority)
         {
             System.out.println(message);
+        }
+
+        @Override
+        public String getCurrentStep() {
+            return currentStep;
+        }
+
+        @Override
+        public void setCurrentStep(String step) {
+            message(step, MessagePriority.HIGH);
+            this.currentStep = step;
         }
     };
     
@@ -136,6 +151,8 @@ public interface ProgressCallback
     {
         return new ProgressCallback()
         {
+            private String step;
+
             @Override
             public void message(String message, MessagePriority priority)
             {
@@ -152,6 +169,77 @@ public interface ProgressCallback
                         throw new RuntimeException(e);
                     }
                 }
+            }
+
+            @Override
+            public void setCurrentStep(String step) {
+                message(step, MessagePriority.HIGH);
+                this.step = step;
+            }
+
+            @Override
+            public String getCurrentStep() {
+                return step;
+            }
+        };
+    }
+
+    default ProgressCallback withoutDownloadProgress() {
+        final ProgressCallback self = this;
+        return new ProgressCallback() {
+            @Override
+            public void start(String label) {
+                self.start(label);
+            }
+
+            @Override
+            public void stage(String message, boolean withProgress) {
+                self.stage(message, withProgress);
+            }
+
+            @Override
+            public void stage(String message) {
+                self.stage(message);
+            }
+
+            @Override
+            public void message(String message) {
+                self.message(message);
+            }
+
+            @Override
+            public ProgressBar getGlobalProgress() {
+                return self.getGlobalProgress();
+            }
+
+            @Override
+            public ProgressBar getStepProgress() {
+                return self.getStepProgress();
+            }
+
+            @Override
+            public InputStream wrapStepDownload(URLConnection connection) throws IOException {
+                return connection.getInputStream();
+            }
+
+            @Override
+            public InputStream wrapStepDownload(InputStream in) {
+                return in;
+            }
+
+            @Override
+            public void message(String message, MessagePriority priority) {
+                self.message(message, priority);
+            }
+
+            @Override
+            public void setCurrentStep(String step) {
+                self.setCurrentStep(step);
+            }
+
+            @Override
+            public String getCurrentStep() {
+                return self.getCurrentStep();
             }
         };
     }
