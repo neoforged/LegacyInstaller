@@ -43,6 +43,9 @@ import net.minecraftforge.installer.actions.Actions;
 import net.minecraftforge.installer.actions.ProgressCallback;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.Util;
+import net.neoforged.cliutils.progress.ProgressInterceptor;
+import net.neoforged.cliutils.progress.ProgressManager;
+import net.neoforged.cliutils.progress.ProgressReporter;
 
 public class SimpleInstaller
 {
@@ -209,33 +212,63 @@ public class SimpleInstaller
     {
         final Pattern endingWhitespace = Pattern.compile("\\r?\\n$");
         final OutputStream monitorStream = new OutputStream() {
-
+            private StringBuffer buffer = new StringBuffer();
             @Override
-            public void write(byte[] buf, int off, int len)
-            {
-                byte[] toWrite = new byte[len];
-                System.arraycopy(buf, off, toWrite, 0, len);
-                write(toWrite);
-            }
-
-            @Override
-            public void write(byte[] b)
-            {
-                String toWrite = new String(b);
-                toWrite = endingWhitespace.matcher(toWrite).replaceAll("");
-                if (!toWrite.isEmpty()) {
-                    monitor.message(toWrite);
+            public void write(byte[] buf, int off, int len) {
+                for (int i = off; i < off + len; i++) {
+                    write(buf[i]);
                 }
             }
 
             @Override
-            public void write(int b)
-            {
-                write(new byte[] { (byte) b });
+            public void write(byte[] b) {
+                write(b, 0, b.length);
+            }
+
+            @Override
+            public void write(int b) {
+                if (b == '\r') return; // Ignore CR
+                if (b == '\n') {
+                    final String message = endingWhitespace.matcher(buffer.toString()).replaceAll("");
+                    if (!message.isEmpty()) {
+                        monitor.message(message);
+                    }
+
+                    buffer = new StringBuffer();
+                } else {
+                    buffer.append((char) b);
+                }
             }
         };
 
         System.setOut(new PrintStream(monitorStream));
-        System.setErr(new PrintStream(monitorStream));
+        System.setErr(new PrintStream(new ProgressInterceptor(monitorStream, new ProgressManager() {
+            @Override
+            public void setMaxProgress(int maxProgress) {
+                monitor.getStepProgress().setMaxProgress(maxProgress);
+            }
+
+            @Override
+            public void setProgress(int progress) {
+                monitor.getStepProgress().progress(progress);
+            }
+
+            @Override
+            public void setPercentageProgress(double percentage) {
+                monitor.getStepProgress().percentageProgress(percentage);
+            }
+
+            @Override
+            public void setStep(String step) {
+                monitor.message(step, ProgressCallback.MessagePriority.HIGH);
+            }
+
+            @Override
+            public void setIndeterminate(boolean indeterminate) {
+                monitor.getStepProgress().setIndeterminate(false);
+            }
+        })));
+
+        System.setProperty(ProgressReporter.ENABLED_PROPERTY, "true");
     }
 }

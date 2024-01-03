@@ -138,6 +138,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
 
         this.stepProgress.setIndeterminate(!withProgress);
         this.stepProgress.setMaximum(100);
+        this.stepProgress.setValue(0);
         this.stepProgress.setToolTipText(message);
     }
 
@@ -173,7 +174,10 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         return new ProgressBar() {
             @Override
             public void setMaxProgress(int maximum) {
-                bar.setMaximum(maximum);
+                if (maximum != -1) {
+                    bar.setMaximum(maximum);
+                    bar.setIndeterminate(false);
+                }
             }
 
             @Override
