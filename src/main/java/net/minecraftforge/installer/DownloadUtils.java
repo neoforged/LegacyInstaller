@@ -411,7 +411,7 @@ public class DownloadUtils {
 
         default LocalSource fallbackWith(@Nullable LocalSource other) {
             if (other == null) {
-                return null;
+                return this;
             }
 
             return p -> {

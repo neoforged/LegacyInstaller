@@ -204,6 +204,7 @@ public class SimpleInstaller
         File output;
         if (f.isFile()) output = new File(f.getName() + ".log");
         else            output = new File("installer.log");
+        System.out.println("Outputting log to file " + output);
 
         return new BufferedOutputStream(new FileOutputStream(output));
     }
