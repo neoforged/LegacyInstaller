@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -111,15 +112,21 @@ public class PostProcessors {
             data.put("INSTALLER", installer.getAbsolutePath());
             data.put("LIBRARY_DIR", librariesDir.getAbsolutePath());
 
-            int progress = 1;
+            int progress = 0;
             if (processors.size() == 1) {
                 monitor.stage("Building Processor");
             } else {
                 monitor.start("Building Processors");
             }
+            monitor.getGlobalProgress().setMaxProgress(processors.size());
             for (Processor proc : processors) {
-                monitor.getGlobalProgress().percentageProgress((double) progress++ / processors.size());
                 log("===============================================================================");
+                String procName = proc.getJar().getDomain() + ":" + proc.getJar().getName();
+                if (proc.getJar().getName().equals("installertools")) {
+                    procName += (" -> " + proc.getArgs()[Arrays.asList(proc.getArgs()).indexOf("--task") + 1]);
+                }
+
+                monitor.setCurrentStep("Processor: " + procName);
 
                 Map<String, String> outputs = new HashMap<>();
                 if (!proc.getOutputs().isEmpty()) {
@@ -213,6 +220,8 @@ public class PostProcessors {
                     error("  Missing Processor data values: " + err.toString());
                     return false;
                 }
+                // Assume the step will take forever. If it doesn't, it will set the max progress so it will be non-indeterminate again
+                monitor.getStepProgress().setIndeterminate(true);
                 monitor.message("  Args: " + args.stream().map(a -> a.indexOf(' ') != -1 || a.indexOf(',') != -1 ? '"' + a + '"' : a).collect(Collectors.joining(", ")), MessagePriority.LOW);
 
                 ClassLoader cl = new URLClassLoader(classpath.toArray(new URL[classpath.size()]), getParentClassloader());
@@ -263,10 +272,12 @@ public class PostProcessors {
                         }
                     }
                     if (err.length() > 0) {
-                        error("  Processor failed, invalid outputs:" + err.toString());
+                        error("  Processor failed, invalid outputs:" + err);
                         return false;
                     }
                 }
+
+                monitor.getGlobalProgress().progress(++progress);
             }
 
             return true;

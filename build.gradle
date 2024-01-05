@@ -22,6 +22,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    maven gradleutils.maven
 }
 
 group = 'net.neoforged'
@@ -67,6 +68,7 @@ ext {
 dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'net.neoforged.installertools:cli-utils:2.1.0'
 	testImplementation(platform('org.junit:junit-bom:5.7.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
     compileOnly 'org.jetbrains:annotations:24.1.0'
@@ -137,6 +139,10 @@ artifacts {
 
 jar {
     manifest.from(MANIFEST)
+}
+
+processResources {
+    exclude 'maven/**'
 }
 
 tasks.register('testJar', Jar) {

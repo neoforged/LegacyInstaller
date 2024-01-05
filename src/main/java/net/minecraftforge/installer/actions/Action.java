@@ -56,8 +56,7 @@ public abstract class Action {
     }
 
     public abstract boolean run(File target, Predicate<String> optionals, File installer) throws ActionCanceledException;
-    public abstract boolean isPathValid(File targetDir);
-    public abstract String getFileError(File targetDir);
+    public abstract TargetValidator getTargetValidator();
     public abstract String getSuccessMessage();
 
     public String getSponsorMessage() {
@@ -80,17 +79,18 @@ public abstract class Action {
         libraries.addAll(Arrays.asList(processors.getLibraries()));
 
         StringBuilder output = new StringBuilder();
-        final double steps = libraries.size();
-        int progress = 1;
+        monitor.getStepProgress().setMaxProgress(libraries.size());
+        int progress = 0;
 
+        final ProgressCallback targetMonitor = monitor.withoutDownloadProgress();
         for (Library lib : libraries) {
             checkCancel();
-            monitor.getGlobalProgress().percentageProgress(progress++ / steps);
-            if (!DownloadUtils.downloadLibrary(monitor, profile.getMirror(), lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
+            if (!DownloadUtils.downloadLibrary(targetMonitor, profile.getMirror(), lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
                 LibraryDownload download = lib.getDownloads() == null ? null :  lib.getDownloads().getArtifact();
                 if (download != null && !download.getUrl().isEmpty()) // If it doesn't have a URL we can't download it, assume we install it later
                     output.append('\n').append(lib.getName());
             }
+            monitor.getStepProgress().progress(++progress);
         }
         String bad = output.toString();
         if (!bad.isEmpty()) {
