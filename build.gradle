@@ -65,6 +65,14 @@ ext {
     }
 }
 
+configurations {
+    testInstallerData {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
+}
+
 dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
     implementation 'com.google.code.gson:gson:2.8.7'
@@ -72,6 +80,7 @@ dependencies {
 	testImplementation(platform('org.junit:junit-bom:5.7.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
     compileOnly 'org.jetbrains:annotations:24.1.0'
+    testInstallerData 'net.neoforged:neoforge:20.4.76-beta:installer'
 }
 
 test {
@@ -151,6 +160,28 @@ tasks.register('testJar', Jar) {
     from sourceSets.test.output
     archiveClassifier = 'test'
     manifest.from(MANIFEST)
+}
+
+// Combine the shrunk jar with data from the current Neoforge installer
+tasks.register('productionTestJar', Jar) {
+    group = "build"
+    dependsOn shrinkJar
+    from zipTree(shrinkJar.archiveFile.get().asFile)
+    from(zipTree(configurations.testInstallerData.singleFile)) {
+        exclude '/**/*.class'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveClassifier = 'prodtest'
+    manifest.from(MANIFEST)
+}
+
+/**
+ * Run this installer that contains the data from a real Neoforge installer.
+ */
+tasks.register('runProductionTest', JavaExec) {
+    dependsOn tasks.named("productionTestJar")
+    mainClass = "-jar";
+    args productionTestJar.archiveFile.get()
 }
 
 publishing {
