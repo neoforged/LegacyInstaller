@@ -32,6 +32,7 @@ import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.Util;
 import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Download;
+import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ServerInstall extends Action {
     private List<Artifact> grabbed = new ArrayList<>();
@@ -133,9 +134,10 @@ public class ServerInstall extends Action {
     }
 
     @Override
-    public String getSuccessMessage() {
-        if (!grabbed.isEmpty())
-            return String.format("Successfully downloaded minecraft server, downloaded %d libraries and installed %s", grabbed.size(), profile.getVersion());
-        return String.format("Successfully downloaded minecraft server and installed %s", profile.getVersion());
+    public TranslatedMessage getSuccessMessage() {
+        if (grabbed.isEmpty()) {
+            return new TranslatedMessage("action.install.server.finished.withoutlibs", profile.getVersion());
+        }
+        return new TranslatedMessage("action.install.server.finished.withlibs", grabbed.size(), profile.getVersion());
     }
 }

@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.json.Artifact;
 import net.minecraftforge.installer.json.InstallV1;
+import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ExtractAction extends Action {
 
@@ -88,7 +89,7 @@ public class ExtractAction extends Action {
     }
 
     @Override
-    public String getSuccessMessage() {
-        return "Extracted successfully";
+    public TranslatedMessage getSuccessMessage() {
+        return new TranslatedMessage("action.extract.finished");
     }
 }

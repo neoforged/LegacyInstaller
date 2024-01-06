@@ -25,9 +25,9 @@ import net.minecraftforge.installer.json.InstallV1;
 
 public enum Actions
 {
-    CLIENT("Install client", "Install a new profile to the Mojang client launcher", ClientInstall::new, () -> "Successfully installed client into launcher."),
-    SERVER("Install server", "Create a new modded server installation", ServerInstall::new, () -> "The server installed successfully"),
-    EXTRACT("Extract", "Extract the contained jar file", ExtractAction::new, () -> "All files successfully extract.");
+    CLIENT("action.install.client.name", "action.install.client.tooltip", ClientInstall::new, () -> "Successfully installed client into launcher."),
+    SERVER("action.install.server.name", "action.install.server.tooltip", ServerInstall::new, () -> "The server installed successfully"),
+    EXTRACT("action.extract.name", "action.extract.tooltip", ExtractAction::new, () -> "All files successfully extract.");
 
     private String label;
     private String tooltip;
