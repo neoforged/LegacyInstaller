@@ -8,5 +8,5 @@ pull_request_labels:
   - l10n
 files:
   - source: /src/main/resources/neoforged/installer.xml
-    translation: /src/main/resources/assets/neoforge/neoforged/installer_%locale%.%file_extension%
+    translation: /src/main/resources/neoforged/installer_%locale%.%file_extension%
     dest: /messages.%file_extension%
