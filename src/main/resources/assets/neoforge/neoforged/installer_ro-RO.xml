@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="language.name">English</entry>
-    <entry key="welcome.version">Version: </entry>
+    <entry key="language.name">Română</entry>
+    <entry key="welcome.version">Versiune: </entry>
     <entry key="welcome.target.tooltip">Path to the Minecraft installation directory</entry>
     <entry key="welcome.dirselect.tooltip">Select an alternative Minecraft directory</entry>
-    <entry key="button.proceed">Proceed</entry>
+    <entry key="button.proceed">Continuă</entry>
     <entry key="button.cancel">Cancel</entry>
     <entry key="action.install.client.name">Install client</entry>
     <entry key="action.install.client.tooltip">Install a new profile to the Mojang client launcher</entry>
     <entry key="action.install.client.finished.withoutlibs">Successfully installed client profile %s for version %s into launcher</entry>
     <entry key="action.install.client.finished.withlibs">Successfully installed client profile %s for version %s into launcher, and downloaded %d libraries</entry>
-    <entry key="action.install.server.name">Install server</entry>
+    <entry key="action.install.server.name">Instalează server</entry>
     <entry key="action.install.server.tooltip">Create a new modded server installation</entry>
     <entry key="action.install.server.finished.withoutlibs">Successfully downloaded minecraft server and installed %s</entry>
     <entry key="action.install.server.finished.withlibs">Successfully downloaded minecraft server, downloaded %d libraries and installed %s</entry>
