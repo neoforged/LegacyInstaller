@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="installer.language.name">English</entry>
-
     <entry key="installer.welcome.version">Version: </entry>
     <entry key="installer.welcome.target.tooltip">Path to the Minecraft installation directory</entry>
     <entry key="installer.welcome.dirselect.tooltip">Select an alternative Minecraft directory</entry>

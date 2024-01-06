@@ -233,7 +233,8 @@ public class L10nManager {
                     try {
                         final Properties properties = new Properties();
                         properties.loadFromXML(is);
-                        final String name = properties.getProperty("installer.language.name");
+                        String name = locale.equals(Locale.ROOT) ? "english" : locale.getDisplayName(locale);
+                        name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
                         // Only root can be named English
                         if (names.add(name) && (!name.equals("English") || locale.equals(Locale.ROOT))) {
                             selections.add(new LocaleSelection(locale, name));
