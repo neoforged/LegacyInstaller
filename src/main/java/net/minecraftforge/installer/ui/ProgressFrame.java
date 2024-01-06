@@ -16,21 +16,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.minecraftforge.installer;
+package net.minecraftforge.installer.ui;
 
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 import net.minecraftforge.installer.actions.ProgressCallback;
 
@@ -49,14 +42,14 @@ public class ProgressFrame extends JFrame implements ProgressCallback
     private final ProgressBar stepProgressController;
     private final JTextArea consoleArea;
 
-    public ProgressFrame(ProgressCallback parent, String title, Runnable canceler)
+    public ProgressFrame(ProgressCallback parent, Runnable canceler, String titleKey, Object... titleArgs)
     {
         int gridY = 0;
 
         this.parent = parent;
         
         setResizable(false);
-        setTitle(title);
+        InstallerPanel.TRANSLATIONS.translate(this, new TranslationTarget<>(JFrame::setTitle), titleKey, titleArgs);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 600, 400);
         setContentPane(panel);
@@ -95,9 +88,8 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_stepProgress.gridy = gridY++;
         panel.add(stepProgress, gbc_stepProgress);
 
-        JButton btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(e ->
-        {
+        JButton btnCancel = InstallerPanel.TRANSLATIONS.button("installer.button.cancel");
+        btnCancel.addActionListener(e -> {
             canceler.run();
             ProgressFrame.this.dispose();
         });

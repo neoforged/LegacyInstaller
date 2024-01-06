@@ -31,6 +31,7 @@ import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Download;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ClientInstall extends Action {
 
@@ -200,9 +201,10 @@ public class ClientInstall extends Action {
     }
 
     @Override
-    public String getSuccessMessage() {
-        if (downloadedCount() > 0)
-            return String.format("Successfully installed client profile %s for version %s into launcher, and downloaded %d libraries", profile.getProfile(), profile.getVersion(), downloadedCount());
-        return String.format("Successfully installed client profile %s for version %s into launcher", profile.getProfile(), profile.getVersion());
+    public TranslatedMessage getSuccessMessage() {
+        if (downloadedCount() > 0) {
+            return new TranslatedMessage("installer.action.install.client.finished.withlibs", profile.getProfile(), profile.getVersion(), downloadedCount());
+        }
+        return new TranslatedMessage("installer.action.install.client.finished.withoutlibs", profile.getProfile(), profile.getVersion());
     }
 }

@@ -43,6 +43,7 @@ import net.minecraftforge.installer.actions.Actions;
 import net.minecraftforge.installer.actions.ProgressCallback;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.Util;
+import net.minecraftforge.installer.ui.InstallerPanel;
 import net.neoforged.cliutils.progress.ProgressInterceptor;
 import net.neoforged.cliutils.progress.ProgressManager;
 import net.neoforged.cliutils.progress.ProgressReporter;
@@ -209,7 +210,7 @@ public class SimpleInstaller
         return new BufferedOutputStream(new FileOutputStream(output));
     }
 
-    static void hookStdOut(ProgressCallback monitor)
+    public static void hookStdOut(ProgressCallback monitor)
     {
         final Pattern endingWhitespace = Pattern.compile("\\r?\\n$");
         final OutputStream monitorStream = new OutputStream() {
