@@ -90,6 +90,6 @@ public class ExtractAction extends Action {
 
     @Override
     public TranslatedMessage getSuccessMessage() {
-        return new TranslatedMessage("action.extract.finished");
+        return new TranslatedMessage("installer.action.extract.finished");
     }
 }

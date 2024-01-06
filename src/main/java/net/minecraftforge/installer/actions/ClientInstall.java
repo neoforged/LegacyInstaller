@@ -203,8 +203,8 @@ public class ClientInstall extends Action {
     @Override
     public TranslatedMessage getSuccessMessage() {
         if (downloadedCount() > 0) {
-            return new TranslatedMessage("action.install.client.finished.withlibs", profile.getProfile(), profile.getVersion(), downloadedCount());
+            return new TranslatedMessage("installer.action.install.client.finished.withlibs", profile.getProfile(), profile.getVersion(), downloadedCount());
         }
-        return new TranslatedMessage("action.install.client.finished.withoutlibs", profile.getProfile(), profile.getVersion());
+        return new TranslatedMessage("installer.action.install.client.finished.withoutlibs", profile.getProfile(), profile.getVersion());
     }
 }

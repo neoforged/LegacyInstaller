@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -224,6 +225,7 @@ public class L10nManager {
 
     private List<LocaleSelection> computeKnownLocales() {
         try {
+            final Set<String> names = new HashSet<>();
             final List<LocaleSelection> selections = new ArrayList<>();
             for (final Locale locale : Locale.getAvailableLocales()) {
                 final InputStream is = L10nManager.class.getResourceAsStream("/" + CONTROL.toBundleName(bundleName, locale) + ".xml");
@@ -231,7 +233,11 @@ public class L10nManager {
                     try {
                         final Properties properties = new Properties();
                         properties.loadFromXML(is);
-                        selections.add(new LocaleSelection(locale, properties.getProperty("language.name")));
+                        final String name = properties.getProperty("installer.language.name");
+                        // Only root can be named English
+                        if (names.add(name) && (!name.equals("English") || locale.equals(Locale.ROOT))) {
+                            selections.add(new LocaleSelection(locale, name));
+                        }
                     } finally {
                         is.close();
                     }

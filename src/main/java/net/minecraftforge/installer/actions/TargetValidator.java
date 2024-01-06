@@ -40,20 +40,20 @@ public interface TargetValidator {
     }
 
     static TargetValidator isDirectory() {
-        return target -> target.isDirectory() ? ValidationResult.valid() : ValidationResult.invalid(true, "target.error.notdirectory");
+        return target -> target.isDirectory() ? ValidationResult.valid() : ValidationResult.invalid(true, "installer.target.error.notdirectory");
     }
 
     static TargetValidator shouldExist(boolean critical) {
-        return target -> target.exists() ? ValidationResult.valid() : ValidationResult.invalid(critical, critical ? "target.error.directory.doesntexist.critical" : "target.error.directory.doesntexist.create");
+        return target -> target.exists() ? ValidationResult.valid() : ValidationResult.invalid(critical, critical ? "installer.target.error.directory.doesntexist.critical" : "installer.target.error.directory.doesntexist.create");
     }
 
     static TargetValidator shouldBeEmpty() {
-        return target -> Objects.requireNonNull(target.list()).length == 0 ? ValidationResult.valid() : ValidationResult.invalid(false, "target.error.directory.notempty");
+        return target -> Objects.requireNonNull(target.list()).length == 0 ? ValidationResult.valid() : ValidationResult.invalid(false, "installer.target.error.directory.notempty");
     }
 
     static TargetValidator isMCInstallationDirectory() {
         return target -> (new File(target, "launcher_profiles.json").exists() ||
-                new File(target, "launcher_profiles_microsoft_store.json").exists()) ? ValidationResult.valid() : ValidationResult.invalid(true, "target.error.missingprofile");
+                new File(target, "launcher_profiles_microsoft_store.json").exists()) ? ValidationResult.valid() : ValidationResult.invalid(true, "installer.target.error.missingprofile");
     }
 
     class ValidationResult {

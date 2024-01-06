@@ -139,7 +139,7 @@ public class InstallerPanel extends JPanel {
         {
             // The version is a box that has a first label that is non-bold
             final Box version = Box.createHorizontalBox();
-            version.add(TRANSLATIONS.label("welcome.version"));
+            version.add(TRANSLATIONS.label("installer.welcome.version"));
             tag = new JLabel(profile.getVersion());
             // and a bold part which represents the actual version
             tag.setFont(tag.getFont().deriveFont(Font.BOLD));
@@ -209,13 +209,13 @@ public class InstallerPanel extends JPanel {
         this.targetDir = targetDir;
         selectedDirText = new JTextField();
         selectedDirText.setEditable(false);
-        TRANSLATIONS.setTooltip(selectedDirText, "welcome.target.tooltip");
+        TRANSLATIONS.setTooltip(selectedDirText, "installer.welcome.target.tooltip");
         selectedDirText.setColumns(30);
         entryPanel.add(selectedDirText);
         JButton dirSelect = new JButton();
         dirSelect.setAction(new FileSelectAction());
         dirSelect.setText("...");
-        TRANSLATIONS.setTooltip(dirSelect, "welcome.dirselect.tooltip");
+        TRANSLATIONS.setTooltip(dirSelect, "installer.welcome.dirselect.tooltip");
         entryPanel.add(dirSelect);
 
         entryPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -302,7 +302,7 @@ public class InstallerPanel extends JPanel {
         languageBox.addActionListener(e -> TRANSLATIONS.setLocale(((L10nManager.LocaleSelection)languageBox.getSelectedItem()).locale, true));
 
         JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, new Object[] {
-                TRANSLATIONS.button("button.proceed"), TRANSLATIONS.button("button.cancel"), languageBox
+                TRANSLATIONS.button("installer.button.proceed"), TRANSLATIONS.button("installer.button.cancel"), languageBox
         });
 
         // Attempt to change the OK button to a Proceed button
@@ -319,14 +319,14 @@ public class InstallerPanel extends JPanel {
         }
 
         dialog = optionPane.createDialog("");
-        TRANSLATIONS.translate(dialog, new TranslationTarget<>(Dialog::setTitle), "window.title", profile.getProfile());
+        TRANSLATIONS.translate(dialog, new TranslationTarget<>(Dialog::setTitle), "installer.window.title", profile.getProfile());
         dialog.setIconImages(Images.getWindowIcons());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
         int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
         if (result == JOptionPane.OK_OPTION)
         {
-            ProgressFrame prog = new ProgressFrame(monitor, Thread.currentThread()::interrupt, "frame.installing", profile.getProfile(), profile.getVersion());
+            ProgressFrame prog = new ProgressFrame(monitor, Thread.currentThread()::interrupt, "installer.frame.installing", profile.getProfile(), profile.getVersion());
             SimpleInstaller.hookStdOut(prog);
             Predicate<String> optPred = input -> {
                 Optional<OptionalListEntry> ent = this.optionals.stream().filter(e -> e.lib.getArtifact().equals(input)).findFirst();
@@ -339,10 +339,10 @@ public class InstallerPanel extends JPanel {
                 if (action.run(targetDir, optPred, installer)) {
                     prog.start("Finished!");
                     prog.getGlobalProgress().percentageProgress(1);
-                    JOptionPane.showMessageDialog(null, TRANSLATIONS.translate(action.getSuccessMessage()), TRANSLATIONS.translate("installation.complete"), JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, TRANSLATIONS.translate(action.getSuccessMessage()), TRANSLATIONS.translate("installer.installation.complete"), JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (ActionCanceledException e) {
-                JOptionPane.showMessageDialog(null, TRANSLATIONS.translate("installation.cancelled"), dialog.getTitle(), JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, TRANSLATIONS.translate("installer.installation.cancelled"), dialog.getTitle(), JOptionPane.WARNING_MESSAGE);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "There was an exception running task: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();

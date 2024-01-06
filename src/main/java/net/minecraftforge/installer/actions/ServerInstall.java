@@ -136,8 +136,8 @@ public class ServerInstall extends Action {
     @Override
     public TranslatedMessage getSuccessMessage() {
         if (grabbed.isEmpty()) {
-            return new TranslatedMessage("action.install.server.finished.withoutlibs", profile.getVersion());
+            return new TranslatedMessage("installer.action.install.server.finished.withoutlibs", profile.getVersion());
         }
-        return new TranslatedMessage("action.install.server.finished.withlibs", grabbed.size(), profile.getVersion());
+        return new TranslatedMessage("installer.action.install.server.finished.withlibs", grabbed.size(), profile.getVersion());
     }
 }

@@ -88,7 +88,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback
         gbc_stepProgress.gridy = gridY++;
         panel.add(stepProgress, gbc_stepProgress);
 
-        JButton btnCancel = InstallerPanel.TRANSLATIONS.button("button.cancel");
+        JButton btnCancel = InstallerPanel.TRANSLATIONS.button("installer.button.cancel");
         btnCancel.addActionListener(e -> {
             canceler.run();
             ProgressFrame.this.dispose();
