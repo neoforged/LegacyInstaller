@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class InstallerPanel extends JPanel {
-    private static final Path INSTALLER_SETTINGS = new File(SimpleInstaller.getMCDir(), "libraries/.neoforge_installer.properties").toPath();
+    private static final Path INSTALLER_SETTINGS = new File(SimpleInstaller.getMCDir(), ".neoforge_installer.properties").toPath();
     public static final L10nManager TRANSLATIONS = new L10nManager("neoforged/installer", INSTALLER_SETTINGS);
 
     private static final long serialVersionUID = 1L;
