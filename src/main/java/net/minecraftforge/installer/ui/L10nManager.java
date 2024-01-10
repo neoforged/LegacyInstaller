@@ -52,7 +52,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 public class L10nManager {
-    public static final ResourceBundle.Control CONTROL = new ResourceBundle.Control() {
+    private static final ResourceBundle.Control CONTROL = new ResourceBundle.Control() {
         @Override
         public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) throws IllegalAccessException, InstantiationException, IOException {
             if (format.equals("java.class")) {
@@ -61,9 +61,12 @@ public class L10nManager {
                 throw new IllegalArgumentException("unknown format: " + format);
             }
 
+            // Copied from the javadocs of ResourceBundle.Control
             final String bundleName = toBundleName(baseName, locale);
 
-            if (bundleName.contains("://")) return null;
+            if (bundleName.contains("://")) {
+                return null;
+            }
             final String resourceName = toResourceName(bundleName, "xml");
 
             InputStream is = null;
@@ -82,7 +85,10 @@ public class L10nManager {
                 is = loader.getResourceAsStream(resourceName);
             }
 
-            if (is == null) return null;
+            if (is == null) {
+                return null;
+            }
+
             try (final InputStream i = is) {
                 final Properties props = new Properties();
                 props.loadFromXML(i);
@@ -117,13 +123,13 @@ public class L10nManager {
     private final Path settingsFile;
     private final List<LocaleSelection> known;
 
-    public L10nManager(String bundleName, File settingsFileIn) {
+    public L10nManager(String bundleName, Path settingsFile) {
         this.bundleName = bundleName;
-        this.settingsFile = settingsFileIn.toPath();
+        this.settingsFile = settingsFile;
         this.known = Collections.unmodifiableList(computeKnownLocales());
 
-        if (Files.exists(settingsFile)) {
-            try (final InputStream is = Files.newInputStream(settingsFile)) {
+        if (Files.exists(this.settingsFile)) {
+            try (final InputStream is = Files.newInputStream(this.settingsFile)) {
                 final Properties props = new Properties();
                 props.load(is);
                 final String lang = props.getProperty("language");
@@ -265,7 +271,7 @@ public class L10nManager {
         }
     }
 
-    public static final class MergedEnumeration implements Enumeration<String> {
+    private static final class MergedEnumeration implements Enumeration<String> {
 
         private final Set<String> set;
         private final Iterator<String> iterator;

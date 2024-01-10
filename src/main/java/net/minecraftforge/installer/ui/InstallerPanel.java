@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -48,7 +49,9 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class InstallerPanel extends JPanel {
-    public static final L10nManager TRANSLATIONS = new L10nManager("neoforged/installer", new File(SimpleInstaller.getMCDir(), "libraries/.neoforge_installer.properties"));
+    private static final Path INSTALLER_SETTINGS = new File(SimpleInstaller.getMCDir(), "libraries/.neoforge_installer.properties").toPath();
+    public static final L10nManager TRANSLATIONS = new L10nManager("neoforged/installer", INSTALLER_SETTINGS);
+
     private static final long serialVersionUID = 1L;
     private File targetDir;
     private ButtonGroup choiceButtonGroup;
