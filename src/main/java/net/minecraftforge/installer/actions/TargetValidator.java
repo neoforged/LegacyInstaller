@@ -18,6 +18,7 @@
  */
 package net.minecraftforge.installer.actions;
 
+import net.minecraftforge.installer.ui.TranslatedMessage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -39,24 +40,24 @@ public interface TargetValidator {
     }
 
     static TargetValidator isDirectory() {
-        return target -> target.isDirectory() ? ValidationResult.valid() : ValidationResult.invalid(true, "The specified path needs to be a directory");
+        return target -> target.isDirectory() ? ValidationResult.valid() : ValidationResult.invalid(true, "installer.target.error.notdirectory");
     }
 
     static TargetValidator shouldExist(boolean critical) {
-        return target -> target.exists() ? ValidationResult.valid() : ValidationResult.invalid(critical, "The specified directory does not exist" + (critical ? "" : "<br/>It will be created"));
+        return target -> target.exists() ? ValidationResult.valid() : ValidationResult.invalid(critical, critical ? "installer.target.error.directory.doesntexist.critical" : "installer.target.error.directory.doesntexist.create");
     }
 
     static TargetValidator shouldBeEmpty() {
-        return target -> Objects.requireNonNull(target.list()).length == 0 ? ValidationResult.valid() : ValidationResult.invalid(false, "There are already files in the target directory");
+        return target -> Objects.requireNonNull(target.list()).length == 0 ? ValidationResult.valid() : ValidationResult.invalid(false, "installer.target.error.directory.notempty");
     }
 
     static TargetValidator isMCInstallationDirectory() {
         return target -> (new File(target, "launcher_profiles.json").exists() ||
-                new File(target, "launcher_profiles_microsoft_store.json").exists()) ? ValidationResult.valid() : ValidationResult.invalid(true, "The directory is missing a launcher profile. Please run the minecraft launcher first");
+                new File(target, "launcher_profiles_microsoft_store.json").exists()) ? ValidationResult.valid() : ValidationResult.invalid(true, "installer.target.error.missingprofile");
     }
 
     class ValidationResult {
-        private static final ValidationResult VALID = new ValidationResult(true, false, "");
+        private static final ValidationResult VALID = new ValidationResult(true, false, new TranslatedMessage(""));
 
         /**
          * Whether the target directory is valid for installation.
@@ -69,9 +70,9 @@ public interface TargetValidator {
         /**
          * A message to display to users if the target is invalid.
          */
-        public final String message;
+        public final TranslatedMessage message;
 
-        private ValidationResult(boolean valid, boolean critical, String message) {
+        private ValidationResult(boolean valid, boolean critical, TranslatedMessage message) {
             this.valid = valid;
             this.critical = critical;
             this.message = message;
@@ -81,8 +82,8 @@ public interface TargetValidator {
             return VALID;
         }
 
-        public static ValidationResult invalid(boolean critical, String message) {
-            return new ValidationResult(false, critical, message);
+        public static ValidationResult invalid(boolean critical, String messageKey) {
+            return new ValidationResult(false, critical, new TranslatedMessage(messageKey));
         }
 
         public ValidationResult combine(Supplier<ValidationResult> other) {

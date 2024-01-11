@@ -34,6 +34,7 @@ import net.minecraftforge.installer.json.Util;
 import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Library;
 import net.minecraftforge.installer.json.Version.LibraryDownload;
+import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public abstract class Action {
     protected final InstallV1 profile;
@@ -57,7 +58,7 @@ public abstract class Action {
 
     public abstract boolean run(File target, Predicate<String> optionals, File installer) throws ActionCanceledException;
     public abstract TargetValidator getTargetValidator();
-    public abstract String getSuccessMessage();
+    public abstract TranslatedMessage getSuccessMessage();
 
     public String getSponsorMessage() {
         return profile.getMirror() != null && profile.getMirror().isAdvertised() ? String.format(SimpleInstaller.headless ? "Data kindly mirrored by %2$s at %1$s" : "<html><a href=\'%s\'>Data kindly mirrored by %s</a></html>", profile.getMirror().getHomepage(), profile.getMirror().getName()) : null;

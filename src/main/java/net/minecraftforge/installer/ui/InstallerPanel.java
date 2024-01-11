@@ -16,8 +16,9 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-package net.minecraftforge.installer;
+package net.minecraftforge.installer.ui;
 
+import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.actions.Action;
 import net.minecraftforge.installer.actions.ActionCanceledException;
 import net.minecraftforge.installer.actions.Actions;
@@ -26,42 +27,31 @@ import net.minecraftforge.installer.actions.TargetValidator;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.OptionalLibrary;
 
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public class InstallerPanel extends JPanel {
+    private static final Path INSTALLER_SETTINGS = new File(SimpleInstaller.getMCDir(), ".neoforge_installer.properties").toPath();
+    public static final L10nManager TRANSLATIONS = new L10nManager("neoforged/installer", INSTALLER_SETTINGS);
+
     private static final long serialVersionUID = 1L;
     private File targetDir;
     private ButtonGroup choiceButtonGroup;
@@ -143,7 +133,8 @@ public class InstallerPanel extends JPanel {
         logoLabel.setAlignmentY(CENTER_ALIGNMENT);
         logoLabel.setSize(image.getWidth(), image.getHeight());
         logoSplash.add(logoLabel);
-        JLabel tag = new JLabel(profile.getWelcome());
+        JLabel tag = new JLabel();
+        TRANSLATIONS.translate(tag, TranslationTarget.LABEL_TEXT, profile.getWelcome());
         tag.setAlignmentX(CENTER_ALIGNMENT);
         tag.setAlignmentY(CENTER_ALIGNMENT);
         logoSplash.add(tag);
@@ -151,7 +142,7 @@ public class InstallerPanel extends JPanel {
         {
             // The version is a box that has a first label that is non-bold
             final Box version = Box.createHorizontalBox();
-            version.add(new JLabel("Version: "));
+            version.add(TRANSLATIONS.label("installer.welcome.version"));
             tag = new JLabel(profile.getVersion());
             // and a bold part which represents the actual version
             tag.setFont(tag.getFont().deriveFont(Font.BOLD));
@@ -192,11 +183,9 @@ public class InstallerPanel extends JPanel {
             if (action == Actions.SERVER && profile.hideServer()) continue;
             if (action == Actions.EXTRACT && profile.hideExtract()) continue;
             actions.put(action.name(), prog -> action.getAction(profile, prog));
-            JRadioButton radioButton = new JRadioButton();
-            radioButton.setAction(sba);
-            radioButton.setText(action.getButtonLabel());
+            JRadioButton radioButton = TRANSLATIONS.radioButton(sba, action.getButtonLabel());
+            TRANSLATIONS.setTooltip(radioButton, action.getTooltip());
             radioButton.setActionCommand(action.name());
-            radioButton.setToolTipText(action.getTooltip());
             radioButton.setSelected(first);
             radioButton.setAlignmentX(LEFT_ALIGNMENT);
             radioButton.setAlignmentY(CENTER_ALIGNMENT);
@@ -217,95 +206,19 @@ public class InstallerPanel extends JPanel {
         choicePanel.setAlignmentY(CENTER_ALIGNMENT);
         add(choicePanel);
 
-        /*
-        if (VersionInfo.hasOptionals())
-        {
-            optionals = new OptionalListEntry[VersionInfo.getOptionals().size()];
-            int x = 0;
-            for (OptionalLibrary opt : VersionInfo.getOptionals())
-                optionals[x++] = new OptionalListEntry(opt);
-
-            final JList<OptionalListEntry> list = new JList<OptionalListEntry>(optionals);
-
-            list.setCellRenderer(new ListCellRenderer<OptionalListEntry>()
-            {
-                private JPanel panel = new JPanel(new BorderLayout());
-                private JCheckBox check = new JCheckBox();
-                private JLabel icon = new JLabel(new ImageIcon(urlIcon));
-                {
-                    check.setHorizontalAlignment(SwingConstants.LEFT);
-                    icon.setSize(urlIcon.getWidth(), urlIcon.getHeight());
-                    panel.add(check, BorderLayout.LINE_START);
-                    panel.add(icon,  BorderLayout.LINE_END);
-                }
-
-                @Override
-                public Component getListCellRendererComponent(JList<? extends OptionalListEntry> list, OptionalListEntry value, int index, boolean isSelected, boolean cellHasFocus)
-                {
-                    check.setSelected(value.isEnabled());
-                    check.setText(value.lib.getName());
-                    icon.setVisible(value.lib.getURL() != null);
-                    return panel;
-                }
-            });
-
-            list.addMouseListener(new MouseAdapter()
-            {
-                public void mouseClicked(MouseEvent event)
-                {
-                    int index = list.locationToIndex(event.getPoint());
-                    OptionalListEntry entry = list.getModel().getElementAt(index);
-
-                    if (entry.lib.getURL() != null && event.getPoint().getX() > list.getWidth() - urlIcon.getWidth())
-                        openURL(entry.lib.getURL());
-                    else
-                        entry.setEnabled(!entry.isEnabled());
-                    list.repaint(list.getCellBounds(index, index));
-                }
-            });
-            list.addMouseMotionListener(new MouseMotionListener()
-            {
-                public void mouseMoved(MouseEvent event)
-                {
-                    int index = list.locationToIndex(event.getPoint());
-                    OptionalListEntry entry = list.getModel().getElementAt(index);
-                    if (entry.lib.getDesc() != null)
-                    {
-                        StringBuilder tt = new StringBuilder();
-                        tt.append("<html>");
-                        //tt.append("  <h1>").append(index).append(" ").append(entry.lib.getName()).append("</h1>");
-                        //if (entry.lib.getURL() != null)
-                        //    tt.append("  URL: <a href=\"").append(entry.lib.getURL()).append("\">").append(entry.lib.getURL()).append("</a><br />");
-                        if (entry.lib.getDesc() != null)
-                            tt.append(entry.lib.getDesc());
-                        tt.append("</html>");
-                        list.setToolTipText(tt.toString());
-                    }
-                    else
-                        list.setToolTipText(null);
-                }
-
-                @Override public void mouseDragged(MouseEvent event) {}
-            });
-
-
-            add(new JScrollPane(list));
-        }
-        */
-
         JPanel entryPanel = new JPanel();
         entryPanel.setLayout(new BoxLayout(entryPanel,BoxLayout.X_AXIS));
 
         this.targetDir = targetDir;
         selectedDirText = new JTextField();
         selectedDirText.setEditable(false);
-        selectedDirText.setToolTipText("Path to the Minecraft installation directory");
+        TRANSLATIONS.setTooltip(selectedDirText, "installer.welcome.target.tooltip");
         selectedDirText.setColumns(30);
         entryPanel.add(selectedDirText);
         JButton dirSelect = new JButton();
         dirSelect.setAction(new FileSelectAction());
         dirSelect.setText("...");
-        dirSelect.setToolTipText("Select an alternative Minecraft directory");
+        TRANSLATIONS.setTooltip(dirSelect, "installer.welcome.dirselect.tooltip");
         entryPanel.add(dirSelect);
 
         entryPanel.setAlignmentX(LEFT_ALIGNMENT);
@@ -368,7 +281,7 @@ public class InstallerPanel extends JPanel {
         } else {
             selectedDirText.setForeground(Color.RED);
             fileEntryPanel.setBorder(new LineBorder(Color.RED));
-            infoLabel.setText("<html>"+valid.message+"</html>");
+            TRANSLATIONS.translate(infoLabel, TranslationTarget.html(TranslationTarget.LABEL_TEXT), valid.message.key, valid.message.arguments);
             infoLabel.setVisible(true);
             proceedButton.ifPresent(button -> button.setEnabled(!valid.critical));
         }
@@ -382,25 +295,41 @@ public class InstallerPanel extends JPanel {
 
     public void run(ProgressCallback monitor)
     {
-        JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        final JComboBox<L10nManager.LocaleSelection> languageBox = new JComboBox<>();
+
+        final List<L10nManager.LocaleSelection> known = TRANSLATIONS.getKnownLocales();
+        languageBox.setModel(new DefaultComboBoxModel(known.toArray()));
+
+        final Locale current = TRANSLATIONS.getLocale();
+        languageBox.setSelectedItem(known.stream().filter(locate -> locate.locale.equals(current)).findFirst().orElse(known.get(0)));
+        languageBox.addActionListener(e -> TRANSLATIONS.setLocale(((L10nManager.LocaleSelection)languageBox.getSelectedItem()).locale, true));
+
+        JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, new Object[] {
+                TRANSLATIONS.button("installer.button.proceed"), TRANSLATIONS.button("installer.button.cancel"), languageBox
+        });
 
         // Attempt to change the OK button to a Proceed button
         // Use index 1 (the buttons panel) as 0 is this panel
-        proceedButton = Arrays.stream(((JPanel) optionPane.getComponents()[1]).getComponents())
+        final JPanel buttonPanel = (JPanel) optionPane.getComponents()[1];
+        final List<JButton> buttons = Arrays.stream(buttonPanel.getComponents())
                 .filter(comp -> comp instanceof JButton)
                 .map(JButton.class::cast)
-                .filter(btn -> btn.getText().equals("OK"))
-                .findFirst();
-        proceedButton.ifPresent(button -> button.setText("Proceed"));
+                .collect(Collectors.toList());
+        if (buttons.size() == 2) {
+            proceedButton = Optional.of(buttons.get(0));
+            buttons.get(0).addActionListener(e -> optionPane.setValue(JOptionPane.OK_OPTION));
+            buttons.get(1).addActionListener(e -> optionPane.setValue(JOptionPane.OK_CANCEL_OPTION));
+        }
 
-        dialog = optionPane.createDialog("NeoForge installer");
+        dialog = optionPane.createDialog("");
+        TRANSLATIONS.translate(dialog, new TranslationTarget<>(Dialog::setTitle), "installer.window.title", profile.getProfile());
         dialog.setIconImages(Images.getWindowIcons());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
         int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
         if (result == JOptionPane.OK_OPTION)
         {
-            ProgressFrame prog = new ProgressFrame(monitor, "Installing " + profile.getVersion(), Thread.currentThread()::interrupt);
+            ProgressFrame prog = new ProgressFrame(monitor, Thread.currentThread()::interrupt, "installer.frame.installing", profile.getProfile(), profile.getVersion());
             SimpleInstaller.hookStdOut(prog);
             Predicate<String> optPred = input -> {
                 Optional<OptionalListEntry> ent = this.optionals.stream().filter(e -> e.lib.getArtifact().equals(input)).findFirst();
@@ -413,10 +342,10 @@ public class InstallerPanel extends JPanel {
                 if (action.run(targetDir, optPred, installer)) {
                     prog.start("Finished!");
                     prog.getGlobalProgress().percentageProgress(1);
-                    JOptionPane.showMessageDialog(null, action.getSuccessMessage(), "Complete", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, TRANSLATIONS.translate(action.getSuccessMessage()), TRANSLATIONS.translate("installer.installation.complete"), JOptionPane.INFORMATION_MESSAGE);
                 }
             } catch (ActionCanceledException e) {
-                JOptionPane.showMessageDialog(null, "Installation Canceled", "Forge Installer", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, TRANSLATIONS.translate("installer.installation.cancelled"), dialog.getTitle(), JOptionPane.WARNING_MESSAGE);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "There was an exception running task: " + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
@@ -424,6 +353,8 @@ public class InstallerPanel extends JPanel {
                 prog.dispose();
                 SimpleInstaller.hookStdOut(monitor);
             }
+        } else if (result == JOptionPane.OK_CANCEL_OPTION) {
+            System.exit(0);
         }
         dialog.dispose();
     }
