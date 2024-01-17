@@ -8,8 +8,8 @@
     <entry key="installer.button.cancel">Zrušiť</entry>
     <entry key="installer.action.install.client.name">Nainštalovať pre klienta</entry>
     <entry key="installer.action.install.client.tooltip">Nainštalujte nový profile do Mojang klientského spúšťača</entry>
-    <entry key="installer.action.install.client.finished.withoutlibs">Úspešne nainštalovaný klientský profile %s pre verziu %s do spúšťača</entry>
-    <entry key="installer.action.install.client.finished.withlibs">Úspešne nainštalovaný klientský profile %s pre verziu %s do spúšťača, a stiahnuté %d knižnice</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">Úspešne nainštalovaný klientský %s profil pre verziu %s do spúšťača</entry>
+    <entry key="installer.action.install.client.finished.withlibs">Úspešne nainštalovaný klientský %s profil pre verziu %s do spúšťača, a stiahnutých %d knižníc</entry>
     <entry key="installer.action.install.server.name">Nainštalovať pre server</entry>
     <entry key="installer.action.install.server.tooltip">Vytvoriť novú módovanú inštaláciu serveru</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Úspešne stiahnutý minecraft server a nainštalovaný %s</entry>
