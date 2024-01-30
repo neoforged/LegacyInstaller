@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="installer.welcome.version">Version: </entry>
-    <entry key="installer.welcome.target.tooltip">Path to the Minecraft installation directory</entry>
-    <entry key="installer.welcome.dirselect.tooltip">Select an alternative Minecraft directory</entry>
-    <entry key="installer.button.proceed">Proceed</entry>
-    <entry key="installer.button.cancel">Cancel</entry>
-    <entry key="installer.action.install.client.name">Install client</entry>
-    <entry key="installer.action.install.client.tooltip">Install a new profile to the Mojang client launcher</entry>
-    <entry key="installer.action.install.client.finished.withoutlibs">Successfully installed client profile %s for version %s into launcher</entry>
-    <entry key="installer.action.install.client.finished.withlibs">Successfully installed client profile %s for version %s into launcher, and downloaded %d libraries</entry>
-    <entry key="installer.action.install.server.name">Install server</entry>
-    <entry key="installer.action.install.server.tooltip">Create a new modded server installation</entry>
-    <entry key="installer.action.install.server.finished.withoutlibs">Successfully downloaded minecraft server and installed %s</entry>
-    <entry key="installer.action.install.server.finished.withlibs">Successfully downloaded minecraft server, downloaded %d libraries and installed %s</entry>
-    <entry key="installer.action.extract.name">Extract</entry>
-    <entry key="installer.action.extract.tooltip">Extract the contained jar file</entry>
-    <entry key="installer.action.extract.finished">Extracted successfully</entry>
-    <entry key="installer.window.title">%s Installer</entry>
-    <entry key="installer.frame.installing">Installing %s version %s</entry>
-    <entry key="installer.installation.complete">Installation Complete</entry>
-    <entry key="installer.installation.cancelled">Installation Cancelled</entry>
-    <entry key="installer.target.error.notdirectory">The specified path needs to be a directory</entry>
-    <entry key="installer.target.error.directory.notempty">There are already files in the target directory</entry>
-    <entry key="installer.target.error.directory.doesntexist.critical">The specified directory does not exist</entry>
-    <entry key="installer.target.error.directory.doesntexist.create">The specified directory does not exist&lt;br&gt;It will be created</entry>
-    <entry key="installer.target.error.missingprofile">The directory is missing a launcher profile. Please run the Minecraft launcher first</entry>
+    <entry key="installer.welcome.version">Versione: </entry>
+    <entry key="installer.welcome.target.tooltip">Percorso della cartella d'installazione di Minecraft</entry>
+    <entry key="installer.welcome.dirselect.tooltip">Seleziona una cartella alternativa per Minecraft</entry>
+    <entry key="installer.button.proceed">Procedi</entry>
+    <entry key="installer.button.cancel">Cancella</entry>
+    <entry key="installer.action.install.client.name">Installa client</entry>
+    <entry key="installer.action.install.client.tooltip">Installa un nuovo profilo nel client launcher di Mojang</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">Installato correttamente il profilo %s per la versione %s nel launcher</entry>
+    <entry key="installer.action.install.client.finished.withlibs">Installato correttamente il profilo %s per la versione %s nel launcher, e scaricato %d librerie</entry>
+    <entry key="installer.action.install.server.name">Installa server</entry>
+    <entry key="installer.action.install.server.tooltip">Crea una nuova installazione per il server moddato</entry>
+    <entry key="installer.action.install.server.finished.withoutlibs">Scaricato e installato correttamente il server minecraft %s</entry>
+    <entry key="installer.action.install.server.finished.withlibs">Scaricato correttamente il server minecraft, scaricato %d librerie e installato %s</entry>
+    <entry key="installer.action.extract.name">Estrai</entry>
+    <entry key="installer.action.extract.tooltip">Estrai i file contenuti nel jar</entry>
+    <entry key="installer.action.extract.finished">Estrazione effettuata con successo</entry>
+    <entry key="installer.window.title">Installazione %s</entry>
+    <entry key="installer.frame.installing">Installando %s versione %s</entry>
+    <entry key="installer.installation.complete">Installazione completata</entry>
+    <entry key="installer.installation.cancelled">Installazione annullata</entry>
+    <entry key="installer.target.error.notdirectory">Il percorso indicato deve essere una cartella</entry>
+    <entry key="installer.target.error.directory.notempty">Sono già presenti dei file nella cartella selezionata</entry>
+    <entry key="installer.target.error.directory.doesntexist.critical">La cartella specificata non esiste</entry>
+    <entry key="installer.target.error.directory.doesntexist.create">La cartella specificata non esiste&lt;br&gt;Sarà creata</entry>
+    <entry key="installer.target.error.missingprofile">La cartella non esiste nel profilo. Esegui Minecraft prima</entry>
 </properties>
