@@ -258,7 +258,7 @@ public class InstallerPanel extends JPanel {
         Action action = actions.get(choiceButtonGroup.getSelection().getActionCommand()).apply(null);
         TargetValidator.ValidationResult valid = action.getTargetValidator().validate(targetDir);
 
-        if (profile.getMirror() != null)
+        if (profile.getMirror() != null && profile.getMirror().isAdvertised())
         {
             sponsorButton.setText(action.getSponsorMessage());
             sponsorButton.setToolTipText(profile.getMirror().getHomepage());
