@@ -304,22 +304,13 @@ public class InstallerPanel extends JPanel {
         languageBox.setSelectedItem(known.stream().filter(locate -> locate.locale.equals(current)).findFirst().orElse(known.get(0)));
         languageBox.addActionListener(e -> TRANSLATIONS.setLocale(((L10nManager.LocaleSelection)languageBox.getSelectedItem()).locale, true));
 
-        JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, new Object[] {
-                TRANSLATIONS.button("installer.button.proceed"), TRANSLATIONS.button("installer.button.cancel"), languageBox
-        });
+        JButton proceedButton = TRANSLATIONS.button("installer.button.proceed");
+        JButton cancelButton = TRANSLATIONS.button("installer.button.cancel");
+        JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, new Object[] { proceedButton, cancelButton, languageBox });
 
-        // Attempt to change the OK button to a Proceed button
-        // Use index 1 (the buttons panel) as 0 is this panel
-        final JPanel buttonPanel = (JPanel) optionPane.getComponents()[1];
-        final List<JButton> buttons = Arrays.stream(buttonPanel.getComponents())
-                .filter(comp -> comp instanceof JButton)
-                .map(JButton.class::cast)
-                .collect(Collectors.toList());
-        if (buttons.size() == 2) {
-            proceedButton = Optional.of(buttons.get(0));
-            buttons.get(0).addActionListener(e -> optionPane.setValue(JOptionPane.OK_OPTION));
-            buttons.get(1).addActionListener(e -> optionPane.setValue(JOptionPane.OK_CANCEL_OPTION));
-        }
+        proceedButton.addActionListener(e -> optionPane.setValue(JOptionPane.OK_OPTION));
+        cancelButton.addActionListener(e -> optionPane.setValue(JOptionPane.OK_CANCEL_OPTION));
+        this.proceedButton = Optional.of(proceedButton);
 
         dialog = optionPane.createDialog("");
         TRANSLATIONS.translate(dialog, new TranslationTarget<>(Dialog::setTitle), "installer.window.title", profile.getProfile());
