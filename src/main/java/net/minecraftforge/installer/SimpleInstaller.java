@@ -119,7 +119,7 @@ public class SimpleInstaller
                 "libraries.minecraft.net",
                 "launchermeta.mojang.com",
                 "piston-meta.mojang.com",
-                "authserver.mojang.com",
+                "sessionserver.mojang.com",
             }) {
                 monitor.message("Host: " + host + " [" + DownloadUtils.getIps(host).stream().collect(Collectors.joining(", ")) + "]");
             }
