@@ -34,6 +34,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -298,7 +299,7 @@ public class DownloadUtils {
         } catch (UnknownHostException e1) {
             e1.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
     }
 
     public static boolean downloadFileEtag(File target, String url) {
