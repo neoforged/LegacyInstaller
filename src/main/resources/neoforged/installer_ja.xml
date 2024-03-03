@@ -24,6 +24,6 @@
     <entry key="installer.target.error.notdirectory">指定したパスはディレクトリでなければなりません</entry>
     <entry key="installer.target.error.directory.notempty">指定されたディレクトリ内に既にファイルがあります</entry>
     <entry key="installer.target.error.directory.doesntexist.critical">指定したディレクトリが存在しません</entry>
-    <entry key="installer.target.error.directory.doesntexist.create">The specified directory does not exist&lt;br&gt;It will be created</entry>
-    <entry key="installer.target.error.missingprofile">The directory is missing a launcher profile. Please run the Minecraft launcher first</entry>
+    <entry key="installer.target.error.directory.doesntexist.create">指定したディレクトリが存在しない為&lt;br&gt;、新しく作成されました</entry>
+    <entry key="installer.target.error.missingprofile">ディレクトリにランチャープロファイルがありません。最初に Minecraft ランチャーを実行してください。</entry>
 </properties>
