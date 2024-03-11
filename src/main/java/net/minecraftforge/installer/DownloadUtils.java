@@ -435,9 +435,9 @@ public class DownloadUtils {
         @Nullable
         static LocalSource walkFromLibs(Path source) {
             source = source.getParent();
-            if (source == null || !source.getFileName().toString().equals("libs")) return null;
+            if (source == null || source.getFileName() == null || !source.getFileName().toString().equals("libs")) return null;
             source = source.getParent();
-            if (source == null || !source.getFileName().toString().equals("build")) return null;
+            if (source == null || source.getFileName() == null || !source.getFileName().toString().equals("build")) return null;
             source = source.getParent();
             if (source == null) return null;
 
