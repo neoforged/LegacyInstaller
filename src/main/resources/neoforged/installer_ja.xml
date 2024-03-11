@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="installer.welcome.version">バージョン: </entry>
+    <entry key="installer.welcome.target.tooltip">Minecraftがインストールされているディレクトリへのパス</entry>
+    <entry key="installer.welcome.dirselect.tooltip">別のMinecraftディレクトリを選択してください</entry>
+    <entry key="installer.button.proceed">次へ</entry>
+    <entry key="installer.button.cancel">取消</entry>
+    <entry key="installer.action.install.client.name">クライアントをインストール</entry>
+    <entry key="installer.action.install.client.tooltip">Mojangのクライアントランチャーに新しいプロファイルをインストールします</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">バージョン %s のクライアントプロファイル%sはランチャーに正常にインストールされました</entry>
+    <entry key="installer.action.install.client.finished.withlibs">バージョン %s 用のプロファイル%sがランチャーに正常にインストールされ、%d 個のライブラリがダウンロードされました。</entry>
+    <entry key="installer.action.install.server.name">サーバーをインストール</entry>
+    <entry key="installer.action.install.server.tooltip">新規Modサーバーのインストールを作成します</entry>
+    <entry key="installer.action.install.server.finished.withoutlibs">Minecraftサーバーのダウンロードと、 %s のインストールのインストールが完了しました</entry>
+    <entry key="installer.action.install.server.finished.withlibs">Minecraft サーバーと%d ライブラリのダウンロード、%s のインストールが完了しました。</entry>
+    <entry key="installer.action.extract.name">解凍</entry>
+    <entry key="installer.action.extract.tooltip">含まれている jar ファイルを解凍します</entry>
+    <entry key="installer.action.extract.finished">正常に解凍しました</entry>
+    <entry key="installer.window.title">%s インストーラ</entry>
+    <entry key="installer.frame.installing">%s のバージョン %s をインストール中</entry>
+    <entry key="installer.installation.complete">インストールが完了しました</entry>
+    <entry key="installer.installation.cancelled">インストールはキャンセルされました</entry>
+    <entry key="installer.target.error.notdirectory">指定したパスはディレクトリでなければなりません</entry>
+    <entry key="installer.target.error.directory.notempty">指定されたディレクトリ内に既にファイルがあります</entry>
+    <entry key="installer.target.error.directory.doesntexist.critical">指定したディレクトリが存在しません</entry>
+    <entry key="installer.target.error.directory.doesntexist.create">指定したディレクトリが存在しない為&lt;br&gt;、新しく作成されました</entry>
+    <entry key="installer.target.error.missingprofile">ディレクトリにランチャープロファイルがありません。最初に Minecraft ランチャーを実行してください。</entry>
+</properties>
