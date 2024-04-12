@@ -2,6 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="installer.welcome.version">Version: </entry>
+    <entry key="installer.welcome.offline">Offline mode</entry>
     <entry key="installer.welcome.target.tooltip">Pfad zum Minecraft-Installationsverzeichnis</entry>
     <entry key="installer.welcome.dirselect.tooltip">Wähle ein alternatives Minecraft-Verzeichnis</entry>
     <entry key="installer.button.proceed">Fortfahren</entry>
@@ -14,6 +15,9 @@
     <entry key="installer.action.install.server.tooltip">Erstelle eine neue modifizierte Serverinstallation</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Minecraft-Server erfolgreich heruntergeladen und %s installiert</entry>
     <entry key="installer.action.install.server.finished.withlibs">Minecraft-Server erfolgreich heruntergeladen, %d Bibliotheken heruntergeladen und %s installiert</entry>
+    <entry key="installer.action.install.fat.name">Create fat installer</entry>
+    <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
+    <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
     <entry key="installer.action.extract.name">Entpacken</entry>
     <entry key="installer.action.extract.tooltip">Entpacken der enthaltenen jar-Datei</entry>
     <entry key="installer.action.extract.finished">Entpacken erfolgreich</entry>
@@ -26,4 +30,13 @@
     <entry key="installer.target.error.directory.doesntexist.critical">Das angegebene Verzeichnis existiert nicht</entry>
     <entry key="installer.target.error.directory.doesntexist.create">Das angegebene Verzeichnis existiert nicht&lt;br&gt;Es wird erstellt</entry>
     <entry key="installer.target.error.missingprofile">Im Verzeichnis fehlt ein Launcher-Profil. Bitte starte zuerst den Minecraft Launcher</entry>
+    <entry key="installer.fat.includemc">Include Minecraft jars</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
+    <entry key="installer.fat.includemclibs">Include Minecraft libraries</entry>
+    <entry key="installer.fat.includemclibs.tooltip">Include the libraries used by Minecraft</entry>
+    <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">Include the libraries used by the installer</entry>
+    <entry key="installer.fat.offline">Offline installer</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
