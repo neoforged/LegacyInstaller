@@ -1,33 +1,22 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.ui;
 
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
 import java.awt.Component;
 import java.beans.PropertyChangeListener;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,6 +39,13 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JRadioButton;
+import org.jetbrains.annotations.NotNull;
 
 public class L10nManager {
     private static final ResourceBundle.Control CONTROL = new ResourceBundle.Control() {
@@ -94,7 +90,6 @@ public class L10nManager {
                 props.loadFromXML(i);
                 final Map<String, Object> lookup = new HashMap(props);
                 return new ResourceBundle() {
-
                     @Override
                     protected Object handleGetObject(@NotNull String key) {
                         return lookup.get(key);
@@ -165,6 +160,10 @@ public class L10nManager {
         final JRadioButton button = new JRadioButton();
         button.setAction(action);
         return translate(button, TranslationTarget.BUTTON_TEXT, key, args);
+    }
+
+    public JCheckBox checkBox(String key, Object... args) {
+        return translate(new JCheckBox(), TranslationTarget.BUTTON_TEXT, key, args);
     }
 
     public <T extends JComponent> T setTooltip(T component, String key, Object... args) {
@@ -272,7 +271,6 @@ public class L10nManager {
     }
 
     private static final class MergedEnumeration implements Enumeration<String> {
-
         private final Set<String> set;
         private final Iterator<String> iterator;
         private final Enumeration<String> enumeration;

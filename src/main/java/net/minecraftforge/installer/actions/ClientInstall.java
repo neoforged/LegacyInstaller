@@ -1,40 +1,35 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.actions;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.function.Predicate;
-import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.Util;
 import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Download;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ClientInstall extends Action {
-
     public ClientInstall(InstallV1 profile, ProgressCallback monitor) {
         super(profile, monitor, true);
     }
@@ -87,7 +82,7 @@ public class ClientInstall extends Action {
         File clientTarget = new File(versionVanilla, profile.getMinecraft() + ".jar");
         if (!clientTarget.exists()) {
             File versionJson = new File(versionVanilla, profile.getMinecraft() + ".json");
-            Version vanilla = Util.getVanillaVersion(profile.getMinecraft(), versionJson);
+            Version vanilla = Util.getVanillaVersion(monitor, profile.getMinecraft(), versionJson);
             if (vanilla == null) {
                 error("Failed to download version manifest, can not find client jar URL.");
                 return false;
@@ -99,10 +94,13 @@ public class ClientInstall extends Action {
                 return false;
             }
 
-            if (!DownloadUtils.download(monitor, profile.getMirror(), client, clientTarget)) {
+            if (!monitor.downloader(client.getUrl())
+                    .sha(client.getSha1())
+                    .localPath("minecraft/" + profile.getMinecraft() + "/client.jar")
+                    .download(clientTarget)) {
                 clientTarget.delete();
                 error("Downloading minecraft client failed, invalid checksum.\n" +
-                      "Try again, or use the vanilla launcher to install the vanilla version.");
+                        "Try again, or use the vanilla launcher to install the vanilla version.");
                 return false;
             }
         }
@@ -115,9 +113,9 @@ public class ClientInstall extends Action {
         /*
         String modListType = VersionInfo.getModListType();
         File modListFile = new File(target, "mods/mod_list.json");
-
+        
         JsonRootNode versionJson = JsonNodeFactories.object(VersionInfo.getVersionInfo().getFields());
-
+        
         if ("absolute".equals(modListType))
         {
             modListFile = new File(versionTarget, "mod_list.json");
@@ -132,7 +130,7 @@ public class ClientInstall extends Action {
                 e.printStackTrace();
             }
         }
-
+        
         if (!"none".equals(modListType))
         {
             if (!OptionalLibrary.saveModListJson(librariesDir, modListFile, VersionInfo.getOptionals(), optionals))

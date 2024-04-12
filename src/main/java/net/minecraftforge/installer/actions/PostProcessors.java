@@ -1,20 +1,17 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.actions;
 
@@ -36,17 +33,16 @@ import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
-
 import javax.swing.JOptionPane;
-
 import net.minecraftforge.installer.DownloadUtils;
+import net.minecraftforge.installer.Downloader;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.actions.ProgressCallback.MessagePriority;
 import net.minecraftforge.installer.json.Artifact;
 import net.minecraftforge.installer.json.Install.Processor;
 import net.minecraftforge.installer.json.InstallV1;
-import net.minecraftforge.installer.json.Version.Library;
 import net.minecraftforge.installer.json.Util;
+import net.minecraftforge.installer.json.Version.Library;
 
 public class PostProcessors {
     private final InstallV1 profile;
@@ -70,17 +66,17 @@ public class PostProcessors {
     }
 
     public int getTaskCount() {
-        return hasTasks ? 0 :
-            profile.getLibraries().length +
-            processors.size() +
-            profile.getData(isClient).size();
+        return hasTasks ? 0
+                : profile.getLibraries().length +
+                        processors.size() +
+                        profile.getData(isClient).size();
     }
 
     public boolean process(File librariesDir, File minecraft, File root, File installer) {
         try {
             if (!data.isEmpty()) {
                 StringBuilder err = new StringBuilder();
-                Path temp  = Files.createTempDirectory("forge_installer");
+                Path temp = Files.createTempDirectory("forge_installer");
                 monitor.start("Created Temporary Directory: " + temp);
                 double steps = data.size();
                 int progress = 1;
@@ -89,9 +85,9 @@ public class PostProcessors {
                     String value = data.get(key);
 
                     if (value.charAt(0) == '[' && value.charAt(value.length() - 1) == ']') { //Artifact
-                        data.put(key, Artifact.from(value.substring(1, value.length() -1)).getLocalPath(librariesDir).getAbsolutePath());
+                        data.put(key, Artifact.from(value.substring(1, value.length() - 1)).getLocalPath(librariesDir).getAbsolutePath());
                     } else if (value.charAt(0) == '\'' && value.charAt(value.length() - 1) == '\'') { //Literal
-                        data.put(key, value.substring(1, value.length() -1));
+                        data.put(key, value.substring(1, value.length() - 1));
                     } else {
                         File target = Paths.get(temp.toString(), value).toFile();
                         monitor.message("  Extracting: " + value);
@@ -112,6 +108,14 @@ public class PostProcessors {
             data.put("INSTALLER", installer.getAbsolutePath());
             data.put("LIBRARY_DIR", librariesDir.getAbsolutePath());
 
+            String localSource = "minecraft/" + profile.getMinecraft() + "/" + data.get("SIDE") + "_mappings.txt";
+            boolean mojmapsSuccess = false;
+            if (Downloader.LOCAL.getArtifact(localSource) != null) {
+                mojmapsSuccess = monitor.downloader("")
+                        .localPath(localSource)
+                        .download(new File(data.get("MOJMAPS")));
+            }
+
             int progress = 0;
             if (processors.size() == 1) {
                 monitor.stage("Building Processor");
@@ -123,7 +127,13 @@ public class PostProcessors {
                 log("===============================================================================");
                 String procName = proc.getJar().getDomain() + ":" + proc.getJar().getName();
                 if (proc.getJar().getName().equals("installertools")) {
-                    procName += (" -> " + proc.getArgs()[Arrays.asList(proc.getArgs()).indexOf("--task") + 1]);
+                    String task = proc.getArgs()[Arrays.asList(proc.getArgs()).indexOf("--task") + 1];
+                    procName += (" -> " + task);
+                    if (task.equals("DOWNLOAD_MOJMAPS") && mojmapsSuccess) {
+                        monitor.message("Skipping mojmaps download due to local cache hit.");
+                        monitor.getGlobalProgress().progress(++progress);
+                        continue;
+                    }
                 }
 
                 monitor.setCurrentStep("Processor: " + procName);
@@ -232,7 +242,7 @@ public class PostProcessors {
                 try {
                     Class<?> cls = Class.forName(mainClass, true, cl);
                     Method main = cls.getDeclaredMethod("main", String[].class);
-                    main.invoke(null, (Object)args.toArray(new String[args.size()]));
+                    main.invoke(null, (Object) args.toArray(new String[args.size()]));
                 } catch (InvocationTargetException ite) {
                     Throwable e = ite.getCause();
                     e.printStackTrace();
@@ -264,8 +274,8 @@ public class PostProcessors {
                                 log("  Output: " + e.getKey() + " Checksum Validated: " + sha);
                             } else {
                                 err.append("\n    ").append(e.getKey())
-                                   .append("\n      Expected: ").append(e.getValue())
-                                   .append("\n      Actual:   ").append(sha);
+                                        .append("\n      Expected: ").append(e.getValue())
+                                        .append("\n      Actual:   ").append(sha);
                                 if (!SimpleInstaller.debug && !artifact.delete())
                                     err.append("\n      Could not delete file");
                             }
@@ -293,6 +303,7 @@ public class PostProcessors {
         for (String line : message.split("\n"))
             monitor.message(line);
     }
+
     private void log(String message) {
         for (String line : message.split("\n"))
             monitor.message(line);
@@ -300,6 +311,7 @@ public class PostProcessors {
 
     private static boolean clChecked = false;
     private static ClassLoader parentClassLoader = null;
+
     @SuppressWarnings("unused")
     private synchronized ClassLoader getParentClassloader() { //Reflectively try and get the platform classloader, done this way to prevent hard dep on J9.
         if (!clChecked) {
@@ -307,7 +319,7 @@ public class PostProcessors {
             if (!System.getProperty("java.version").startsWith("1.")) { //in 9+ the changed from 1.8 to just 9. So this essentially detects if we're <9
                 try {
                     Method getPlatform = ClassLoader.class.getDeclaredMethod("getPlatformClassLoader");
-                    parentClassLoader = (ClassLoader)getPlatform.invoke(null);
+                    parentClassLoader = (ClassLoader) getPlatform.invoke(null);
                 } catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     log("No platform classloader: " + System.getProperty("java.version"));
                 }
