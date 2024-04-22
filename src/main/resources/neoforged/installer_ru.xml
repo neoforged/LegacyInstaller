@@ -16,8 +16,8 @@
     <entry key="installer.action.install.server.finished.withoutlibs">Успешно скачан сервер minecraft и установлен %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Успешно скачан сервер minecraft, загружено %d библиотек и установлен %s</entry>
     <entry key="installer.action.install.fat.name">Создать "толстый" установщик</entry>
-    <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
-    <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
+    <entry key="installer.action.install.fat.tooltip">Создать установщик, который собирает скачанные библиотеки, для возможного использования в офлайн режиме</entry>
+    <entry key="installer.action.install.fat.finished">Успешно создан "толстый" установщик для версии %s</entry>
     <entry key="installer.action.extract.name">Извлечь</entry>
     <entry key="installer.action.extract.tooltip">Извлечь содержащийся jar файл</entry>
     <entry key="installer.action.extract.finished">Успешно извлечено</entry>
@@ -31,8 +31,8 @@
     <entry key="installer.target.error.directory.doesntexist.create">Указанная директория не существует&lt;br&gt;Она будет создана</entry>
     <entry key="installer.target.error.missingprofile">В директории отсутствует профиль. Пожалуйста, сначала запустите лаунчер Minecraft</entry>
     <entry key="installer.fat.includemc">Включать jar файлы Minecraft</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Включить jar файлы Minecraft. &lt;br&gt; Конечный jar файл будет включать в себя Minecraft сервер и клиентские jar файлы, которые лицензированы как "Все права защищены". &lt;br&gt; &lt;b&gt; Распространение "толстого" установщика является незаконным.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Конечный jar файл будет включать в себя сервер Minecraft и клиентские jar файлы, которые лицензированы как "Все права защищены". Распространение "толстого" установщика является незаконным.</entry>
     <entry key="installer.fat.includemclibs">Включать библиотеки Minecraft</entry>
     <entry key="installer.fat.includemclibs.tooltip">Включать библиотеки, используемые Minecraft</entry>
     <entry key="installer.fat.includeinstallerlibs">Включать программы установщика</entry>
