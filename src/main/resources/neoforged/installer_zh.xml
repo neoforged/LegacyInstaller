@@ -17,7 +17,7 @@
     <entry key="installer.action.install.server.finished.withlibs">下载 Minecraft 服务器和 %d 个库并安装 %s 成功</entry>
     <entry key="installer.action.install.fat.name">Create fat installer</entry>
     <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
-    <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
+    <entry key="installer.action.install.fat.finished">成功为版本 %s 创建 fat 安装程序</entry>
     <entry key="installer.action.extract.name">解压缩</entry>
     <entry key="installer.action.extract.tooltip">解压缩包含的 jar 文件</entry>
     <entry key="installer.action.extract.finished">解压缩成功</entry>
@@ -35,7 +35,7 @@
     <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
     <entry key="installer.fat.includemclibs">包括我的世界的库</entry>
     <entry key="installer.fat.includemclibs.tooltip">包括我的世界使用的库</entry>
-    <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
+    <entry key="installer.fat.includeinstallerlibs">包括安装程序的库</entry>
     <entry key="installer.fat.includeinstallerlibs.tooltip">包括安装程序使用的库</entry>
     <entry key="installer.fat.offline">离线安装程序</entry>
     <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
