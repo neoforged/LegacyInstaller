@@ -16,7 +16,7 @@
     <entry key="installer.action.install.server.finished.withoutlibs">下载 Minecraft 服务器并安装 %s 成功</entry>
     <entry key="installer.action.install.server.finished.withlibs">下载 Minecraft 服务器和 %d 个库并安装 %s 成功</entry>
     <entry key="installer.action.install.fat.name">创建 fat 安装程序</entry>
-    <entry key="installer.action.install.fat.tooltip">创建一个包含已下载好的库的安装程序，以供最终离线使用</entry>
+    <entry key="installer.action.install.fat.tooltip">创建一个打包了已下载好的库的安装程序，以供最终离线使用</entry>
     <entry key="installer.action.install.fat.finished">成功为版本 %s 创建 fat 安装程序</entry>
     <entry key="installer.action.extract.name">解压缩</entry>
     <entry key="installer.action.extract.tooltip">解压缩包含的 jar 文件</entry>
@@ -24,19 +24,19 @@
     <entry key="installer.window.title">%s 安装器</entry>
     <entry key="installer.frame.installing">正在安装 %s（版本 %s）</entry>
     <entry key="installer.installation.complete">安装完成</entry>
-    <entry key="installer.installation.cancelled">安装取消</entry>
+    <entry key="installer.installation.cancelled">安装已取消</entry>
     <entry key="installer.target.error.notdirectory">指定的路径应为文件夹</entry>
     <entry key="installer.target.error.directory.notempty">目标文件夹已存在文件</entry>
     <entry key="installer.target.error.directory.doesntexist.critical">指定的文件夹不存在</entry>
     <entry key="installer.target.error.directory.doesntexist.create">指定的文件夹不存在&lt;br&gt;它将被创建</entry>
     <entry key="installer.target.error.missingprofile">此文件夹下没有启动器配置。请先运行 Minecraft 启动器</entry>
-    <entry key="installer.fat.includemc">包括我的世界的 jars</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
-    <entry key="installer.fat.includemclibs">包括我的世界的库</entry>
-    <entry key="installer.fat.includemclibs.tooltip">包括我的世界使用的库</entry>
+    <entry key="installer.fat.includemc">包括 Minecraft 的 jar 文件</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;包括 Minecraft 的 jar 文件。&lt;br&gt;输出的 jar 将包含 Minecraft 服务端和客户端的 jar 文件，后两者均在“保留所有权利”许可证下分发。&lt;br&gt;&lt;b&gt;二次分发此复合安装程序是非法的。&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">输出的 jar 将包括 Minecraft 服务端和客户端的 jar 文件，后两者均在“保留所有权利”许可证下分发。二次分发此复合安装程序是非法的。</entry>
+    <entry key="installer.fat.includemclibs">包括 Minecraft 的库</entry>
+    <entry key="installer.fat.includemclibs.tooltip">包括 Minecraft 所使用的库</entry>
     <entry key="installer.fat.includeinstallerlibs">包括安装程序的库</entry>
-    <entry key="installer.fat.includeinstallerlibs.tooltip">包括安装程序使用的库</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">包括安装程序所使用的库</entry>
     <entry key="installer.fat.offline">离线安装程序</entry>
-    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;创建不需要互联网连接即可运行的安装程序。&lt;br&gt;离线安装程序将包含 Minecraft 服务端和客户端的 jar 文件，后两者均在“保留所有权利”许可证下分发。&lt;br&gt;&lt;b&gt;二次分发此离线安装程序是非法的。&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
