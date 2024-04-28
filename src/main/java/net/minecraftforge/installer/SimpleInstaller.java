@@ -1,22 +1,20 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,20 +24,21 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import net.minecraftforge.installer.actions.Actions;
+import net.minecraftforge.installer.actions.FatInstallerAction;
 import net.minecraftforge.installer.actions.ProgressCallback;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.Util;
@@ -48,21 +47,16 @@ import net.neoforged.cliutils.progress.ProgressInterceptor;
 import net.neoforged.cliutils.progress.ProgressManager;
 import net.neoforged.cliutils.progress.ProgressReporter;
 
-public class SimpleInstaller
-{
+public class SimpleInstaller {
     public static boolean headless = false;
     public static boolean debug = false;
     public static URL mirror = null;
 
-    public static void main(String[] args) throws IOException, URISyntaxException
-    {
+    public static void main(String[] args) throws IOException, URISyntaxException {
         ProgressCallback monitor;
-        try
-        {
+        try {
             monitor = ProgressCallback.withOutputs(System.out, getLog());
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             monitor = ProgressCallback.withOutputs(System.out);
         }
@@ -80,8 +74,7 @@ public class SimpleInstaller
         monitor.message("Current Time: " + new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
 
         File installer = new File(SimpleInstaller.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-        if (installer.getAbsolutePath().contains("!/"))
-        {
+        if (installer.getAbsolutePath().contains("!/")) {
             monitor.stage("Due to java limitation, please do not run this jar in a folder ending with !");
             monitor.message(installer.getAbsolutePath());
             return;
@@ -90,8 +83,14 @@ public class SimpleInstaller
         OptionParser parser = new OptionParser();
         OptionSpec<File> clientInstallOption = parser.acceptsAll(Arrays.asList("installClient", "install-client"), "Install a client to the specified directory, defaulting to the MC installation directory").withOptionalArg().ofType(File.class).defaultsTo(getMCDir());
         OptionSpec<File> serverInstallOption = parser.acceptsAll(Arrays.asList("installServer", "install-server"), "Install a server to the current directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
-        OptionSpec<File> extractOption = parser.accepts("extract", "Extract the contained jar file to the specified directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
-        OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"),"Help with this installer");
+
+        OptionSpec<File> fatInstallerOption = parser.acceptsAll(Arrays.asList("fat-installer", "fat", "generate-fat"), "Generate a fat installer jar").withOptionalArg().ofType(File.class).defaultsTo(new File(installer.getParent(), installer.getName().replace(".jar", "-fat.jar")));
+        OptionSpec<Void> fatIncludeMC = parser.acceptsAll(Arrays.asList("fat-include-minecraft"), "Include the Minecraft client / server jar in the fat installer").availableIf(fatInstallerOption);
+        OptionSpec<Void> fatIncludeMCLibs = parser.acceptsAll(Arrays.asList("fat-include-minecraft-libs"), "Include the Minecraft libraries in the fat installer").availableIf(fatInstallerOption);
+        OptionSpec<Void> fatIncludeInstallerLibs = parser.acceptsAll(Arrays.asList("fat-include-installer-libs"), "Include the installer libraries in the fat installer").availableIf(fatInstallerOption);
+        OptionSpec<Void> fatOffline = parser.acceptsAll(Arrays.asList("fat-offline", "gen-offline", "generate-offline", "gf"), "Generate an online fat installer");
+
+        OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"), "Help with this installer");
         OptionSpec<Void> offlineOption = parser.accepts("offline", "Don't attempt any network calls");
         OptionSpec<Void> debugOption = parser.accepts("debug", "Run in debug mode -- don't delete any files");
         OptionSpec<URL> mirrorOption = parser.accepts("mirror", "Use a specific mirror URL").withRequiredArg().ofType(URL.class);
@@ -107,19 +106,22 @@ public class SimpleInstaller
             mirror = optionSet.valueOf(mirrorOption);
         }
 
-        if (optionSet.has(offlineOption))
-        {
+        boolean isOffline = optionSet.has(offlineOption);
+        if (Files.isRegularFile(installer.toPath())) {
+            try (JarFile jf = new JarFile(installer)) {
+                isOffline = isOffline | Boolean.parseBoolean(jf.getManifest().getMainAttributes().getValue("Offline"));
+            }
+        }
+        if (isOffline) {
             DownloadUtils.OFFLINE_MODE = true;
             monitor.message("ENABLING OFFLINE MODE");
-        }
-        else
-        {
-            for(String host : new String[] {
-                "maven.neoforged.net",
-                "libraries.minecraft.net",
-                "launchermeta.mojang.com",
-                "piston-meta.mojang.com",
-                "sessionserver.mojang.com",
+        } else {
+            for (String host : new String[] {
+                    "maven.neoforged.net",
+                    "libraries.minecraft.net",
+                    "launchermeta.mojang.com",
+                    "piston-meta.mojang.com",
+                    "sessionserver.mojang.com",
             }) {
                 monitor.message("Host: " + host + " [" + DownloadUtils.getIps(host).stream().collect(Collectors.joining(", ")) + "]");
             }
@@ -131,90 +133,85 @@ public class SimpleInstaller
         if (optionSet.has(serverInstallOption)) {
             action = Actions.SERVER;
             target = optionSet.valueOf(serverInstallOption);
-        } else if (optionSet.has(extractOption)) {
-            action = Actions.EXTRACT;
-            target = optionSet.valueOf(extractOption);
         } else if (optionSet.has(clientInstallOption)) {
             action = Actions.CLIENT;
             target = optionSet.valueOf(clientInstallOption);
+        } else if (optionSet.has(fatInstallerOption) || optionSet.has(fatOffline)) {
+            action = Actions.FAT_INSTALLER;
+            target = optionSet.valueOf(fatInstallerOption);
+
+            if (optionSet.has(fatIncludeMC) || optionSet.has(fatOffline)) {
+                FatInstallerAction.OPTIONS.add(FatInstallerAction.Options.MC_JAR);
+            }
+            if (optionSet.has(fatIncludeMCLibs) || optionSet.has(fatOffline)) {
+                FatInstallerAction.OPTIONS.add(FatInstallerAction.Options.MC_LIBS);
+            }
+            if (optionSet.has(fatIncludeInstallerLibs) || optionSet.has(fatOffline)) {
+                FatInstallerAction.OPTIONS.add(FatInstallerAction.Options.INSTALLER_LIBS);
+            }
         }
 
-        if (action != null)
-        {
-            try
-            {
+        if (action != null) {
+            try {
                 SimpleInstaller.headless = true;
                 monitor.message("Target Directory: " + target);
                 InstallV1 install = Util.loadInstallProfile();
-                if (!action.getAction(install, monitor).run(target, a -> true, installer))
-                {
+                if (!action.getAction(install, monitor).run(target, a -> true, installer)) {
                     monitor.stage("There was an error during installation");
                     System.exit(1);
-                }
-                else
-                {
+                } else {
                     monitor.message(action.getSuccess());
                     monitor.stage("You can delete this installer file now if you wish");
                 }
                 System.exit(0);
-            }
-            catch (Throwable e)
-            {
+            } catch (Throwable e) {
                 monitor.stage("A problem installing was detected, install cannot continue");
                 System.exit(1);
             }
-        }
-        else
+        } else
             launchGui(monitor, installer);
     }
 
-    public static File getMCDir()
-    {
+    public static File getMCDir() {
         String userHomeDir = System.getProperty("user.home", ".");
         String osType = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
         String mcDir = ".minecraft";
         if (osType.contains("win") && System.getenv("APPDATA") != null)
             return new File(System.getenv("APPDATA"), mcDir);
         else if (osType.contains("mac"))
-            return new File(new File(new File(userHomeDir, "Library"),"Application Support"),"minecraft");
+            return new File(new File(new File(userHomeDir, "Library"), "Application Support"), "minecraft");
         return new File(userHomeDir, mcDir);
     }
 
-    private static void launchGui(ProgressCallback monitor, File installer)
-    {
-        try
-        {
+    private static void launchGui(ProgressCallback monitor, File installer) {
+        try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (Exception e)
-        {
-        }
+        } catch (Exception e) {}
 
         try {
             InstallV1 profile = Util.loadInstallProfile();
             InstallerPanel panel = new InstallerPanel(getMCDir(), profile, installer);
             panel.run(monitor);
         } catch (Throwable e) {
-            JOptionPane.showMessageDialog(null,"Something went wrong while installing.<br />Check log for more details:<br/>" + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Something went wrong while installing.<br />Check log for more details:<br/>" + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    private static OutputStream getLog() throws FileNotFoundException
-    {
+    private static OutputStream getLog() throws FileNotFoundException {
         File f = new File(SimpleInstaller.class.getProtectionDomain().getCodeSource().getLocation().getFile());
         File output;
         if (f.isFile()) output = new File(f.getName() + ".log");
-        else            output = new File("installer.log");
+        else output = new File("installer.log");
         System.out.println("Outputting log to file " + output);
 
         return new BufferedOutputStream(new FileOutputStream(output));
     }
 
-    public static void hookStdOut(ProgressCallback monitor)
-    {
+    public static void hookStdOut(ProgressCallback monitor) {
         final Pattern endingWhitespace = Pattern.compile("\\r?\\n$");
         final OutputStream monitorStream = new OutputStream() {
             private StringBuffer buffer = new StringBuffer();
+
             @Override
             public void write(byte[] buf, int off, int len) {
                 for (int i = off; i < off + len; i++) {

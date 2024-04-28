@@ -15,7 +15,7 @@ jobs:
   release:
     uses: neoforged/actions/.github/workflows/gradle-publish.yml@main
     with:
-      java: 8
+      java: 17
       pre_gradle_tasks: test
       gradle_tasks: publish 
     secrets:
@@ -25,4 +25,3 @@ jobs:
       GPG_SUBKEY: ${{ secrets.GPG_SUBKEY }}
       GPG_SUBKEY_ID: ${{ secrets.GPG_SUBKEY_ID }}
       GPG_SUBKEY_PASSWORD: ${{ secrets.GPG_SUBKEY_PASSWORD }}
-      

@@ -1,25 +1,19 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.json;
-
-import java.io.File;
-import java.lang.reflect.Type;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -29,6 +23,8 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import java.io.File;
+import java.lang.reflect.Type;
 
 public class Artifact {
     //Descriptor parts: group:name:version[:classifier][@extension]
@@ -43,8 +39,7 @@ public class Artifact {
     private String file;
     private String descriptor;
 
-    public static Artifact from(String descriptor)
-    {
+    public static Artifact from(String descriptor) {
         Artifact ret = new Artifact();
         ret.descriptor = descriptor;
 
@@ -76,14 +71,38 @@ public class Artifact {
         return new File(base, path.replace('/', File.separatorChar));
     }
 
-    public String getDescriptor(){ return descriptor; }
-    public String getPath()      { return path;       }
-    public String getDomain()    { return domain;     }
-    public String getName()      { return name;       }
-    public String getVersion()   { return version;    }
-    public String getClassifier(){ return classifier; }
-    public String getExt()       { return ext;        }
-    public String getFilename()  { return file;       }
+    public String getDescriptor() {
+        return descriptor;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public String getClassifier() {
+        return classifier;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public String getFilename() {
+        return file;
+    }
+
     @Override
     public String toString() {
         return getDescriptor();
