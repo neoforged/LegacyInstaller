@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="installer.welcome.version">バージョン: </entry>
-    <entry key="installer.welcome.offline">Offline mode</entry>
-    <entry key="installer.welcome.target.tooltip">Minecraftがインストールされているディレクトリへのパス</entry>
+    <entry key="installer.welcome.version">バージョン：</entry>
+    <entry key="installer.welcome.offline">オフラインモード</entry>
+    <entry key="installer.welcome.target.tooltip">Minecraftがインストールされているディレクトリのパス</entry>
     <entry key="installer.welcome.dirselect.tooltip">別のMinecraftディレクトリを選択してください</entry>
     <entry key="installer.button.proceed">次へ</entry>
-    <entry key="installer.button.cancel">取消</entry>
+    <entry key="installer.button.cancel">キャンセル</entry>
     <entry key="installer.action.install.client.name">クライアントをインストール</entry>
     <entry key="installer.action.install.client.tooltip">Mojangのクライアントランチャーに新しいプロファイルをインストールします</entry>
     <entry key="installer.action.install.client.finished.withoutlibs">バージョン %s のクライアントプロファイル%sはランチャーに正常にインストールされました</entry>
@@ -15,9 +15,9 @@
     <entry key="installer.action.install.server.tooltip">新規Modサーバーのインストールを作成します</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Minecraftサーバーのダウンロードと、 %s のインストールのインストールが完了しました</entry>
     <entry key="installer.action.install.server.finished.withlibs">Minecraft サーバーと%d ライブラリのダウンロード、%s のインストールが完了しました。</entry>
-    <entry key="installer.action.install.fat.name">Create fat installer</entry>
-    <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
-    <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
+    <entry key="installer.action.install.fat.name">fatインストーラーを作成</entry>
+    <entry key="installer.action.install.fat.tooltip">ダウンロードしたライブラリをパッケージ化し、オフラインで利用できるインストーラーを作成する</entry>
+    <entry key="installer.action.install.fat.finished">バージョン%sのfatインストーラーが正常に作成されました</entry>
     <entry key="installer.action.extract.name">解凍</entry>
     <entry key="installer.action.extract.tooltip">含まれている jar ファイルを解凍します</entry>
     <entry key="installer.action.extract.finished">正常に解凍しました</entry>
@@ -30,9 +30,9 @@
     <entry key="installer.target.error.directory.doesntexist.critical">指定したディレクトリが存在しません</entry>
     <entry key="installer.target.error.directory.doesntexist.create">指定したディレクトリが存在しない為&lt;br&gt;、新しく作成されました</entry>
     <entry key="installer.target.error.missingprofile">ディレクトリにランチャープロファイルがありません。最初に Minecraft ランチャーを実行してください。</entry>
-    <entry key="installer.fat.includemc">Include Minecraft jars</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
+    <entry key="installer.fat.includemc">Minecraftのjarファイルを含める</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Minecraftのjarファイルを含めます。&lt;br&gt;出力されるjarファイルには、ライセンスによりすべての権利が留保されているMinecraftのサーバーおよびクライアントのjarが含まれます。&lt;br&gt; &lt;b&gt;fatインストーラーの再配布は違法です。&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Minecraftのjarファイルを含めます。出力されるjarファイルには、すべての権利が留保されているMinecraftのサーバーおよびクライアントのjarが含まれます。fatインストーラーの再配布は違法です。</entry>
     <entry key="installer.fat.includemclibs">Include Minecraft libraries</entry>
     <entry key="installer.fat.includemclibs.tooltip">Include the libraries used by Minecraft</entry>
     <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
