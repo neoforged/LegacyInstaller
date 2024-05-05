@@ -31,12 +31,12 @@
     <entry key="installer.target.error.directory.doesntexist.create">Das angegebene Verzeichnis existiert nicht&lt;br&gt;Es wird erstellt</entry>
     <entry key="installer.target.error.missingprofile">Im Verzeichnis fehlt ein Launcher-Profil. Bitte starte zuerst den Minecraft Launcher</entry>
     <entry key="installer.fat.includemc">Minecraft jars inkludieren</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
-    <entry key="installer.fat.includemclibs">Include Minecraft libraries</entry>
-    <entry key="installer.fat.includemclibs.tooltip">Include the libraries used by Minecraft</entry>
-    <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
-    <entry key="installer.fat.includeinstallerlibs.tooltip">Include the libraries used by the installer</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Minecraft-Jars einfügen. &lt;br&gt; Die erstellte jar-Datei wird die Minecraft-Jars des Clients und Servers beinhalten, welche unter Alle Rechte vorbehalten lizenziert sind. &lt;br&gt; &lt;b&gt; Die Veröffentlichung des Fat-Installers ist illegal.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Die erstellte jar-Datei wird die Minecraft-Jars des Clients und Servers beinhalten, welche unter Alle Rechte vorbehalten lizenziert sind. Die Veröffentlichung des Fat-Installers ist illegal.</entry>
+    <entry key="installer.fat.includemclibs">Minecraft-Bibliotheken einfügen</entry>
+    <entry key="installer.fat.includemclibs.tooltip">Bibliotheken einfügen, die von Minecraft verwendet werden</entry>
+    <entry key="installer.fat.includeinstallerlibs">Installations-Bibliotheken einfügen</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">Bibliotheken einfügen, die vom Installationsprogramm verwendet werden</entry>
     <entry key="installer.fat.offline">Offline Installer</entry>
-    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Ein Installisierungsprogramm erstellen, welches ohne Internetverbindung funktioniert.&lt;br&gt; Das Offline-Installisierungsprogramm wird die Minecraft-Jars des Clients und Servers beinhalten, welche unter Alle Rechte vorbehalten lizenziert sind. &lt;br&gt; &lt;b&gt; Die Veröffentlichung des Offline-Installisierungsprogramms ist illegal.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
