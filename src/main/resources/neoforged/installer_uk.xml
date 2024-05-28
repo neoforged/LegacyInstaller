@@ -30,13 +30,13 @@
     <entry key="installer.target.error.directory.doesntexist.critical">Зазначена тека не існує</entry>
     <entry key="installer.target.error.directory.doesntexist.create">Зазначена тека не існує&lt;br&gt;Її буде створено</entry>
     <entry key="installer.target.error.missingprofile">В теці відсутній профіль лаунчеру. Спочатку запустіть Minecraft лаунчер</entry>
-    <entry key="installer.fat.includemc">Включати jar файли Minecraft</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Включити jar файли Minecraft. &lt;br&gt; Кінцевий jar файл буде включати сервер Minecraft і клієнтські jar файли, що ліцензовані як "Всі права захищені". &lt;br&gt; &lt;b&gt; Передача "товстого" встановлювача є незаконним.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">Кінцевий jar файл буде містити Minecraft сервер і клієнтські jar файли, що ліцензовані як "Всі права захищені". Передача "товстого" інсталятора є незаконним.</entry>
+    <entry key="installer.fat.includemc">Включати jar-файли Minecraft</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Включити jar-файли Minecraft. &lt;br&gt; Кінцевий jar-файл буде включати сервер Minecraft і клієнтські jar-файли, що ліцензовані як "Всі права захищені". &lt;br&gt; &lt;b&gt; Передача "товстого" встановлювача є незаконним.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Кінцевий jar-файл буде містити сервер Minecraft і клієнтські jar-файли, що ліцензовані як "Всі права захищені". Передача "товстого" інсталятора є незаконним.</entry>
     <entry key="installer.fat.includemclibs">Включити бібліотеки Minecraft</entry>
     <entry key="installer.fat.includemclibs.tooltip">Включити бібліотеки, які використовуються Minecraft</entry>
     <entry key="installer.fat.includeinstallerlibs">Включити бібліотеки встановлювача</entry>
     <entry key="installer.fat.includeinstallerlibs.tooltip">Включити бібліотеки, які використовуються встановлювачем</entry>
     <entry key="installer.fat.offline">Офлайн встановлювач</entry>
-    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Створити інсталятор, який може бути запущений без підключення до Інтернету.&lt;br&gt; Офлайн встановлювач буде включати сервер Minecraft і клієнтські jar файли, що ліцензовані як "Всі права захищені". &lt;br&gt; &lt;b&gt; Передача офлайн встановлювача є незаконним.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Створити встановлювач, який може бути запущений без підключення до Інтернету.&lt;br&gt; Офлайн встановлювач буде включати сервер Minecraft і клієнтські jar-файли, що ліцензовані як "Всі права захищені". &lt;br&gt; &lt;b&gt; Передача офлайн встановлювача є незаконним.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
