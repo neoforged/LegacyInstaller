@@ -15,8 +15,8 @@
     <entry key="installer.action.install.server.tooltip">Створити новий встановлювач сервера з модами</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Minecraft Сервер успішно завантажений та встановлено %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Minecraft Сервер успішно завантажений, завантажено %d бібліотек та встановлено %s</entry>
-    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
-    <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
+    <entry key="installer.action.install.server.starterjar">Jar-файл стартеру сервера</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Створити файл server.jar, що може бути використаний для запуску сервера як виконуваний файл, як альтернативу скриптів запуску</entry>
     <entry key="installer.action.install.fat.name">Створити "товстий" інсталятор</entry>
     <entry key="installer.action.install.fat.tooltip">Створити встановлювач, який збирає завантажені бібліотеки, для можливого використання в офлайн режимі</entry>
     <entry key="installer.action.install.fat.finished">Успішно створено "товстий" інсталятор для версії %s</entry>
