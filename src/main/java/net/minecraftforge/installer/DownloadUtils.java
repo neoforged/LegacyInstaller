@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 public class DownloadUtils {
     public static final String MANIFEST_URL = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
+    public static final String SERVER_STARTER_JAR = "https://github.com/NeoForged/serverstarterjar/releases/latest/download/server.jar";
 
     public static boolean OFFLINE_MODE = false;
 
