@@ -85,7 +85,7 @@ public class SimpleInstaller {
         OptionSpec<File> clientInstallOption = parser.acceptsAll(Arrays.asList("installClient", "install-client"), "Install a client to the specified directory, defaulting to the MC installation directory").withOptionalArg().ofType(File.class).defaultsTo(getMCDir());
         OptionSpec<File> serverInstallOption = parser.acceptsAll(Arrays.asList("installServer", "install-server"), "Install a server to the current directory").withOptionalArg().ofType(File.class).defaultsTo(new File("."));
 
-        OptionSpec<Void> serverStarterOption = parser.acceptsAll(Arrays.asList("server-start", "server.jar", "server-jar"), "Download the server starter jar for arg-free executable launches");
+        OptionSpec<Void> serverStarterOption = parser.acceptsAll(Arrays.asList("server-starter", "server.jar", "server-jar"), "Download the server starter jar for arg-free executable launches");
 
         OptionSpec<File> fatInstallerOption = parser.acceptsAll(Arrays.asList("fat-installer", "fat", "generate-fat"), "Generate a fat installer jar").withOptionalArg().ofType(File.class).defaultsTo(new File(installer.getParent(), installer.getName().replace(".jar", "-fat.jar")));
         OptionSpec<Void> fatIncludeMC = parser.acceptsAll(Arrays.asList("fat-include-minecraft"), "Include the Minecraft client / server jar in the fat installer").availableIf(fatInstallerOption);
