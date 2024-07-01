@@ -234,7 +234,7 @@ public class PostProcessors {
                 monitor.getStepProgress().setIndeterminate(true);
                 monitor.message("  Args: " + args.stream().map(a -> a.indexOf(' ') != -1 || a.indexOf(',') != -1 ? '"' + a + '"' : a).collect(Collectors.joining(", ")), MessagePriority.LOW);
 
-                ClassLoader cl = new URLClassLoader(classpath.toArray(new URL[classpath.size()]), getParentClassloader());
+                URLClassLoader cl = new URLClassLoader(classpath.toArray(new URL[classpath.size()]), getParentClassloader());
                 // Set the thread context classloader to be our newly constructed one so that service loaders work
                 Thread currentThread = Thread.currentThread();
                 ClassLoader threadClassloader = currentThread.getContextClassLoader();
@@ -261,6 +261,9 @@ public class PostProcessors {
                 } finally {
                     // Set back to the previous classloader
                     currentThread.setContextClassLoader(threadClassloader);
+
+                    // Close the CL and any resources it opened
+                    cl.close();
                 }
 
                 if (!outputs.isEmpty()) {
