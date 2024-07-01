@@ -15,6 +15,8 @@
     <entry key="installer.action.install.server.tooltip">Utwórz nową instancję serwera modowanego</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Pomyślnie pobrano serwer Minecraft i zainstalowano %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Pomyślnie pobrano serwer Minecraft, pobrano bibliotek %d i zainstalowano %s</entry>
+    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
     <entry key="installer.action.install.fat.name">Create fat installer</entry>
     <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
     <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
