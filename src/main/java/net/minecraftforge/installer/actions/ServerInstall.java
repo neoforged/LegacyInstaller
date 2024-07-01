@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+
+import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.json.Artifact;
 import net.minecraftforge.installer.json.InstallV1;
@@ -30,7 +32,9 @@ import net.minecraftforge.installer.json.Version.Download;
 import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ServerInstall extends Action {
-    private List<Artifact> grabbed = new ArrayList<>();
+    public static boolean serverStarterJar;
+
+    private final List<Artifact> grabbed = new ArrayList<>();
 
     public ServerInstall(InstallV1 profile, ProgressCallback monitor) {
         super(profile, monitor, false);
@@ -105,9 +109,11 @@ public class ServerInstall extends Action {
         if (!processors.process(librariesDir, serverTarget, target, installer))
             return false;
 
-        // TODO: Optionals
-        //if (!OptionalLibrary.saveModListJson(librariesDir, new File(target, "mods/mod_list.json"), VersionInfo.getOptionals(), optionals))
-        //    return false;
+        if (serverStarterJar) {
+            monitor.downloader(DownloadUtils.SERVER_STARTER_JAR)
+                    .localPath("serverstarter.jar")
+                    .download(new File(target, "server.jar"));
+        }
 
         return true;
     }

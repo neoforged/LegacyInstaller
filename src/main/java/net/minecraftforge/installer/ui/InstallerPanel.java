@@ -41,6 +41,7 @@ import net.minecraftforge.installer.actions.ActionCanceledException;
 import net.minecraftforge.installer.actions.Actions;
 import net.minecraftforge.installer.actions.FatInstallerAction;
 import net.minecraftforge.installer.actions.ProgressCallback;
+import net.minecraftforge.installer.actions.ServerInstall;
 import net.minecraftforge.installer.actions.TargetValidator;
 import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.OptionalLibrary;
@@ -63,8 +64,10 @@ public class InstallerPanel extends JPanel {
     private final AtomicReference<Actions> action = new AtomicReference<>(Actions.CLIENT);
     private JPanel fileEntryPanel;
     private JPanel fatInstallerOptionsPanel;
+    private JPanel serverOptionsPanel;
 
     private JCheckBox fatIncludeMC, fatIncludeMCLibs, fatIncludeInstallerLibs, fatOffline;
+    private JCheckBox serverStarterJar;
 
     private List<OptionalListEntry> optionals = new ArrayList<>();
     private Map<String, Function<ProgressCallback, Action>> actions = new HashMap<>();
@@ -221,8 +224,17 @@ public class InstallerPanel extends JPanel {
                         this.remove(fileEntryPanel);
                         this.add(fatInstallerOptionsPanel);
                     } else {
-                        this.add(fileEntryPanel);
+                        if (!Arrays.asList(this.getComponents()).contains(fileEntryPanel)) {
+                            this.add(fileEntryPanel);
+                        }
                         this.remove(fatInstallerOptionsPanel);
+                    }
+                });
+            } else if (action == Actions.SERVER) {
+                radioButton.addChangeListener(e -> {
+                    if (radioButton.isSelected() != serverStarterJar.isSelected()) {
+                        serverStarterJar.setVisible(radioButton.isSelected());
+                        revalidate();
                     }
                 });
             }
@@ -256,6 +268,14 @@ public class InstallerPanel extends JPanel {
         infoLabel.setForeground(Color.RED);
         infoLabel.setVisible(false);
 
+        serverOptionsPanel = centreAlignedPanel();
+        serverStarterJar = TRANSLATIONS.checkBox("installer.action.install.server.starterjar");
+        serverStarterJar.setMargin(new Insets(3, 0, 3, 0));
+        serverStarterJar.setVisible(false);
+        TRANSLATIONS.setTooltip(serverStarterJar, "installer.action.install.server.starterjar.tooltip");
+        serverOptionsPanel.add(serverStarterJar);
+        this.add(serverOptionsPanel);
+
         fileEntryPanel = new JPanel();
         fileEntryPanel.setLayout(new BoxLayout(fileEntryPanel, BoxLayout.Y_AXIS));
         fileEntryPanel.add(infoLabel);
@@ -265,10 +285,7 @@ public class InstallerPanel extends JPanel {
         fileEntryPanel.setAlignmentY(TOP_ALIGNMENT);
         this.add(fileEntryPanel);
 
-        fatInstallerOptionsPanel = new JPanel();
-        fatInstallerOptionsPanel.setLayout(new BoxLayout(fatInstallerOptionsPanel, BoxLayout.Y_AXIS));
-        fatInstallerOptionsPanel.setAlignmentX(CENTER_ALIGNMENT);
-        fatInstallerOptionsPanel.setAlignmentY(TOP_ALIGNMENT);
+        fatInstallerOptionsPanel = centreAlignedPanel();
 
         this.fatIncludeMC = TRANSLATIONS.checkBox("installer.fat.includemc");
         TRANSLATIONS.setTooltip(fatIncludeMC, "installer.fat.includemc.tooltip");
@@ -298,6 +315,14 @@ public class InstallerPanel extends JPanel {
         fatInstallerOptionsPanel.add(fatOffline);
 
         updateFilePath();
+    }
+
+    private JPanel centreAlignedPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(CENTER_ALIGNMENT);
+        panel.setAlignmentY(TOP_ALIGNMENT);
+        return panel;
     }
 
     private void updateFilePath() {
@@ -388,6 +413,8 @@ public class InstallerPanel extends JPanel {
                     FatInstallerAction.OPTIONS.add(FatInstallerAction.Options.INSTALLER_LIBS);
                 }
                 targetDir = new File(installer.getParent(), installer.getName().replace(".jar", "-fat.jar"));
+            } else if (action.get() == Actions.SERVER) {
+                ServerInstall.serverStarterJar = serverStarterJar.isSelected();
             }
 
             ProgressFrame prog = new ProgressFrame(monitor, Thread.currentThread()::interrupt, "installer.frame.installing", profile.getProfile(), profile.getVersion());

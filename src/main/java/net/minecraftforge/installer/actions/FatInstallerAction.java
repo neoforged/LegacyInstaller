@@ -86,6 +86,9 @@ public class FatInstallerAction extends Action {
                 }
                 if (OPTIONS.contains(Options.INSTALLER_LIBS)) {
                     libraries.addAll(Arrays.asList(processors.getLibraries()));
+
+                    monitor.stage("Downloading server starter jar");
+                    writeFromUrl(out, "serverstarter.jar", DownloadUtils.SERVER_STARTER_JAR);
                 }
 
                 Set<String> duplicates = new HashSet<>();
