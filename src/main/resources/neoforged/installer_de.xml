@@ -15,6 +15,8 @@
     <entry key="installer.action.install.server.tooltip">Erstelle eine neue modifizierte Serverinstallation</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Minecraft-Server erfolgreich heruntergeladen und %s installiert</entry>
     <entry key="installer.action.install.server.finished.withlibs">Minecraft-Server erfolgreich heruntergeladen, %d Bibliotheken heruntergeladen und %s installiert</entry>
+    <entry key="installer.action.install.server.starterjar">Serverstarter-jar</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Eine ausführbare server.jar-Datei erstellen, mit der der Server gestartet werden kann, als Alternative zu den Start-Skripten</entry>
     <entry key="installer.action.install.fat.name">Erstelle Fat Installer</entry>
     <entry key="installer.action.install.fat.tooltip">Erstelle einen Installer, der heruntergeladene Bibliotheken für die spätere Offline-Nutzung packt</entry>
     <entry key="installer.action.install.fat.finished">Erfolgreich einen Fat Installer für die Version %s angelegt</entry>

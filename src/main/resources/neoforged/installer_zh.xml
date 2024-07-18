@@ -15,6 +15,8 @@
     <entry key="installer.action.install.server.tooltip">建立一個新的模組伺服器安裝</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">已成功下載 Minecraft 伺服器並安裝 %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">已成功下載 Minecraft 伺服器和 %d 個函式庫並安裝 %s</entry>
+    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
     <entry key="installer.action.install.fat.name">Create fat installer</entry>
     <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
     <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
