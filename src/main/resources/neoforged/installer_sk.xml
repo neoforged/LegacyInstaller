@@ -15,7 +15,7 @@
     <entry key="installer.action.install.server.tooltip">Vytvoriť novú módovanú inštaláciu serveru</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Úspešne stiahnutý minecraft server a nainštalovaný %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Úspešne stiahnutý minecraft server, stiahnuté %d knižnice a nainštalované %s</entry>
-    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
+    <entry key="installer.action.install.server.starterjar">Jar súbor pre zapnutie serveru</entry>
     <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
     <entry key="installer.action.install.fat.name">Vytvoriť inštalátor pre „fat“</entry>
     <entry key="installer.action.install.fat.tooltip">Vytvoriť inštalátor ktorý uloží stiahnuté knižnice, pre neskoršie offline použitie</entry>
