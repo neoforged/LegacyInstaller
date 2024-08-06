@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="installer.welcome.version">Version : </entry>
-    <entry key="installer.welcome.offline">Offline mode</entry>
+    <entry key="installer.welcome.offline">Mode hors ligne</entry>
     <entry key="installer.welcome.target.tooltip">Chemin vers le répertoire d'installation de Minecraft</entry>
     <entry key="installer.welcome.dirselect.tooltip">Sélectionner un dossier Minecraft alternatif</entry>
     <entry key="installer.button.proceed">Continuer</entry>
@@ -15,9 +15,9 @@
     <entry key="installer.action.install.server.tooltip">Créer une nouvelle installation de serveur moddé</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Le serveur Minecraft %s a été téléchargé et installé avec succès</entry>
     <entry key="installer.action.install.server.finished.withlibs">Le serveur Minecraft %s a été téléchargé et installé avec succès. De plus, %d bibliothèques ont été installées</entry>
-    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
-    <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
-    <entry key="installer.action.install.fat.name">Create fat installer</entry>
+    <entry key="installer.action.install.server.starterjar">Jar de démarrage du serveur</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Générer un fichier server.jar qui peut être utilisé pour lancer le serveur avec un exécutable, comme alternative aux scripts de démarrage</entry>
+    <entry key="installer.action.install.fat.name">Créer un gros installeur</entry>
     <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
     <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
     <entry key="installer.action.extract.name">Extraire</entry>
