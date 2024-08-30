@@ -39,6 +39,6 @@
     <entry key="installer.fat.includemclibs.tooltip">Include the libraries used by Minecraft</entry>
     <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
     <entry key="installer.fat.includeinstallerlibs.tooltip">Include the libraries used by the installer</entry>
-    <entry key="installer.fat.offline">Offline installer</entry>
+    <entry key="installer.fat.offline">離綫安裝</entry>
     <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
