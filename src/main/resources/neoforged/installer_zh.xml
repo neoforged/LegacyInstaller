@@ -35,10 +35,10 @@
     <entry key="installer.fat.includemc">包含 Minecraft 的 jar 檔案</entry>
     <entry key="installer.fat.includemc.tooltip">&lt;html&gt;包含 Minecraft 的 jar 檔案。&lt;br&gt; 輸出的 jar 檔案會包含 Minecraft 的伺服器及客戶端檔案，所有權利皆被保留。&lt;br&gt; &lt;b&gt; 重新分發離線安裝程式式違法的！&lt;/b&gt;&lt;/html&gt;</entry>
     <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
-    <entry key="installer.fat.includemclibs">Include Minecraft libraries</entry>
-    <entry key="installer.fat.includemclibs.tooltip">Include the libraries used by Minecraft</entry>
-    <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
-    <entry key="installer.fat.includeinstallerlibs.tooltip">Include the libraries used by the installer</entry>
+    <entry key="installer.fat.includemclibs">包含 Minecraft 程式庫</entry>
+    <entry key="installer.fat.includemclibs.tooltip">包含 Minecraft 所使用的程式庫</entry>
+    <entry key="installer.fat.includeinstallerlibs">包含安裝器程式庫</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">包含安裝器所使用的程式庫</entry>
     <entry key="installer.fat.offline">離綫安裝</entry>
     <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
