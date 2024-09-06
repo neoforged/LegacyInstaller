@@ -40,5 +40,5 @@
     <entry key="installer.fat.includeinstallerlibs">包含安裝器程式庫</entry>
     <entry key="installer.fat.includeinstallerlibs.tooltip">包含安裝器所使用的程式庫</entry>
     <entry key="installer.fat.offline">離綫安裝</entry>
-    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;建立一個可以在離線狀態下執行的安裝程式。&lt;br&gt;這個離線安裝程式會包含 Minecraft 伺服器和用戶端 jar 檔，它們的授權方式皆為「版權所有」。&lt;br&gt;&lt;b&gt;二次轉發離線安裝程式是違法的。&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
