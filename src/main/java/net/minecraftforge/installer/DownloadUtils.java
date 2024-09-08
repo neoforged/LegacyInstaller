@@ -15,15 +15,6 @@
  */
 package net.minecraftforge.installer;
 
-import net.minecraftforge.installer.actions.ProgressCallback;
-import net.minecraftforge.installer.json.Artifact;
-import net.minecraftforge.installer.json.Manifest;
-import net.minecraftforge.installer.json.Mirror;
-import net.minecraftforge.installer.json.Util;
-import net.minecraftforge.installer.json.Version.Library;
-import net.minecraftforge.installer.json.Version.LibraryDownload;
-
-import javax.net.ssl.SSLHandshakeException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +31,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.net.ssl.SSLHandshakeException;
+import net.minecraftforge.installer.actions.ProgressCallback;
+import net.minecraftforge.installer.json.Artifact;
+import net.minecraftforge.installer.json.Manifest;
+import net.minecraftforge.installer.json.Mirror;
+import net.minecraftforge.installer.json.Util;
+import net.minecraftforge.installer.json.Version.Library;
+import net.minecraftforge.installer.json.Version.LibraryDownload;
 
 public class DownloadUtils {
     public static final String MANIFEST_URL = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";

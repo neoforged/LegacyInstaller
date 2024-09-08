@@ -15,10 +15,6 @@
  */
 package net.minecraftforge.installer;
 
-import net.minecraftforge.installer.actions.ProgressCallback;
-import org.jetbrains.annotations.CheckReturnValue;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,6 +29,9 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.minecraftforge.installer.actions.ProgressCallback;
+import org.jetbrains.annotations.CheckReturnValue;
+import org.jetbrains.annotations.Nullable;
 
 @CheckReturnValue
 public class Downloader {

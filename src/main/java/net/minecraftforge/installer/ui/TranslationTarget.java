@@ -15,11 +15,13 @@
  */
 package net.minecraftforge.installer.ui;
 
-import java.awt.*;
+import java.awt.Component;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public final class TranslationTarget<J extends Component> {
