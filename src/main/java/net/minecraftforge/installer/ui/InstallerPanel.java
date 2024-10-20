@@ -408,7 +408,7 @@ public class InstallerPanel extends JPanel {
 
         dialog = optionPane.createDialog("");
         TRANSLATIONS.translate(dialog, new TranslationTarget<>(Dialog::setTitle), "installer.window.title", profile.getProfile());
-        dialog.setIconImages(Images.getWindowIcons());
+        dialog.setIconImages(Images.getWindowIcons(profile.getIcon()));
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
         int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);

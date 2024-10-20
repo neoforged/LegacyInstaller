@@ -20,7 +20,10 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import net.minecraftforge.installer.SimpleInstaller;
@@ -28,7 +31,12 @@ import net.minecraftforge.installer.SimpleInstaller;
 final class Images {
     private Images() {}
 
-    static List<Image> getWindowIcons() {
+    static List<Image> getWindowIcons(String legacyBase64Icon) {
+        if (legacyBase64Icon != null) {
+            try {
+                return Collections.singletonList(ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(legacyBase64Icon))));
+            } catch (UnsupportedEncodingException | IOException e) {}
+        }
         List<Image> result = new ArrayList<>();
         result.add(getImage("/icons/neoforged_background_16x16.png"));
         result.add(getImage("/icons/neoforged_background_32x32.png"));
