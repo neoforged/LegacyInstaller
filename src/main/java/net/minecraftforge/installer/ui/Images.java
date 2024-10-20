@@ -35,7 +35,7 @@ final class Images {
         if (legacyBase64Icon != null) {
             try {
                 return Collections.singletonList(ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(legacyBase64Icon))));
-            } catch (UnsupportedEncodingException | IOException e) {}
+            } catch (UnsupportedEncodingException | IOException ignored) {} // Use the defaults
         }
         List<Image> result = new ArrayList<>();
         result.add(getImage("/icons/neoforged_background_16x16.png"));
