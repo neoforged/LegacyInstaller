@@ -28,6 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import net.minecraftforge.installer.actions.ProgressCallback;
+import net.minecraftforge.installer.json.Install;
 
 public class ProgressFrame extends JFrame implements ProgressCallback {
     private static final long serialVersionUID = 1L;
@@ -43,7 +44,7 @@ public class ProgressFrame extends JFrame implements ProgressCallback {
     private final ProgressBar stepProgressController;
     private final JTextArea consoleArea;
 
-    public ProgressFrame(ProgressCallback parent, Runnable canceler, String titleKey, InstallV1 profile) {
+    public ProgressFrame(ProgressCallback parent, Runnable canceler, String titleKey, Install profile) {
         int gridY = 0;
 
         this.parent = parent;
