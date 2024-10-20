@@ -438,7 +438,7 @@ public class InstallerPanel extends JPanel {
                 ServerInstall.serverStarterJar = serverStarterJar.isSelected();
             }
 
-            ProgressFrame prog = new ProgressFrame(monitor, Thread.currentThread()::interrupt, "installer.frame.installing", profile.getProfile(), profile.getVersion());
+            ProgressFrame prog = new ProgressFrame(monitor, Thread.currentThread()::interrupt, "installer.frame.installing", profile);
             SimpleInstaller.hookStdOut(prog);
             Predicate<String> optPred = input -> {
                 Optional<OptionalListEntry> ent = this.optionals.stream().filter(e -> e.lib.getArtifact().equals(input)).findFirst();
