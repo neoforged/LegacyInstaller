@@ -15,8 +15,8 @@
     <entry key="installer.action.install.server.tooltip">새로운 모드 서버를 생성합니다</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">성공적으로 %s 서버를 설치했습니다</entry>
     <entry key="installer.action.install.server.finished.withlibs">성공적으로 %2$s 서버와 필수 라이브러리 %1$d개를 설치했습니다</entry>
-    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
-    <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
+    <entry key="installer.action.install.server.starterjar">서버 구동 jar 파일 생성</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">실행 스크립트를 대신하여 서버를 실행 파일로 실행시킬 수 있는 server.jar 파일을 생성합니다</entry>
     <entry key="installer.action.install.fat.name">오프라인 설치기 만들기</entry>
     <entry key="installer.action.install.fat.tooltip">설치에 필요한 모든 라이브러리들을 미리 포함하여 인터넷 없이도 사용 가능한 설치기를 만듭니다</entry>
     <entry key="installer.action.install.fat.finished">성공적으로 %s 오프라인 설치기를 생성했습니다</entry>

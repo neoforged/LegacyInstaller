@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <entry key="installer.welcome.version">Wersja: </entry>
-    <entry key="installer.welcome.offline">Offline mode</entry>
+    <entry key="installer.welcome.offline">Tryb offline</entry>
     <entry key="installer.welcome.target.tooltip">Ścieżka do katalogu instalacyjnego Minecraft</entry>
     <entry key="installer.welcome.dirselect.tooltip">Wybierz alternatywny katalog Minecraft</entry>
     <entry key="installer.button.proceed">Kontynuuj</entry>
@@ -15,11 +15,11 @@
     <entry key="installer.action.install.server.tooltip">Utwórz nową instancję serwera modowanego</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Pomyślnie pobrano serwer Minecraft i zainstalowano %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Pomyślnie pobrano serwer Minecraft, pobrano bibliotek %d i zainstalowano %s</entry>
-    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
-    <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
-    <entry key="installer.action.install.fat.name">Create fat installer</entry>
-    <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
-    <entry key="installer.action.install.fat.finished">Successfully created fat installer for version %s</entry>
+    <entry key="installer.action.install.server.starterjar">Plik startowy serwera jar</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Wygeneruj plik server.jar który może zostać użyty do uruchamiania serwera jako plik wykonywalny, jako alternatywa do skryptów uruchamiania</entry>
+    <entry key="installer.action.install.fat.name">Stwórz gruby instalator</entry>
+    <entry key="installer.action.install.fat.tooltip">Utwórz instalatora, który zapakuje pobrane pliki bibliotek, dla ewentualnego użytku offline</entry>
+    <entry key="installer.action.install.fat.finished">Pomyślnie utworzono gruby instalator dla wersji %s</entry>
     <entry key="installer.action.extract.name">Rozpakuj</entry>
     <entry key="installer.action.extract.tooltip">Rozpakuj plik jar</entry>
     <entry key="installer.action.extract.finished">Rozpakowywanie przeszło pomyślnie</entry>
@@ -32,13 +32,13 @@
     <entry key="installer.target.error.directory.doesntexist.critical">Podany katalog nie istnieje</entry>
     <entry key="installer.target.error.directory.doesntexist.create">Podany katalog nie istnieje&lt;br&gt;Zostanie utworzony</entry>
     <entry key="installer.target.error.missingprofile">W katalogu brakuje profilu launchera. Uruchom najpierw launcher Minecraft</entry>
-    <entry key="installer.fat.includemc">Include Minecraft jars</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
-    <entry key="installer.fat.includemclibs">Include Minecraft libraries</entry>
-    <entry key="installer.fat.includemclibs.tooltip">Include the libraries used by Minecraft</entry>
-    <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
-    <entry key="installer.fat.includeinstallerlibs.tooltip">Include the libraries used by the installer</entry>
-    <entry key="installer.fat.offline">Offline installer</entry>
-    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc">Dołącz pliki Minecraft jar</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Dołącz pliki jar Minecrafta. &lt;br&gt; Wyjściowy plik jar będzie zawierał pliki serwera Minecraft i klienta, które są licencjonowane jako wszystkie prawa zastrzeżone. &lt;br&gt; &lt;b&gt; Redystrybucja grubego instalatora jest nielegalna.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Wyjściowy plik jar będzie zawierał serwer Minecraft i pliki jar klienta, które są licencjonowane jako wszystkie prawa zastrzeżone. Redystrybucja grubego instalatora jest nielegalna.</entry>
+    <entry key="installer.fat.includemclibs">Dołącz biblioteki Minecrafta</entry>
+    <entry key="installer.fat.includemclibs.tooltip">Dołącz biblioteki używane przez Minecrafta</entry>
+    <entry key="installer.fat.includeinstallerlibs">Dołącz biblioteki instalatora</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">Dołącz biblioteki używane przez instalator</entry>
+    <entry key="installer.fat.offline">Instalator Offline</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Utwórz instalator, który może być uruchomiony bez połączenia internetem.&lt;br&gt; Instalator offline będzie zawierał pliki jar serwera Minecraft i klienta, które są licencjonowane jako Wszelkie prawa zastrzeżone. &lt;br&gt; &lt;b&gt; Redystrybucja instalatora offline jest nielegalna.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
