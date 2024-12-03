@@ -13,7 +13,7 @@
     <entry key="installer.action.install.client.finished.withlibs">Perfil de cliente %s para versão %s foi instalada no launcher com sucesso, sendo baixada/s %d livraria/s</entry>
     <entry key="installer.action.install.server.name">Instalar servidor</entry>
     <entry key="installer.action.install.server.tooltip">Criar uma instalação de servidor modificada</entry>
-    <entry key="installer.action.install.server.finished.withoutlibs">Successfully downloaded minecraft server and installed %s</entry>
+    <entry key="installer.action.install.server.finished.withoutlibs">Servidor de minecraft baixado com sucesso e instalado %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Successfully downloaded minecraft server, downloaded %d libraries and installed %s</entry>
     <entry key="installer.action.install.server.starterjar">jar Iniciador do Server</entry>
     <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
@@ -32,13 +32,13 @@
     <entry key="installer.target.error.directory.doesntexist.critical">The specified directory does not exist</entry>
     <entry key="installer.target.error.directory.doesntexist.create">The specified directory does not exist&lt;br&gt;It will be created</entry>
     <entry key="installer.target.error.missingprofile">The directory is missing a launcher profile. Please run the Minecraft launcher first</entry>
-    <entry key="installer.fat.includemc">Include Minecraft jars</entry>
+    <entry key="installer.fat.includemc">Incluir .jars do Minecraft</entry>
     <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Include the Minecraft jars. &lt;br&gt; The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the fat installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
     <entry key="installer.fat.includemc.warning">The output jar will include the Minecraft server and client jars, which are licensed as All Rights Reserved. Redistribution of the fat installer is illegal.</entry>
     <entry key="installer.fat.includemclibs">Incluir livrarias Minecraft</entry>
     <entry key="installer.fat.includemclibs.tooltip">Incluir as livrarias usadas por Minecraft</entry>
-    <entry key="installer.fat.includeinstallerlibs">Include installer libraries</entry>
-    <entry key="installer.fat.includeinstallerlibs.tooltip">Include the libraries used by the installer</entry>
-    <entry key="installer.fat.offline">Offline installer</entry>
+    <entry key="installer.fat.includeinstallerlibs">Incluir livrarias do instalador</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">Incluir livrarias usadas pelo instalador</entry>
+    <entry key="installer.fat.offline">Instalador offline</entry>
     <entry key="installer.fat.offline.tooltip">&lt;html&gt;Create an installer that can be run without an internet connection.&lt;br&gt; The offline installer will include the Minecraft server and client jars, which are licensed as All Rights Reserved. &lt;br&gt; &lt;b&gt; Redistribution of the offline installer is illegal.&lt;/b&gt;&lt;/html&gt;</entry>
 </properties>
