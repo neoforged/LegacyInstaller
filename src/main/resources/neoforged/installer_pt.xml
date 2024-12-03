@@ -5,10 +5,10 @@
     <entry key="installer.welcome.offline">Modo offline</entry>
     <entry key="installer.welcome.target.tooltip">Path to the Minecraft installation directory</entry>
     <entry key="installer.welcome.dirselect.tooltip">Select an alternative Minecraft directory</entry>
-    <entry key="installer.button.proceed">Proceed</entry>
-    <entry key="installer.button.cancel">Cancel</entry>
-    <entry key="installer.action.install.client.name">Install client</entry>
-    <entry key="installer.action.install.client.tooltip">Install a new profile to the Mojang client launcher</entry>
+    <entry key="installer.button.proceed">Continuar</entry>
+    <entry key="installer.button.cancel">Cancelar</entry>
+    <entry key="installer.action.install.client.name">Instalar client</entry>
+    <entry key="installer.action.install.client.tooltip">Instalar um perfil novo no lancher de client da Mojang</entry>
     <entry key="installer.action.install.client.finished.withoutlibs">Successfully installed client profile %s for version %s into launcher</entry>
     <entry key="installer.action.install.client.finished.withlibs">Successfully installed client profile %s for version %s into launcher, and downloaded %d libraries</entry>
     <entry key="installer.action.install.server.name">Install server</entry>
