@@ -15,6 +15,7 @@
  */
 package net.minecraftforge.installer;
 
+import java.awt.GraphicsEnvironment;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -153,6 +154,13 @@ public class SimpleInstaller {
             if (optionSet.has(fatIncludeInstallerLibs) || optionSet.has(fatOffline)) {
                 FatInstallerAction.OPTIONS.add(FatInstallerAction.Options.INSTALLER_LIBS);
             }
+        }
+
+        if (action == null && GraphicsEnvironment.isHeadless()) {
+            monitor.message("No action was specified but headless environment was detected... Installing server");
+            action = Actions.SERVER;
+            target = optionSet.valueOf(serverInstallOption);
+            ServerInstall.serverStarterJar = true;
         }
 
         if (action != null) {

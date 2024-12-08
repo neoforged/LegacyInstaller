@@ -84,7 +84,7 @@ dependencies {
 	testImplementation(platform('org.junit:junit-bom:5.7.2'))
 	testImplementation('org.junit.jupiter:junit-jupiter')
     compileOnly 'org.jetbrains:annotations:24.1.0'
-    testInstallerData 'net.neoforged:neoforge:20.4.76-beta:installer'
+    testInstallerData 'net.neoforged:neoforge:21.4.10-beta:installer'
 }
 
 test {
