@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-    <entry key="installer.welcome.version">Version: </entry>
-    <entry key="installer.welcome.offline">Offline mode</entry>
-    <entry key="installer.welcome.target.tooltip">Path to the Minecraft installation directory</entry>
-    <entry key="installer.welcome.dirselect.tooltip">Select an alternative Minecraft directory</entry>
-    <entry key="installer.button.proceed">Proceed</entry>
-    <entry key="installer.button.cancel">Cancel</entry>
-    <entry key="installer.action.install.client.name">Install client</entry>
-    <entry key="installer.action.install.client.tooltip">Install a new profile to the Mojang client launcher</entry>
-    <entry key="installer.action.install.client.finished.withoutlibs">Successfully installed client profile %s for version %s into launcher</entry>
-    <entry key="installer.action.install.client.finished.withlibs">Successfully installed client profile %s for version %s into launcher, and downloaded %d libraries</entry>
-    <entry key="installer.action.install.server.name">Install server</entry>
-    <entry key="installer.action.install.server.tooltip">Create a new modded server installation</entry>
-    <entry key="installer.action.install.server.finished.withoutlibs">Successfully downloaded minecraft server and installed %s</entry>
+    <entry key="installer.welcome.version">Phiên bản: </entry>
+    <entry key="installer.welcome.offline">Chế độ ngoại tuyến </entry>
+    <entry key="installer.welcome.target.tooltip">Đường dẫn đến thư mục cài đặt Minecraft</entry>
+    <entry key="installer.welcome.dirselect.tooltip">Chọn một thư mục Minecraft thay thế</entry>
+    <entry key="installer.button.proceed">Tiếp tục</entry>
+    <entry key="installer.button.cancel">Hủy bỏ</entry>
+    <entry key="installer.action.install.client.name">Cài đặt trên máy khách</entry>
+    <entry key="installer.action.install.client.tooltip">Cài đặt một hồ sơ mới vào trình khởi chạy của Mojang</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">Thành công cài đặt hồ sơ %s cho phiên bản %s vào trình khởi chạy</entry>
+    <entry key="installer.action.install.client.finished.withlibs">Thành công cài đặt hồ sơ %s cho phiên bản %s vào trình khởi chạy và đã tải %d thư viện</entry>
+    <entry key="installer.action.install.server.name">Cài máy chủ</entry>
+    <entry key="installer.action.install.server.tooltip">Tạo một cài đặt máy chủ đã bị chỉnh sửa mới</entry>
+    <entry key="installer.action.install.server.finished.withoutlibs">Thành công tải máy chủ minecraft và cài đặt %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Successfully downloaded minecraft server, downloaded %d libraries and installed %s</entry>
     <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
     <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
