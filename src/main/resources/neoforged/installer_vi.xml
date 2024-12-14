@@ -14,8 +14,8 @@
     <entry key="installer.action.install.server.name">Cài máy chủ</entry>
     <entry key="installer.action.install.server.tooltip">Tạo một cài đặt máy chủ đã bị chỉnh sửa mới</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Thành công tải máy chủ minecraft và cài đặt %s</entry>
-    <entry key="installer.action.install.server.finished.withlibs">Successfully downloaded minecraft server, downloaded %d libraries and installed %s</entry>
-    <entry key="installer.action.install.server.starterjar">Server starter jar</entry>
+    <entry key="installer.action.install.server.finished.withlibs">Thành công tải máy chủ minecràt, tải %d thư viện và cài đặt %s</entry>
+    <entry key="installer.action.install.server.starterjar">Máy chủ khởi động jar</entry>
     <entry key="installer.action.install.server.starterjar.tooltip">Generate a server.jar file that can be used to launch the server as an executable, as an alternative to the launch scripts</entry>
     <entry key="installer.action.install.fat.name">Create fat installer</entry>
     <entry key="installer.action.install.fat.tooltip">Create an installer that packs downloaded libs, for eventual offline use</entry>
