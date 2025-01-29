@@ -12,7 +12,7 @@
     <entry key="installer.action.install.client.finished.withoutlibs">Профіль клієнта %s для версії %s успішно встановлено у запускач</entry>
     <entry key="installer.action.install.client.finished.withlibs">Профіль клієнта %s для версії %s успішно встановлено у запускач і встановлено бібліотеки (%d)</entry>
     <entry key="installer.action.install.server.name">Установити сервер</entry>
-    <entry key="installer.action.install.server.tooltip">Створити новий встановлювач сервера з модами</entry>
+    <entry key="installer.action.install.server.tooltip">Створити нове модифіковане встановлення сервера</entry>
     <entry key="installer.action.install.server.finished.withoutlibs">Сервер Minecraft успішно завантажено та встановлено %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Сервер Minecraft успішно завантажено, завантажено бібліотеки (%d) та встановлено %s</entry>
     <entry key="installer.action.install.server.starterjar">Jar-файл стартеру сервера</entry>
