@@ -16,10 +16,10 @@
     <entry key="installer.action.install.server.finished.withoutlibs">Успешно скачан сервер minecraft и установлен %s</entry>
     <entry key="installer.action.install.server.finished.withlibs">Успешно скачан сервер minecraft, загружено %d библиотек и установлен %s</entry>
     <entry key="installer.action.install.server.starterjar">Файл JAR для запуска сервера</entry>
-    <entry key="installer.action.install.server.starterjar.tooltip">Сгенерировать файл server.jar, который может быть использован для запуска сервера как исполняемого файла в качестве альтернативы скриптам запуска</entry>
-    <entry key="installer.action.install.fat.name">Создать "толстый" установщик</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Сгенерировать файл server.jar, который позволит запускать сервер как самостоятельное приложение вместо использования скриптов запуска</entry>
+    <entry key="installer.action.install.fat.name">Создать самодостаточный установщик</entry>
     <entry key="installer.action.install.fat.tooltip">Создать установщик, который собирает скачанные библиотеки, для возможного использования в офлайн режиме</entry>
-    <entry key="installer.action.install.fat.finished">Успешно создан "толстый" установщик для версии %s</entry>
+    <entry key="installer.action.install.fat.finished">Самодостаточный установщик для версии %s успешно создан</entry>
     <entry key="installer.action.extract.name">Извлечь</entry>
     <entry key="installer.action.extract.tooltip">Извлечь содержащийся jar файл</entry>
     <entry key="installer.action.extract.finished">Успешно извлечено</entry>
@@ -33,8 +33,8 @@
     <entry key="installer.target.error.directory.doesntexist.create">Указанная директория не существует&lt;br&gt;Она будет создана</entry>
     <entry key="installer.target.error.missingprofile">В директории отсутствует профиль. Пожалуйста, сначала запустите лаунчер Minecraft</entry>
     <entry key="installer.fat.includemc">Включать jar файлы Minecraft</entry>
-    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Включить JAR-файлы Minecraft. &lt;br&gt; Итоговый JAR-файл будет содержать серверные и клиентские JAR-файлы Minecraft, которые защищены лицензией All Rights Reserved. &lt;br&gt; &lt;b&gt; Распространение полных установщиков незаконно.&lt;/b&gt;&lt;/html&gt;</entry>
-    <entry key="installer.fat.includemc.warning">Полученный JAR-файл будет включать серверные и клиентские JAR-файлы Minecraft, которые имеют лицензию «Все права защищены». Распространение такого файла будет считаться незаконным.</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Включить JAR-файлы Minecraft. &lt;br&gt; Итоговый файл JAR будет включать серверные и клиентские JAR-файлы Minecraft, которые имеют лицензию «Все права защищены». &lt;br&gt; &lt;b&gt; Распространение такого установщика будет считаться незаконным.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Итоговый файл JAR будет включать серверные и клиентские JAR-файлы Minecraft, которые имеют лицензию «Все права защищены». Распространение такого установщика будет считаться незаконным.</entry>
     <entry key="installer.fat.includemclibs">Включать библиотеки Minecraft</entry>
     <entry key="installer.fat.includemclibs.tooltip">Включать библиотеки, используемые Minecraft</entry>
     <entry key="installer.fat.includeinstallerlibs">Включать программы установщика</entry>
