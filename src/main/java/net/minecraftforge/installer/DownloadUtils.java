@@ -34,15 +34,20 @@ import java.util.stream.Collectors;
 import javax.net.ssl.SSLHandshakeException;
 import net.minecraftforge.installer.actions.ProgressCallback;
 import net.minecraftforge.installer.json.Artifact;
+import net.minecraftforge.installer.json.InstallV1;
 import net.minecraftforge.installer.json.Manifest;
 import net.minecraftforge.installer.json.Mirror;
 import net.minecraftforge.installer.json.Util;
 import net.minecraftforge.installer.json.Version.Library;
 import net.minecraftforge.installer.json.Version.LibraryDownload;
+import org.jetbrains.annotations.Nullable;
 
 public class DownloadUtils {
     public static final String MANIFEST_URL = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
     public static final String SERVER_STARTER_JAR = "https://github.com/NeoForged/serverstarterjar/releases/latest/download/server.jar";
+
+    @Nullable
+    public static String userAgent;
 
     public static boolean OFFLINE_MODE = false;
 
@@ -118,6 +123,7 @@ public class DownloadUtils {
                 connection.setReadTimeout(5000);
                 if (connection instanceof HttpURLConnection) {
                     HttpURLConnection hcon = (HttpURLConnection) connection;
+                    hcon.setRequestProperty("User-Agent", getUserAgent());
                     hcon.setInstanceFollowRedirects(false);
                     int res = hcon.getResponseCode();
                     if (res == HttpURLConnection.HTTP_MOVED_PERM || res == HttpURLConnection.HTTP_MOVED_TEMP) {
@@ -148,6 +154,25 @@ public class DownloadUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private static String getUserAgent() {
+        if (userAgent == null) {
+            userAgent = "NeoForged LegacyInstaller";
+
+            String installerVersion = SimpleInstaller.class.getPackage().getImplementationVersion();
+            if (installerVersion != null) {
+                userAgent += " (" + installerVersion + ")";
+            }
+
+            try {
+                InstallV1 profile = Util.loadInstallProfile();
+                userAgent += " / " + profile.getVersion();
+            } catch (Exception ignored) {
+
+            }
+        }
+        return userAgent;
     }
 
     public static List<String> getIps(String host) {
