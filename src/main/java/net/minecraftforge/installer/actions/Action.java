@@ -18,7 +18,9 @@ package net.minecraftforge.installer.actions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import javax.swing.JOptionPane;
 import net.minecraftforge.installer.DownloadUtils;
@@ -61,7 +63,13 @@ public abstract class Action {
         return profile.getMirror() != null && profile.getMirror().isAdvertised() ? String.format(SimpleInstaller.headless ? "Data kindly mirrored by %2$s at %1$s" : "<html><a href=\'%s\'>Data kindly mirrored by %s</a></html>", profile.getMirror().getHomepage(), profile.getMirror().getName()) : null;
     }
 
-    protected boolean downloadLibraries(File librariesDir, Predicate<String> optionals, List<File> additionalLibDirs) throws ActionCanceledException {
+    public enum LibraryCategory {
+        VANILLA,
+        NEOFORGE,
+        INSTALLER
+    }
+
+    protected boolean downloadLibraries(File librariesDir, Predicate<String> optionals, List<File> additionalLibDirs, Set<LibraryCategory> categories) throws ActionCanceledException {
         monitor.start("Downloading libraries");
         String userHome = System.getProperty("user.home");
         if (userHome != null && !userHome.isEmpty()) {
@@ -73,8 +81,18 @@ public abstract class Action {
         monitor.message(String.format("Found %d additional library directories", additionalLibDirs.size()));
 
         List<Library> libraries = new ArrayList<>();
-        libraries.addAll(Arrays.asList(version.getLibraries()));
-        libraries.addAll(Arrays.asList(processors.getLibraries()));
+        if (categories.contains(LibraryCategory.VANILLA)) {
+            libraries.addAll(Arrays.asList(version.getLibraries()));
+        }
+        if (categories.contains(LibraryCategory.NEOFORGE)) {
+            libraries.addAll(Arrays.asList(profile.getLibraries()));
+        }
+        if (categories.contains(LibraryCategory.INSTALLER)) {
+            libraries.addAll(Arrays.asList(processors.getLibraries()));
+        }
+
+        Set<String> duplicates = new HashSet<>();
+        libraries.removeIf(library -> !duplicates.add(library.getDownloads() == null ? null : library.getDownloads().getArtifact().getPath()));
 
         StringBuilder output = new StringBuilder();
         monitor.getStepProgress().setMaxProgress(libraries.size());
@@ -100,10 +118,6 @@ public abstract class Action {
 
     protected int downloadedCount() {
         return grabbed.size();
-    }
-
-    protected int getTaskCount() {
-        return profile.getLibraries().length + processors.getTaskCount();
     }
 
     protected void checkCancel() throws ActionCanceledException {

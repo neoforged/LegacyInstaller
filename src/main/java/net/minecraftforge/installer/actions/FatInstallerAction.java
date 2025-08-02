@@ -85,6 +85,7 @@ public class FatInstallerAction extends Action {
                     libraries.addAll(Arrays.asList(version.getLibraries()));
                 }
                 if (OPTIONS.contains(Options.INSTALLER_LIBS)) {
+                    libraries.addAll(Arrays.asList(profile.getLibraries()));
                     libraries.addAll(Arrays.asList(processors.getLibraries()));
 
                     monitor.stage("Downloading server starter jar");

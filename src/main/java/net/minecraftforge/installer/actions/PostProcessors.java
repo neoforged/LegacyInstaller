@@ -26,10 +26,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.stream.Collectors;
@@ -48,28 +51,30 @@ public class PostProcessors {
     private final InstallV1 profile;
     private final boolean isClient;
     private final ProgressCallback monitor;
-    private final boolean hasTasks;
     private final Map<String, String> data;
     private final List<Processor> processors;
+    private final Library[] libraries;
 
     public PostProcessors(InstallV1 profile, boolean isClient, ProgressCallback monitor) {
         this.profile = profile;
         this.isClient = isClient;
         this.monitor = monitor;
         this.processors = profile.getProcessors(isClient ? "client" : "server");
-        this.hasTasks = !this.processors.isEmpty();
         this.data = profile.getData(isClient);
+
+        // Filter the list of libraries by the classpath requirements of the processors
+        Set<Artifact> requiredClasspath = new HashSet<>(processors.size()); // Likely an under-estimate
+        for (Processor processor : processors) {
+            Collections.addAll(requiredClasspath, processor.getClasspath());
+        }
+
+        this.libraries = Arrays.stream(profile.getLibraries())
+                .filter(l -> requiredClasspath.contains(l.getName()))
+                .toArray(Library[]::new);
     }
 
     public Library[] getLibraries() {
-        return hasTasks ? profile.getLibraries() : new Library[0];
-    }
-
-    public int getTaskCount() {
-        return hasTasks ? 0
-                : profile.getLibraries().length +
-                        processors.size() +
-                        profile.getData(isClient).size();
+        return libraries;
     }
 
     public boolean process(File librariesDir, File minecraft, File root, File installer) {

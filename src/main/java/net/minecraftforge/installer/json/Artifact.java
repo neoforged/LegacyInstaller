@@ -25,6 +25,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.io.File;
 import java.lang.reflect.Type;
+import java.util.Objects;
 
 public class Artifact {
     //Descriptor parts: group:name:version[:classifier][@extension]
@@ -101,6 +102,22 @@ public class Artifact {
 
     public String getFilename() {
         return file;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Artifact artifact = (Artifact) o;
+        return Objects.equals(domain, artifact.domain) &&
+                Objects.equals(name, artifact.name) &&
+                Objects.equals(version, artifact.version) &&
+                Objects.equals(classifier, artifact.classifier) &&
+                Objects.equals(ext, artifact.ext);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(domain, name, version, classifier, ext);
     }
 
     @Override

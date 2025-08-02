@@ -17,6 +17,7 @@ package net.minecraftforge.installer.actions;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +104,8 @@ public class ServerInstall extends Action {
         if (mcLibDir.exists()) {
             libDirs.add(mcLibDir);
         }
-        if (!downloadLibraries(librariesDir, optionals, libDirs))
+        // Don't download Vanilla libraries since they're already bundled in the server fatjar we'll extract anyway
+        if (!downloadLibraries(librariesDir, optionals, libDirs, EnumSet.of(LibraryCategory.NEOFORGE, LibraryCategory.INSTALLER)))
             return false;
 
         checkCancel();

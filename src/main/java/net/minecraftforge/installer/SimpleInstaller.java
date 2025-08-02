@@ -96,8 +96,10 @@ public class SimpleInstaller {
         OptionSpec<Void> fatIncludeInstallerLibs = parser.acceptsAll(Arrays.asList("fat-include-installer-libs"), "Include the installer libraries in the fat installer").availableIf(fatInstallerOption);
         OptionSpec<Void> fatOffline = parser.acceptsAll(Arrays.asList("fat-offline", "gen-offline", "generate-offline", "gf"), "Generate an online fat installer");
 
-        OptionSpec<File> librariesFolderArg = parser.accepts("libraries", "Folder used to store downloaded libraries").withOptionalArg().ofType(File.class);
-        OptionSpec<File> versionsFolderArg = parser.accepts("versions", "Folder used to store downloaded Minecraft versions").withOptionalArg().ofType(File.class);
+        OptionSpec<File> librariesFolderArg = parser.accepts("libraries", "Folder used to store downloaded libraries").availableIf(clientInstallOption, serverInstallOption).withOptionalArg().ofType(File.class);
+        OptionSpec<File> versionsFolderArg = parser.accepts("versions", "Folder used to store downloaded Minecraft versions").availableIf(clientInstallOption).withOptionalArg().ofType(File.class);
+        OptionSpec<Void> skipLauncherProfileOption = parser.accepts("skip-vanilla-launcher-profile", "Does not add a profile to the Vanilla launcher").availableIf(clientInstallOption);
+        OptionSpec<File> mergedVersionJsonFileArg = parser.accepts("version-json-out", "Writes a merged copy of the Vanilla launcher version.json describing how to launch the game to the given path.").availableIf(clientInstallOption).withOptionalArg().ofType(File.class);
 
         OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"), "Help with this installer");
         OptionSpec<Void> offlineOption = parser.accepts("offline", "Don't attempt any network calls");
@@ -151,6 +153,8 @@ public class SimpleInstaller {
             target = optionSet.valueOf(clientInstallOption);
             ClientInstall.librariesDir = optionSet.valueOf(librariesFolderArg);
             ClientInstall.versionsDir = optionSet.valueOf(versionsFolderArg);
+            ClientInstall.skipLauncherProfile = optionSet.has(skipLauncherProfileOption);
+            ClientInstall.mergedVersionJsonFile = optionSet.valueOf(mergedVersionJsonFileArg);
         } else if (optionSet.has(fatInstallerOption) || optionSet.has(fatOffline)) {
             action = Actions.FAT_INSTALLER;
             target = optionSet.valueOf(fatInstallerOption);
