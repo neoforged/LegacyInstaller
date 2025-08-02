@@ -98,7 +98,7 @@ public class SimpleInstaller {
 
         OptionSpec<File> librariesFolderArg = parser.accepts("libraries", "Folder used to store downloaded libraries").availableIf(clientInstallOption, serverInstallOption).withOptionalArg().ofType(File.class);
         OptionSpec<File> versionsFolderArg = parser.accepts("versions", "Folder used to store downloaded Minecraft versions").availableIf(clientInstallOption).withOptionalArg().ofType(File.class);
-        OptionSpec<Void> noLauncherProfileOption = parser.accepts("no-create-minecraft-launcher-profile", "Does not add a profile to the official Minecraft Launcher").availableIf(clientInstallOption);
+        OptionSpec<Void> noLauncherProfileOption = parser.accepts("no-minecraft-launcher-profile", "Does not add a profile to the official Minecraft Launcher").availableIf(clientInstallOption);
         OptionSpec<File> mergedVersionJsonFileArg = parser.accepts("write-merged-version-json", "Writes a merged copy of the Vanilla launcher version.json describing how to launch the game to the given path.").availableIf(clientInstallOption).withOptionalArg().ofType(File.class);
         OptionSpec<Void> noDownloadLibrariesOption = parser.accepts("no-download-libraries", "Do not download any libraries that aren't necessary for the installer itself");
 
