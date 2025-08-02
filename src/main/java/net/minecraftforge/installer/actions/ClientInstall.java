@@ -314,7 +314,7 @@ public class ClientInstall extends Action {
         }
 
         List<JsonObject> result = new ArrayList<>();
-        JsonPrimitive inheritsFrom = manifest.getAsJsonPrimitive("inheritsFrom");
+        JsonPrimitive inheritsFrom = (JsonPrimitive) manifest.remove("inheritsFrom");
         if (inheritsFrom != null) {
             result.addAll(loadVersionManifests(versionsDir, inheritsFrom.getAsString()));
         }
