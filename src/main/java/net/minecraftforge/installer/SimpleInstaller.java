@@ -100,6 +100,7 @@ public class SimpleInstaller {
         OptionSpec<File> versionsFolderArg = parser.accepts("versions", "Folder used to store downloaded Minecraft versions").availableIf(clientInstallOption).withOptionalArg().ofType(File.class);
         OptionSpec<Void> skipLauncherProfileOption = parser.accepts("skip-vanilla-launcher-profile", "Does not add a profile to the Vanilla launcher").availableIf(clientInstallOption);
         OptionSpec<File> mergedVersionJsonFileArg = parser.accepts("version-json-out", "Writes a merged copy of the Vanilla launcher version.json describing how to launch the game to the given path.").availableIf(clientInstallOption).withOptionalArg().ofType(File.class);
+        OptionSpec<Void> skipLibrariesDownloadArg = parser.accepts("skip-libraries-download", "Do not download any libraries that aren't necessary for the installer itself.");
 
         OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"), "Help with this installer");
         OptionSpec<Void> offlineOption = parser.accepts("offline", "Don't attempt any network calls");
@@ -148,6 +149,7 @@ public class SimpleInstaller {
             target = optionSet.valueOf(serverInstallOption);
             ServerInstall.serverStarterJar = optionSet.has(serverStarterOption);
             ServerInstall.librariesDir = optionSet.valueOf(librariesFolderArg);
+            ServerInstall.skipLibrariesDownload = optionSet.has(skipLibrariesDownloadArg);
         } else if (optionSet.has(clientInstallOption)) {
             action = Actions.CLIENT;
             target = optionSet.valueOf(clientInstallOption);
@@ -155,6 +157,7 @@ public class SimpleInstaller {
             ClientInstall.versionsDir = optionSet.valueOf(versionsFolderArg);
             ClientInstall.skipLauncherProfile = optionSet.has(skipLauncherProfileOption);
             ClientInstall.mergedVersionJsonFile = optionSet.valueOf(mergedVersionJsonFileArg);
+            ClientInstall.skipLibrariesDownload = optionSet.has(skipLibrariesDownloadArg);
         } else if (optionSet.has(fatInstallerOption) || optionSet.has(fatOffline)) {
             action = Actions.FAT_INSTALLER;
             target = optionSet.valueOf(fatInstallerOption);

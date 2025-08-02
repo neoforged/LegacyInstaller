@@ -15,13 +15,6 @@
  */
 package net.minecraftforge.installer.actions;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.json.Artifact;
@@ -31,9 +24,19 @@ import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Download;
 import net.minecraftforge.installer.ui.TranslatedMessage;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+
 public class ServerInstall extends Action {
     public static boolean serverStarterJar;
     public static File librariesDir;
+    public static boolean skipLibrariesDownload;
 
     private final List<Artifact> grabbed = new ArrayList<>();
 
@@ -105,7 +108,13 @@ public class ServerInstall extends Action {
             libDirs.add(mcLibDir);
         }
         // Don't download Vanilla libraries since they're already bundled in the server fatjar we'll extract anyway
-        if (!downloadLibraries(librariesDir, optionals, libDirs, EnumSet.of(LibraryCategory.NEOFORGE, LibraryCategory.INSTALLER)))
+        Set<LibraryCategory> librarySet;
+        if (skipLibrariesDownload) {
+            librarySet = EnumSet.of(LibraryCategory.INSTALLER);
+        } else {
+            librarySet = EnumSet.of(LibraryCategory.NEOFORGE, LibraryCategory.INSTALLER);
+        }
+        if (!downloadLibraries(librariesDir, optionals, libDirs, librarySet))
             return false;
 
         checkCancel();
