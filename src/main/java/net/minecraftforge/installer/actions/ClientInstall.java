@@ -34,6 +34,10 @@ import net.minecraftforge.installer.json.Version.Download;
 import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ClientInstall extends Action {
+
+    public static File librariesDir;
+    public static File versionsDir;
+
     public ClientInstall(InstallV1 profile, ProgressCallback monitor) {
         super(profile, monitor, true);
     }
@@ -52,16 +56,21 @@ public class ClientInstall extends Action {
             return false;
         }
 
-        File versionRoot = new File(target, "versions");
-        File librariesDir = new File(target, "libraries");
-        librariesDir.mkdir();
+        if (versionsDir == null) {
+            versionsDir = new File(target, "versions");
+        }
+        if (librariesDir == null) {
+            librariesDir = new File(target, "libraries");
+        }
+        librariesDir.mkdirs();
+        versionsDir.mkdirs();
 
         checkCancel();
 
         // Extract version json
         monitor.stage("Extracting json");
         try (InputStream stream = Util.class.getResourceAsStream(profile.getJson())) {
-            File json = new File(versionRoot, profile.getVersion() + '/' + profile.getVersion() + ".json");
+            File json = new File(versionsDir, profile.getVersion() + '/' + profile.getVersion() + ".json");
             json.getParentFile().mkdirs();
             Files.copy(stream, json.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -73,7 +82,7 @@ public class ClientInstall extends Action {
 
         // Download Vanilla main jar/json
         monitor.stage("Considering minecraft client jar");
-        File versionVanilla = new File(versionRoot, profile.getMinecraft());
+        File versionVanilla = new File(versionsDir, profile.getMinecraft());
         if (!versionVanilla.mkdirs() && !versionVanilla.isDirectory()) {
             if (!versionVanilla.delete()) {
                 error("There was a problem with the launcher version data. You will need to clear " + versionVanilla + " manually.");

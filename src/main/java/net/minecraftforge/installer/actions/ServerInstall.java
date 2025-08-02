@@ -32,6 +32,7 @@ import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ServerInstall extends Action {
     public static boolean serverStarterJar;
+    public static File librariesDir;
 
     private final List<Artifact> grabbed = new ArrayList<>();
 
@@ -46,10 +47,11 @@ public class ServerInstall extends Action {
             return false;
         }
 
-        File librariesDir = new File(target, "libraries");
-        if (!target.exists())
-            target.mkdirs();
-        librariesDir.mkdir();
+        if (librariesDir == null) {
+            librariesDir = new File(target, "libraries");
+        }
+        target.mkdirs();
+        librariesDir.mkdirs();
         if (profile.getMirror() != null && profile.getMirror().isAdvertised())
             monitor.stage(getSponsorMessage());
         checkCancel();

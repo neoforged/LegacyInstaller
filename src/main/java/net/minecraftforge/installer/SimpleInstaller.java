@@ -39,6 +39,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import net.minecraftforge.installer.actions.Actions;
+import net.minecraftforge.installer.actions.ClientInstall;
 import net.minecraftforge.installer.actions.FatInstallerAction;
 import net.minecraftforge.installer.actions.ProgressCallback;
 import net.minecraftforge.installer.actions.ServerInstall;
@@ -95,6 +96,9 @@ public class SimpleInstaller {
         OptionSpec<Void> fatIncludeInstallerLibs = parser.acceptsAll(Arrays.asList("fat-include-installer-libs"), "Include the installer libraries in the fat installer").availableIf(fatInstallerOption);
         OptionSpec<Void> fatOffline = parser.acceptsAll(Arrays.asList("fat-offline", "gen-offline", "generate-offline", "gf"), "Generate an online fat installer");
 
+        OptionSpec<File> librariesFolderArg = parser.accepts("libraries", "Folder used to store downloaded libraries").withOptionalArg().ofType(File.class);
+        OptionSpec<File> versionsFolderArg = parser.accepts("versions", "Folder used to store downloaded Minecraft versions").withOptionalArg().ofType(File.class);
+
         OptionSpec<Void> helpOption = parser.acceptsAll(Arrays.asList("h", "help"), "Help with this installer");
         OptionSpec<Void> offlineOption = parser.accepts("offline", "Don't attempt any network calls");
         OptionSpec<Void> debugOption = parser.accepts("debug", "Run in debug mode -- don't delete any files");
@@ -141,9 +145,12 @@ public class SimpleInstaller {
             action = Actions.SERVER;
             target = optionSet.valueOf(serverInstallOption);
             ServerInstall.serverStarterJar = optionSet.has(serverStarterOption);
+            ServerInstall.librariesDir = optionSet.valueOf(librariesFolderArg);
         } else if (optionSet.has(clientInstallOption)) {
             action = Actions.CLIENT;
             target = optionSet.valueOf(clientInstallOption);
+            ClientInstall.librariesDir = optionSet.valueOf(librariesFolderArg);
+            ClientInstall.versionsDir = optionSet.valueOf(versionsFolderArg);
         } else if (optionSet.has(fatInstallerOption) || optionSet.has(fatOffline)) {
             action = Actions.FAT_INSTALLER;
             target = optionSet.valueOf(fatInstallerOption);
@@ -179,6 +186,7 @@ public class SimpleInstaller {
                     monitor.stage("You can delete this installer file now if you wish");
                 }
             } catch (Throwable e) {
+                e.printStackTrace();
                 monitor.stage("A problem installing was detected, install cannot continue");
                 System.exit(1);
             }
@@ -207,6 +215,7 @@ public class SimpleInstaller {
             InstallerPanel panel = new InstallerPanel(getMCDir(), profile, installer);
             panel.run(monitor);
         } catch (Throwable e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Something went wrong while installing.<br />Check log for more details:<br/>" + e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
