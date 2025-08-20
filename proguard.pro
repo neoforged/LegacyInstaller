@@ -1,4 +1,4 @@
-#-dontoptimize
+-dontoptimize
 -dontobfuscate
 #-dontpreverify
 -dontwarn javax.annotation.**
