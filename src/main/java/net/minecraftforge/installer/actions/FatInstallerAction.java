@@ -56,6 +56,8 @@ public class FatInstallerAction extends Action {
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
                 if (entry.getName().equals("META-INF/MANIFEST.MF")) continue;
+                // These will be downloaded through LocalSource#fromResource()
+                if (entry.getName().startsWith("maven/")) continue;
                 ZipEntry ze = new ZipEntry(entry.getName());
                 out.putNextEntry(ze);
                 copy(in.getInputStream(entry), out);
