@@ -198,8 +198,9 @@ public class SimpleInstaller {
             return new File(new File(new File(userHomeDir, "Library"), "Application Support"), "minecraft");
 
         File candidate = new File(userHomeDir, mcDir);
-        if (!candidate.exists() && osType.equals("linux")) {
+        if (!candidate.exists() && osType.contains("linux")) {
             File flatPakCandidate = new File(userHomeDir, ".var/app/com.mojang.Minecraft/.minecraft");
+            System.out.println("Flatpak path: " + flatPakCandidate.getAbsolutePath());
             if (flatPakCandidate.exists())
                 return flatPakCandidate;
         }
