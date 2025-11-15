@@ -187,6 +187,8 @@ public class SimpleInstaller {
     }
 
     public static File getMCDir() {
+        if (System.getenv("mcdir") != null)
+            return new File(System.getenv("mcdir"));
         String userHomeDir = System.getProperty("user.home", ".");
         String osType = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
         String mcDir = ".minecraft";
@@ -194,7 +196,15 @@ public class SimpleInstaller {
             return new File(System.getenv("APPDATA"), mcDir);
         else if (osType.contains("mac"))
             return new File(new File(new File(userHomeDir, "Library"), "Application Support"), "minecraft");
-        return new File(userHomeDir, mcDir);
+
+        File candidate = new File(userHomeDir, mcDir);
+        if (!candidate.exists() && osType.equals("linux")) {
+            File flatPakCandidate = new File(userHomeDir, ".var/app/com.mojang.Minecraft/.minecraft");
+            if (flatPakCandidate.exists())
+                return flatPakCandidate;
+        }
+
+        return candidate;
     }
 
     private static void launchGui(ProgressCallback monitor, File installer) {
