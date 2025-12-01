@@ -53,7 +53,7 @@ public class DownloadUtils {
 
     public static boolean downloadLibrary(ProgressCallback monitor, Library library, File root, Predicate<String> optional, List<Artifact> grabbed, List<File> additionalLibraryDirs) {
         Artifact artifact = library.getName();
-        File target =  artifact.getLocalPath(root);
+        File target = artifact.getLocalPath(root);
         LibraryDownload download = library.getDownloads() == null ? null : library.getDownloads().getArtifact();
         if (download == null) {
             download = new LibraryDownload();
