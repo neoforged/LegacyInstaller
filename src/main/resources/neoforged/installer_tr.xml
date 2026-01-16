@@ -9,7 +9,7 @@
     <entry key="installer.button.cancel">İptal et</entry>
     <entry key="installer.action.install.client.name">İstemci yükle</entry>
     <entry key="installer.action.install.client.tooltip">Mojang istemci başlatıcısına yeni bir profil yükle</entry>
-    <entry key="installer.action.install.client.finished.withoutlibs">Successfully installed client profile %s for version %s into launcher</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">%s sürümüne ait %s istemci profili başlatıcıya başarıyla yüklendi</entry>
     <entry key="installer.action.install.client.finished.withlibs">Successfully installed client profile %s for version %s into launcher, and downloaded %d libraries</entry>
     <entry key="installer.action.install.server.name">Sunucu yükle</entry>
     <entry key="installer.action.install.server.tooltip">Yeni bir modlu sunucu yüklemesi oluştur</entry>
