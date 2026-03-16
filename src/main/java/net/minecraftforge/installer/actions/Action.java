@@ -83,7 +83,7 @@ public abstract class Action {
         final ProgressCallback targetMonitor = monitor.withoutDownloadProgress();
         for (Library lib : libraries) {
             checkCancel();
-            if (!DownloadUtils.downloadLibrary(targetMonitor, lib, librariesDir, optionals, grabbed, additionalLibDirs, profile.getMirror())) {
+            if (!DownloadUtils.downloadLibrary(targetMonitor, lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
                 LibraryDownload download = lib.getDownloads() == null ? null : lib.getDownloads().getArtifact();
                 if (download != null && !download.getUrl().isEmpty()) // If it doesn't have a URL we can't download it, assume we install it later
                     output.append('\n').append(lib.getName());

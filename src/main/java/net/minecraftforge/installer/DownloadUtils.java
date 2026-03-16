@@ -51,7 +51,13 @@ public class DownloadUtils {
 
     public static boolean OFFLINE_MODE = false;
 
+    // 7-param overload for v3.0.42+ compatibility (Action passes Mirror)
     public static boolean downloadLibrary(ProgressCallback monitor, Library library, File root, Predicate<String> optional, List<Artifact> grabbed, List<File> additionalLibraryDirs, @Nullable Mirror mirror) {
+        return downloadLibrary(monitor, library, root, optional, grabbed, additionalLibraryDirs);
+    }
+
+    // 6-param version for v3.0.41 compatibility
+    public static boolean downloadLibrary(ProgressCallback monitor, Library library, File root, Predicate<String> optional, List<Artifact> grabbed, List<File> additionalLibraryDirs) {
         Artifact artifact = library.getName();
         File target = artifact.getLocalPath(root);
         LibraryDownload download = library.getDownloads() == null ? null : library.getDownloads().getArtifact();
@@ -73,11 +79,17 @@ public class DownloadUtils {
             return false;
         }
 
+        // Resolve mirror URL from command-line --mirror argument
+        String mirrorUrl = null;
+        if (SimpleInstaller.mirror != null) {
+            mirrorUrl = SimpleInstaller.mirror.toString();
+        }
+
         if (monitor.downloader(url)
                 .additionalDirectory(additionalLibraryDirs.toArray(new File[0]))
                 .sha(download.getSha1())
                 .localPath(download.getPath())
-                .mirror(mirror != null ? mirror.getUrl() : null)
+                .mirror(mirrorUrl)
                 .download(target)) {
             grabbed.add(artifact);
             return true;
