@@ -15,12 +15,19 @@
  */
 package net.minecraftforge.installer.actions;
 
+import net.minecraftforge.installer.DownloadUtils;
+import net.minecraftforge.installer.json.InstallV1;
+import net.minecraftforge.installer.json.Util;
+import net.minecraftforge.installer.json.Version;
+import net.minecraftforge.installer.ui.TranslatedMessage;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -34,12 +41,6 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
-import net.minecraftforge.installer.DownloadUtils;
-import net.minecraftforge.installer.json.InstallV1;
-import net.minecraftforge.installer.json.Util;
-import net.minecraftforge.installer.json.Version;
-import net.minecraftforge.installer.ui.TranslatedMessage;
-import org.jetbrains.annotations.Nullable;
 
 public class FatInstallerAction extends Action {
     public static final EnumSet<Options> OPTIONS = EnumSet.noneOf(Options.class);
@@ -51,7 +52,7 @@ public class FatInstallerAction extends Action {
     @Override
     public boolean run(File target, Predicate<String> optionals, File installer) throws ActionCanceledException {
         try (final JarFile in = new JarFile(installer);
-                final JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(target)), newManifest(in.getManifest()))) {
+                final TrackingJarOutputStream out = new TrackingJarOutputStream(new BufferedOutputStream(Files.newOutputStream(target.toPath())), newManifest(in.getManifest()))) {
             Enumeration<JarEntry> entries = in.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
@@ -73,10 +74,14 @@ public class FatInstallerAction extends Action {
                 monitor.stage("Downloading server jar");
                 writeFromUrl(out, "minecraft/" + profile.getMinecraft() + "/server.jar", version.getDownload("server").getUrl());
 
-                monitor.stage("Downloading client mappings");
-                writeFromUrl(out, "minecraft/" + profile.getMinecraft() + "/client_mappings.txt", version.getDownload("client_mappings").getUrl());
-                monitor.stage("Downloading server mappings");
-                writeFromUrl(out, "minecraft/" + profile.getMinecraft() + "/server_mappings.txt", version.getDownload("server_mappings").getUrl());
+                if (version.getDownload("client_mappings") != null) {
+                    monitor.stage("Downloading client mappings");
+                    writeFromUrl(out, "minecraft/" + profile.getMinecraft() + "/client_mappings.txt", version.getDownload("client_mappings").getUrl());
+                }
+                if (version.getDownload("server_mappings") != null) {
+                    monitor.stage("Downloading server mappings");
+                    writeFromUrl(out, "minecraft/" + profile.getMinecraft() + "/server_mappings.txt", version.getDownload("server_mappings").getUrl());
+                }
             }
 
             if (OPTIONS.contains(Options.MC_LIBS) || OPTIONS.contains(Options.INSTALLER_LIBS)) {
@@ -112,11 +117,13 @@ public class FatInstallerAction extends Action {
         }
     }
 
-    private void writeFromUrl(JarOutputStream jos, String name, String url) throws IOException {
+    private void writeFromUrl(TrackingJarOutputStream jos, String name, String url) throws IOException {
         writeFromUrl(jos, name, url, null);
     }
 
-    private void writeFromUrl(JarOutputStream jos, String name, String url, @Nullable String localPath) throws IOException {
+    private void writeFromUrl(TrackingJarOutputStream jos, String name, String url, @Nullable String localPath) throws IOException {
+        if (jos.knownEntries.contains("maven/" + name)) return;
+
         JarEntry entry = new JarEntry("maven/" + name);
         jos.putNextEntry(entry);
         try (InputStream stream = monitor.downloader(url)
@@ -156,6 +163,31 @@ public class FatInstallerAction extends Action {
         int length;
         while ((length = source.read(buf)) != -1) {
             target.write(buf, 0, length);
+        }
+    }
+
+    private static class TrackingJarOutputStream extends JarOutputStream {
+        private final Set<String> knownEntries = new HashSet<>();
+        private ZipEntry currentEntry;
+
+        public TrackingJarOutputStream(OutputStream out, Manifest man) throws IOException {
+            super(out, man);
+        }
+
+        @Override
+        public void putNextEntry(ZipEntry ze) throws IOException {
+            super.putNextEntry(ze);
+            currentEntry = ze;
+        }
+
+        @Override
+        public void closeEntry() throws IOException {
+            super.closeEntry();
+
+            if (currentEntry != null && knownEntries != null) { // knownEntries is null initially, when the super constructor is called (which adds the manifest)
+                knownEntries.add(currentEntry.getName());
+                currentEntry = null;
+            }
         }
     }
 }
