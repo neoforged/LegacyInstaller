@@ -166,6 +166,12 @@ public class FatInstallerAction extends Action {
         }
     }
 
+    /**
+     * A version of {@link JarOutputStream} that tracks the names of the entries that have already been added to the jar.
+     * This class is used to avoid adding duplicate entries to fat installers, when those entries were already present in the non-fat installer
+     * (and have, therefore, been already copied into the fat installer).
+     * For instance, to avoid adding the universal jar twice, when the source installer was a PR build.
+     */
     private static class TrackingJarOutputStream extends JarOutputStream {
         private final Set<String> knownEntries = new HashSet<>();
         private ZipEntry currentEntry;
