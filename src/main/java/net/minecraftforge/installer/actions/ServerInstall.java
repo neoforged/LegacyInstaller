@@ -15,12 +15,6 @@
  */
 package net.minecraftforge.installer.actions;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
 import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.json.Artifact;
@@ -30,8 +24,19 @@ import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Download;
 import net.minecraftforge.installer.ui.TranslatedMessage;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Predicate;
+
 public class ServerInstall extends Action {
     public static boolean serverStarterJar;
+    public static File librariesDir;
+    public static boolean skipLibrariesDownload;
 
     private final List<Artifact> grabbed = new ArrayList<>();
 
@@ -46,10 +51,11 @@ public class ServerInstall extends Action {
             return false;
         }
 
-        File librariesDir = new File(target, "libraries");
-        if (!target.exists())
-            target.mkdirs();
-        librariesDir.mkdir();
+        if (librariesDir == null) {
+            librariesDir = new File(target, "libraries");
+        }
+        target.mkdirs();
+        librariesDir.mkdirs();
         if (profile.getMirror() != null && profile.getMirror().isAdvertised())
             monitor.stage(getSponsorMessage());
         checkCancel();
@@ -101,7 +107,14 @@ public class ServerInstall extends Action {
         if (mcLibDir.exists()) {
             libDirs.add(mcLibDir);
         }
-        if (!downloadLibraries(librariesDir, optionals, libDirs))
+        // Don't download Vanilla libraries since they're already bundled in the server fatjar we'll extract anyway
+        Set<LibraryCategory> librarySet;
+        if (skipLibrariesDownload) {
+            librarySet = EnumSet.of(LibraryCategory.INSTALLER);
+        } else {
+            librarySet = EnumSet.of(LibraryCategory.NEOFORGE, LibraryCategory.INSTALLER);
+        }
+        if (!downloadLibraries(librariesDir, optionals, libDirs, librarySet))
             return false;
 
         checkCancel();

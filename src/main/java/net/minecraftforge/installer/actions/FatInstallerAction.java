@@ -90,6 +90,7 @@ public class FatInstallerAction extends Action {
                 final List<Version.Library> libraries = new ArrayList<>();
                 if (OPTIONS.contains(Options.MC_LIBS)) {
                     libraries.addAll(Arrays.asList(version.getLibraries()));
+                    libraries.addAll(Arrays.asList(profile.getLibraries()));
                 }
                 if (OPTIONS.contains(Options.INSTALLER_LIBS)) {
                     libraries.addAll(Arrays.asList(processors.getLibraries()));
