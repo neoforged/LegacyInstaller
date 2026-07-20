@@ -1,28 +1,20 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer;
 
-import net.minecraftforge.installer.actions.ProgressCallback;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -37,7 +29,10 @@ import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
-
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import net.minecraftforge.installer.actions.ProgressCallback;
 
 /**
  * Ripped out of forge - modified to work for installer
@@ -49,6 +44,7 @@ import java.util.stream.Collectors;
  * <a href="https://letsencrypt.org/certificates/">https://letsencrypt.org/certificates/</a>
  *
  * To create the keystore, the following commands were run:
+ * 
  * <pre>
  *     keytool -import -alias letsencryptisrgx1 -file isrgrootx1.pem -keystore lekeystore.jks -storetype jks -storepass supersecretpassword -v
  *     keytool -import -alias identrustx3 -file identrustx3.pem -keystore lekeystore.jks -storetype jks -storepass supersecretpassword -v
@@ -57,9 +53,7 @@ import java.util.stream.Collectors;
  * The PEM files were obtained from the above URL.
  */
 class FixSSL {
-
-    private static boolean hasJavaForDownload(ProgressCallback callback)
-    {
+    private static boolean hasJavaForDownload(ProgressCallback callback) {
         String javaVersion = System.getProperty("java.version");
         callback.message("Found java version " + javaVersion);
         if (javaVersion != null && javaVersion.startsWith("1.8.0_")) {
@@ -78,7 +72,7 @@ class FixSSL {
         if (hasJavaForDownload(callback)) return;
         try {
             final KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            Path ksPath = Paths.get(System.getProperty("java.home"),"lib", "security", "cacerts");
+            Path ksPath = Paths.get(System.getProperty("java.home"), "lib", "security", "cacerts");
             keyStore.load(Files.newInputStream(ksPath), "changeit".toCharArray());
             final Map<String, Certificate> jdkTrustStore = Collections.list(keyStore.aliases()).stream().collect(Collectors.toMap(a -> a, (String alias) -> {
                 try {
@@ -104,7 +98,7 @@ class FixSSL {
             for (Map.Entry<String, Certificate> entry : jdkTrustStore.entrySet()) {
                 mergedTrustStore.setCertificateEntry(entry.getKey(), entry.getValue());
             }
-            for (Map.Entry<String , Certificate> entry : leTrustStore.entrySet()) {
+            for (Map.Entry<String, Certificate> entry : leTrustStore.entrySet()) {
                 mergedTrustStore.setCertificateEntry(entry.getKey(), entry.getValue());
             }
 

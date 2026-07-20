@@ -1,20 +1,17 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.actions;
 
@@ -24,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
-
 import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.json.Artifact;
@@ -35,7 +31,9 @@ import net.minecraftforge.installer.json.Version.Download;
 import net.minecraftforge.installer.ui.TranslatedMessage;
 
 public class ServerInstall extends Action {
-    private List<Artifact> grabbed = new ArrayList<>();
+    public static boolean serverStarterJar;
+
+    private final List<Artifact> grabbed = new ArrayList<>();
 
     public ServerInstall(InstallV1 profile, ProgressCallback monitor) {
         super(profile, monitor, false);
@@ -48,24 +46,12 @@ public class ServerInstall extends Action {
             return false;
         }
 
-        File librariesDir = new File(target,"libraries");
+        File librariesDir = new File(target, "libraries");
         if (!target.exists())
             target.mkdirs();
         librariesDir.mkdir();
         if (profile.getMirror() != null && profile.getMirror().isAdvertised())
             monitor.stage(getSponsorMessage());
-        checkCancel();
-
-        // Extract main executable jar
-        Artifact contained = profile.getPath();
-        if (contained != null) {
-            monitor.stage("Extracting main jar:");
-            if (!DownloadUtils.extractFile(contained, new File(target, contained.getFilename()), null)) {
-                error("  Failed to extract main jar: " + contained.getFilename());
-                return false;
-            } else
-                monitor.stage("  Extracted successfully");
-        }
         checkCancel();
 
         //Download MC Server jar
@@ -84,7 +70,7 @@ public class ServerInstall extends Action {
             }
 
             File versionJson = new File(target, profile.getMinecraft() + ".json");
-            Version vanilla = Util.getVanillaVersion(profile.getMinecraft(), versionJson);
+            Version vanilla = Util.getVanillaVersion(monitor, profile.getMinecraft(), versionJson);
             if (vanilla == null) {
                 error("Failed to download version manifest, can not find server jar URL.");
                 return false;
@@ -97,10 +83,13 @@ public class ServerInstall extends Action {
 
             versionJson.delete();
 
-            if (!DownloadUtils.download(monitor, profile.getMirror(), server, serverTarget)) {
+            if (!monitor.downloader(server.getUrl())
+                    .sha(server.getSha1())
+                    .localPath("minecraft/" + profile.getMinecraft() + "/server.jar")
+                    .download(serverTarget)) {
                 serverTarget.delete();
                 error("Downloading minecraft server failed, invalid checksum.\n" +
-                      "Try again, or manually place server jar to skip download.");
+                        "Try again, or manually place server jar to skip download.");
                 return false;
             }
         }
@@ -119,9 +108,11 @@ public class ServerInstall extends Action {
         if (!processors.process(librariesDir, serverTarget, target, installer))
             return false;
 
-        // TODO: Optionals
-        //if (!OptionalLibrary.saveModListJson(librariesDir, new File(target, "mods/mod_list.json"), VersionInfo.getOptionals(), optionals))
-        //    return false;
+        if (serverStarterJar) {
+            monitor.downloader(DownloadUtils.SERVER_STARTER_JAR)
+                    .localPath("serverstarter.jar")
+                    .download(new File(target, "server.jar"));
+        }
 
         return true;
     }

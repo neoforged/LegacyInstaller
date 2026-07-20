@@ -1,23 +1,22 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -27,10 +26,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.minecraftforge.installer.DownloadUtils;
+import net.minecraftforge.installer.actions.ProgressCallback;
 
 public class Util {
     public static Gson GSON = new GsonBuilder().setPrettyPrinting()
@@ -46,9 +43,12 @@ public class Util {
         }
         Spec spec = GSON.fromJson(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8), Spec.class);
         switch (spec.getSpec()) {
-            case 0: return new InstallV1(GSON.fromJson(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8), Install.class));
-            case 1: return GSON.fromJson(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8), InstallV1.class);
-            default: throw new IllegalArgumentException("Invalid launcher profile spec: " + spec.getSpec() + " Only 0, and 1 are supported");
+            case 0:
+                return new InstallV1(GSON.fromJson(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8), Install.class));
+            case 1:
+                return GSON.fromJson(new InputStreamReader(new ByteArrayInputStream(data), StandardCharsets.UTF_8), InstallV1.class);
+            default:
+                throw new IllegalArgumentException("Invalid launcher profile spec: " + spec.getSpec() + " Only 0, and 1 are supported");
         }
     }
 
@@ -68,18 +68,29 @@ public class Util {
         }
     }
 
-    public static Version getVanillaVersion(String version, File target) {
+    public static Version getVanillaVersion(ProgressCallback callback, String version, File target) {
         if (!target.exists()) {
-            Manifest manifest = DownloadUtils.downloadManifest();
+            Manifest manifest = DownloadUtils.downloadManifest(callback);
             if (manifest == null)
                 return null;
-            String url = manifest.getUrl(version);
-            if (url == null)
+            Manifest.Info ver = manifest.get(version);
+            if (ver == null)
                 return null;
-            if (!DownloadUtils.downloadFile(target, url))
+            if (!callback.downloader(ver.getUrl())
+                    .localPath("minecraft/" + version + ".json")
+                    .sha(ver.sha1)
+                    .download(target))
                 return null;
         }
         try (InputStream stream = new FileInputStream(target)) {
+            return GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), Version.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Version getVersionUncached(ProgressCallback callback, String url) {
+        try (InputStream stream = callback.downloader(url).openStream()) {
             return GSON.fromJson(new InputStreamReader(stream, StandardCharsets.UTF_8), Version.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -108,7 +119,7 @@ public class Util {
                 if (x == value.length() - 1)
                     throw new IllegalArgumentException("Illegal pattern (Bad escape): " + value);
                 buf.append(value.charAt(++x));
-            } else if (c == '{' || c ==  '\'') {
+            } else if (c == '{' || c == '\'') {
                 StringBuilder key = new StringBuilder();
                 for (int y = x + 1; y <= value.length(); y++) {
                     if (y == value.length())

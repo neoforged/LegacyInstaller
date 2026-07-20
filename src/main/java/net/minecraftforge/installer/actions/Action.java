@@ -1,20 +1,17 @@
 /*
  * Installer
  * Copyright (c) 2016-2018.
- *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation version 2.1
  * of the License.
- *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 package net.minecraftforge.installer.actions;
 
@@ -23,9 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-
 import javax.swing.JOptionPane;
-
 import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.json.Artifact;
@@ -57,7 +52,9 @@ public abstract class Action {
     }
 
     public abstract boolean run(File target, Predicate<String> optionals, File installer) throws ActionCanceledException;
+
     public abstract TargetValidator getTargetValidator();
+
     public abstract TranslatedMessage getSuccessMessage();
 
     public String getSponsorMessage() {
@@ -86,8 +83,8 @@ public abstract class Action {
         final ProgressCallback targetMonitor = monitor.withoutDownloadProgress();
         for (Library lib : libraries) {
             checkCancel();
-            if (!DownloadUtils.downloadLibrary(targetMonitor, profile.getMirror(), lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
-                LibraryDownload download = lib.getDownloads() == null ? null :  lib.getDownloads().getArtifact();
+            if (!DownloadUtils.downloadLibrary(targetMonitor, lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
+                LibraryDownload download = lib.getDownloads() == null ? null : lib.getDownloads().getArtifact();
                 if (download != null && !download.getUrl().isEmpty()) // If it doesn't have a URL we can't download it, assume we install it later
                     output.append('\n').append(lib.getName());
             }

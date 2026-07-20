@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="installer.welcome.version">Phiên bản: </entry>
+    <entry key="installer.welcome.offline">Chế độ ngoại tuyến </entry>
+    <entry key="installer.welcome.target.tooltip">Đường dẫn đến thư mục cài đặt Minecraft</entry>
+    <entry key="installer.welcome.dirselect.tooltip">Chọn một thư mục Minecraft thay thế</entry>
+    <entry key="installer.button.proceed">Tiếp tục</entry>
+    <entry key="installer.button.cancel">Hủy bỏ</entry>
+    <entry key="installer.action.install.client.name">Cài đặt client</entry>
+    <entry key="installer.action.install.client.tooltip">Cài đặt một hồ sơ mới vào trình khởi chạy của Mojang</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">Đã cài đặt thành công hồ sơ %s cho phiên bản %s vào trình khởi chạy</entry>
+    <entry key="installer.action.install.client.finished.withlibs">Đã cài đặt thành công cấu hình máy khách %s cho phiên bản %s vào trình khởi chạy và đã tải xuống %d thư viện</entry>
+    <entry key="installer.action.install.server.name">Cài máy chủ</entry>
+    <entry key="installer.action.install.server.tooltip">Tạo trình cài đặt máy chủ mod mới</entry>
+    <entry key="installer.action.install.server.finished.withoutlibs">Đã tải xuống thành công máy chủ Minecraft và cài đặt %s</entry>
+    <entry key="installer.action.install.server.finished.withlibs">Đã tải xuống thành công máy chủ Minecraft, tải xuống %d thư viện và cài đặt %s</entry>
+    <entry key="installer.action.install.server.starterjar">Tệp Jar khởi động máy chủ</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Tạo một tệp server.jar để có thể dùng để khởi chạy máy chủ như một tệp thực thi, kiểu một cách thay thế cho các kịch bản khởi chạy</entry>
+    <entry key="installer.action.install.fat.name">Tạo trình cài đặt đầy đủ</entry>
+    <entry key="installer.action.install.fat.tooltip">Tạo một trình cài đặt đóng gói các thư viện tải xuống, cho cả khi dùng ngoại tuyến</entry>
+    <entry key="installer.action.install.fat.finished">Đã tạo thành công trình cài đặt đầy đủ cho phiên bản %s</entry>
+    <entry key="installer.action.extract.name">Trích xuất</entry>
+    <entry key="installer.action.extract.tooltip">Trích xuất tệp Jar đã chứa</entry>
+    <entry key="installer.action.extract.finished">Trích xuất thành công</entry>
+    <entry key="installer.window.title">Trình cài đặt %s</entry>
+    <entry key="installer.frame.installing">Đang cài đặt %s phiên bản %s</entry>
+    <entry key="installer.installation.complete">Cài đặt thành công</entry>
+    <entry key="installer.installation.cancelled">Đã huỷ cài đặt</entry>
+    <entry key="installer.target.error.notdirectory">Đường dẫn được chỉ định phải là một thư mục</entry>
+    <entry key="installer.target.error.directory.notempty">Trong thư mục đích đã có sẵn các tệp</entry>
+    <entry key="installer.target.error.directory.doesntexist.critical">Thư mục chỉ định không tồn tại</entry>
+    <entry key="installer.target.error.directory.doesntexist.create">Đường dẫn chỉ định không tồn tại&lt;br&gt;Nó sẽ được tạo ra</entry>
+    <entry key="installer.target.error.missingprofile">Thư mục này thiếu cấu hình trình khởi chạy. Hãy chạy Minecraft trước</entry>
+    <entry key="installer.fat.includemc">Thêm các tệp jar của Minecraft</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Thêm các tệp Jar của Minecraft vào. &lt;br&gt; Tệp Jar đầu ra sẽ bao gồm các tệp Jar của máy chủ và client Minecraft, được cấp phép theo điều khoản “Tất cả các quyền được bảo lưu”. &lt;br&gt; &lt;b&gt; Việc phân phối lại trình cài đặt tích hợp là bất hợp pháp.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Tệp Jar đầu ra sẽ bao gồm các tệp Jar của máy chủ và client Minecraft, được cấp phép theo điều khoản “Tất cả các quyền được bảo lưu”. Việc phân phối lại trình cài đặt tích hợp là bất hợp pháp.</entry>
+    <entry key="installer.fat.includemclibs">Thêm các thư viện của Minecraft</entry>
+    <entry key="installer.fat.includemclibs.tooltip">Thêm các thư viện Minecraft dùng</entry>
+    <entry key="installer.fat.includeinstallerlibs">Thêm thư viện của trình cài đặt</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">Thêm các thư viện trình cài đặt dùng</entry>
+    <entry key="installer.fat.offline">Trình cài đặt ngoại tuyến</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Tạo một trình cài đặt có thể chạy mà không cần kết nối internet.&lt;br&gt; Trình cài đặt ngoại tuyến này sẽ bao gồm các tệp Jar của máy chủ và client Minecraft, được cấp phép theo điều khoản “Tất cả các quyền được bảo lưu”. &lt;br&gt; &lt;b&gt;Việc phân phối lại trình cài đặt ngoại tuyến này là bất hợp pháp.&lt;/b&gt;&lt;/html&gt;</entry>
+</properties>
