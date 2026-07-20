@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="installer.welcome.version">Versi: </entry>
+    <entry key="installer.welcome.offline">Mod luar talian</entry>
+    <entry key="installer.welcome.target.tooltip">Laluan ke direktori pemasangan Minecraft</entry>
+    <entry key="installer.welcome.dirselect.tooltip">Pilih direktori Minecraft alternatif</entry>
+    <entry key="installer.button.proceed">Teruskan</entry>
+    <entry key="installer.button.cancel">Batal</entry>
+    <entry key="installer.action.install.client.name">Pasang klien</entry>
+    <entry key="installer.action.install.client.tooltip">Pasang sebuah profil baharu pada pelancar klien Mojang</entry>
+    <entry key="installer.action.install.client.finished.withoutlibs">Berjaya memasang profil klien %s untuk versi %s ke dalam pelancar</entry>
+    <entry key="installer.action.install.client.finished.withlibs">Berjaya memasang profil klien %s untuk versi %s ke dalam pelancar dan memuat turun %d pustaka</entry>
+    <entry key="installer.action.install.server.name">Pasang pelayan</entry>
+    <entry key="installer.action.install.server.tooltip">Cipta sebuah pemasangan pelayan yang diubah suai baharu</entry>
+    <entry key="installer.action.install.server.finished.withoutlibs">Berjaya memuat turun pelayan minecraft dan memasang %s</entry>
+    <entry key="installer.action.install.server.finished.withlibs">Berjaya memuat turun pelayan minecraft, memuat turun %d pustaka dan memasang %s</entry>
+    <entry key="installer.action.install.server.starterjar">Jar pemula pelayan</entry>
+    <entry key="installer.action.install.server.starterjar.tooltip">Hasilkan fail server.jar yang boleh digunakan untuk melancarkan pelayan sebagai fail executable, sebagai alternatif kepada skrip pelancaran</entry>
+    <entry key="installer.action.install.fat.name">Cipta pemasang fat</entry>
+    <entry key="installer.action.install.fat.tooltip">Cipta sebuah pemasang yang membungkus pustaka yang dimuat turun untuk kegunaan luar talian</entry>
+    <entry key="installer.action.install.fat.finished">Berjaya mencipta pemasang fat untuk versi %s</entry>
+    <entry key="installer.action.extract.name">Ekstrak</entry>
+    <entry key="installer.action.extract.tooltip">Ekstrak fail jar yang terkandung</entry>
+    <entry key="installer.action.extract.finished">Berjaya diekstrak</entry>
+    <entry key="installer.window.title">Pemasang %s</entry>
+    <entry key="installer.frame.installing">Sedang memasang %s versi %s</entry>
+    <entry key="installer.installation.complete">Pemasangan Selesai</entry>
+    <entry key="installer.installation.cancelled">Pemasangan Dibatalkan</entry>
+    <entry key="installer.target.error.notdirectory">Laluan yang ditentukan perlu menjadi direktori</entry>
+    <entry key="installer.target.error.directory.notempty">Sudah ada fail dalam direktori sasaran</entry>
+    <entry key="installer.target.error.directory.doesntexist.critical">Direktori yang ditentukan tidak wujud</entry>
+    <entry key="installer.target.error.directory.doesntexist.create">Direktori yang ditentukan tidak wujud&lt;br&gt;Ia akan dicipta</entry>
+    <entry key="installer.target.error.missingprofile">Direktori tidak mempunyai profil pelancar. Sila jalankan pelancar Minecraft dahulu</entry>
+    <entry key="installer.fat.includemc">Sertakan jar Minecraft</entry>
+    <entry key="installer.fat.includemc.tooltip">&lt;html&gt;Menyertakan jar Minecraft. &lt;br&gt; Jar output akan menyertakan jar pelayan dan klien Minecraft, yang dilesenkan sebagai Hak Cipta Terpelihara. &lt;br&gt; &lt;b&gt; Pengagihan semula pemasang fat adalah menyalahi undang-undang.&lt;/b&gt;&lt;/html&gt;</entry>
+    <entry key="installer.fat.includemc.warning">Jar output akan menyertakan jar pelayan dan klien Minecraft, yang dilesenkan sebagai Hak Cipta Terpelihara. Pengagihan semula pemasang fat adalah menyalahi undang-undang.</entry>
+    <entry key="installer.fat.includemclibs">Sertakan pustaka Minecraft</entry>
+    <entry key="installer.fat.includemclibs.tooltip">Sertakan pustaka yang digunakan oleh Minecraft</entry>
+    <entry key="installer.fat.includeinstallerlibs">Sertakan pustaka pemasang</entry>
+    <entry key="installer.fat.includeinstallerlibs.tooltip">Sertakan pustaka yang digunakan oleh pemasang</entry>
+    <entry key="installer.fat.offline">Pemasang luar talian</entry>
+    <entry key="installer.fat.offline.tooltip">&lt;html&gt;Cipta sebuah pemasang yang boleh dijalankan tanpa sambungan internet.&lt;br&gt; Pemasang luar talian akan menyertakan jar pelayan dan klien Minecraft, yang dilesenkan sebagai Hak Cipta Terpelihara. &lt;br&gt; &lt;b&gt; Pengagihan semula pemasang luar talian adalah menyalahi undang-undang.&lt;/b&gt;&lt;/html&gt;</entry>
+</properties>
