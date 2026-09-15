@@ -179,6 +179,7 @@ public class SimpleInstaller {
                     monitor.stage("You can delete this installer file now if you wish");
                 }
             } catch (Throwable e) {
+                e.printStackTrace();
                 monitor.stage("A problem installing was detected, install cannot continue");
                 System.exit(1);
             }
