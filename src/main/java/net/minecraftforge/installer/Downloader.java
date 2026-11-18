@@ -38,10 +38,15 @@ public class Downloader {
     private static final Logger LOGGER = Logger.getLogger("Downloading");
     public static final LocalSource LOCAL = LocalSource.detect();
 
+    /** Downloading from the Mojang libraries host is never redirected to a mirror. */
+    private static final String MOJANG_LIBRARIES_URL = "https://libraries.minecraft.net/";
+
     private LocalSource localSource;
     private final ProgressCallback monitor;
     private final String url;
     private String sha1, localPath;
+    @Nullable
+    private String mirrorUrl;
 
     public Downloader(LocalSource localSource, ProgressCallback monitor, String url) {
         this.localSource = localSource;
@@ -56,6 +61,15 @@ public class Downloader {
 
     public Downloader localPath(@Nullable String localPath) {
         this.localPath = localPath;
+        return this;
+    }
+
+    /**
+     * Sets the base URL of a mirror repository that should be preferred over the original artifact URL.
+     * A trailing slash is optional; blank values disable mirroring.
+     */
+    public Downloader mirror(@Nullable String mirrorUrl) {
+        this.mirrorUrl = mirrorUrl;
         return this;
     }
 
@@ -115,35 +129,76 @@ public class Downloader {
             return false;
         }
 
-        monitor.message("Downloading library from " + url);
-        try {
-            URLConnection connection = DownloadUtils.getConnection(url);
-            if (connection != null) {
-                Files.copy(monitor.wrapStepDownload(connection), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                if (this.sha1 != null) {
-                    String sha1 = DownloadUtils.getSha1(target);
-                    if (Objects.equals(sha1, this.sha1)) {
-                        monitor.message("\tDownload completed: Checksum validated.");
-                        return true;
-                    }
-                    monitor.message("\tDownload failed: Checksum invalid, deleting file:");
-                    monitor.message("\t\tExpected: " + this.sha1);
-                    monitor.message("\t\tActual:   " + sha1);
-                    if (!target.delete()) {
-                        monitor.stage("\tFailed to delete file, aborting.");
-                        return false;
-                    }
-                } else {
-                    monitor.message("\tDownload completed: No checksum, Assuming valid.");
-                    return true;
-                }
+        String mirror = getMirrorDownloadUrl();
+        if (mirror != null) {
+            if (downloadFrom(target, mirror)) {
+                return true;
             }
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, e, () -> "Failed to download from " + url);
+            monitor.message("\tMirror unavailable, falling back to " + url);
         }
 
-        return false;
+        return downloadFrom(target, url);
+    }
+
+    /**
+     * Builds the mirror URL for this artifact, or {@code null} when the original URL should be used.
+     * Mirrors are only used for artifacts that are not hosted on Mojang's own library host, and only
+     * when the original URL ends with the artifact path, so the path can be appended to the mirror
+     * base safely.
+     */
+    @Nullable
+    private String getMirrorDownloadUrl() {
+        if (mirrorUrl == null) {
+            return null;
+        }
+
+        String base = mirrorUrl.trim();
+        if (base.isEmpty() || localPath == null || localPath.isEmpty()) {
+            return null;
+        }
+
+        if (!url.startsWith("http") || url.startsWith(MOJANG_LIBRARIES_URL) || !url.endsWith(localPath)) {
+            return null;
+        }
+
+        return (base.endsWith("/") ? base : base + "/") + localPath;
+    }
+
+    private boolean downloadFrom(File target, String address) {
+        monitor.message("Downloading library from " + address);
+        try {
+            URLConnection connection = DownloadUtils.getConnection(address);
+            if (connection == null) {
+                // Offline mode, or a malformed/unresolvable address: nothing was downloaded.
+                return false;
+            }
+
+            Files.copy(monitor.wrapStepDownload(connection), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            if (this.sha1 != null) {
+                String sha1 = DownloadUtils.getSha1(target);
+                if (Objects.equals(sha1, this.sha1)) {
+                    monitor.message("\tDownload completed: Checksum validated.");
+                    return true;
+                }
+                monitor.message("\tDownload failed: Checksum invalid, deleting file:");
+                monitor.message("\t\tExpected: " + this.sha1);
+                monitor.message("\t\tActual:   " + sha1);
+                if (!target.delete()) {
+                    monitor.stage("\tFailed to delete file, aborting.");
+                }
+                return false;
+            }
+
+            monitor.message("\tDownload completed: No checksum, Assuming valid.");
+            return true;
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, e, () -> "Failed to download from " + address);
+            if (target.exists() && !target.delete()) {
+                LOGGER.log(Level.WARNING, () -> "Failed to delete incomplete download " + target);
+            }
+            return false;
+        }
     }
 
     public InputStream openStream() throws IOException {
@@ -158,7 +213,12 @@ public class Downloader {
             monitor.message("\tLibrary not cached, expecting download from " + url + ", but running in offline mode.");
             throw new RuntimeException("Running in offline mode, cannot download from " + url + ", cached version not found");
         }
-        return monitor.wrapStepDownload(DownloadUtils.getConnection(url));
+
+        URLConnection connection = DownloadUtils.getConnection(url);
+        if (connection == null) {
+            throw new IOException("Failed to open a connection to " + url);
+        }
+        return monitor.wrapStepDownload(connection);
     }
 
     public static class LocalFile {

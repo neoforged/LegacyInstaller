@@ -25,6 +25,7 @@ import net.minecraftforge.installer.DownloadUtils;
 import net.minecraftforge.installer.SimpleInstaller;
 import net.minecraftforge.installer.json.Artifact;
 import net.minecraftforge.installer.json.InstallV1;
+import net.minecraftforge.installer.json.Mirror;
 import net.minecraftforge.installer.json.Util;
 import net.minecraftforge.installer.json.Version;
 import net.minecraftforge.installer.json.Version.Library;
@@ -81,9 +82,12 @@ public abstract class Action {
         int progress = 0;
 
         final ProgressCallback targetMonitor = monitor.withoutDownloadProgress();
+        // Resolve the mirror once: getMirror() may fetch and pick from the mirror list, and we want
+        // every library of this run to be downloaded from the same mirror.
+        final Mirror mirror = profile.getMirror();
         for (Library lib : libraries) {
             checkCancel();
-            if (!DownloadUtils.downloadLibrary(targetMonitor, lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
+            if (!DownloadUtils.downloadLibrary(targetMonitor, mirror, lib, librariesDir, optionals, grabbed, additionalLibDirs)) {
                 LibraryDownload download = lib.getDownloads() == null ? null : lib.getDownloads().getArtifact();
                 if (download != null && !download.getUrl().isEmpty()) // If it doesn't have a URL we can't download it, assume we install it later
                     output.append('\n').append(lib.getName());

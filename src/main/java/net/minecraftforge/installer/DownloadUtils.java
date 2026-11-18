@@ -51,7 +51,7 @@ public class DownloadUtils {
 
     public static boolean OFFLINE_MODE = false;
 
-    public static boolean downloadLibrary(ProgressCallback monitor, Library library, File root, Predicate<String> optional, List<Artifact> grabbed, List<File> additionalLibraryDirs) {
+    public static boolean downloadLibrary(ProgressCallback monitor, @Nullable Mirror mirror, Library library, File root, Predicate<String> optional, List<Artifact> grabbed, List<File> additionalLibraryDirs) {
         Artifact artifact = library.getName();
         File target = artifact.getLocalPath(root);
         LibraryDownload download = library.getDownloads() == null ? null : library.getDownloads().getArtifact();
@@ -77,6 +77,7 @@ public class DownloadUtils {
                 .additionalDirectory(additionalLibraryDirs.toArray(new File[0]))
                 .sha(download.getSha1())
                 .localPath(download.getPath())
+                .mirror(mirror == null ? null : mirror.getUrl())
                 .download(target)) {
             grabbed.add(artifact);
             return true;
